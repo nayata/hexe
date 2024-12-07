@@ -1,5 +1,3 @@
-# HEXE
-
 ![HEXE](/hexe.png "HEXE")
 
 **HEXE** (Witch) is a prefab editor and runtime library for the [Heaps](https://heaps.io/) game engine. **HEXE** is focused on 2D content and serves as a more user-friendly alternative to **Hide** (Heaps IDE).
@@ -54,8 +52,8 @@ var object:hxe.Prefab = hxe.Lib.load("myPrefab", s2d);
 
 # Documentation
 
-## [Introduction](https://nayata.github.io/hexe)  
-## [Quick Start](https://nayata.github.io/hexe/#quick-start)  
-## [Working with editor](https://nayata.github.io/hexe/#working-with-editor)  
-## [In-game implementation](https://nayata.github.io/hexe-lib)  
-## [API](https://nayata.github.io/hexe-api)
+* [Introduction](https://nayata.github.io/hexe)  
+* [Quick Start](https://nayata.github.io/hexe/#quick-start)  
+* [Working with editor](https://nayata.github.io/hexe/#working-with-editor)  
+* [In-game implementation](https://nayata.github.io/hexe-lib)  
+* [API](https://nayata.github.io/hexe-api)
