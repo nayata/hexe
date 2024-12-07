@@ -1,3 +1,5 @@
+# HEXE
+
 ![HEXE](/hexe.png "HEXE")
 
 **HEXE** (Witch) is a prefab editor and runtime library for the [Heaps](https://heaps.io/) game engine. **HEXE** is focused on 2D content and serves as a more user-friendly alternative to **Hide** (Heaps IDE).
@@ -24,7 +26,7 @@ List of Heaps h2d objects that can be added to a prefab:
 
 # Quick Start
 
-Download the editor and create your prefab. 
+[Download](https://github.com/nayata/hexe/releases) the editor and create your prefab. 
 
 Install the library from haxelib:
 

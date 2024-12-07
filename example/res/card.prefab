@@ -1,0 +1,84 @@
+{
+	"name": "prefab",
+	"type": "prefab",
+	"children": [
+		{
+			"name": "bitmap",
+			"type": "bitmap",
+			"link": "card",
+			"scaleX": 0.7,
+			"scaleY": 0.7,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "card.png"
+		},
+		{
+			"name": "bitmap.2",
+			"type": "bitmap",
+			"link": "bitmap",
+			"y": 4,
+			"dx": 0.5,
+			"dy": 0.5,
+			"atlas": "texture",
+			"path": "texture.atlas",
+			"src": "spot"
+		},
+		{
+			"name": "bitmap.1",
+			"type": "bitmap",
+			"link": "image",
+			"y": -42,
+			"dx": 0.5,
+			"dy": 0.5,
+			"atlas": "texture",
+			"path": "texture.atlas",
+			"src": "enemy"
+		},
+		{
+			"name": "text",
+			"type": "text",
+			"link": "title",
+			"y": 42,
+			"src": "tiltWarpLarge.fnt",
+			"font": "tiltWarpLarge",
+			"align": 1,
+			"text": "Reaper"
+		},
+		{
+			"name": "text.1",
+			"type": "text",
+			"link": "description",
+			"y": 128,
+			"scaleX": 0.6,
+			"scaleY": 0.6,
+			"src": "tiltWarp.fnt",
+			"font": "tiltWarp",
+			"color": 16761095,
+			"align": 1,
+			"text": "Deal 20 Damage"
+		},
+		{
+			"name": "bitmap.3",
+			"type": "bitmap",
+			"link": "bitmap",
+			"x": -118,
+			"y": -178,
+			"dx": 0.5,
+			"dy": 0.5,
+			"atlas": "texture",
+			"path": "texture.atlas",
+			"src": "cost"
+		},
+		{
+			"name": "text.2",
+			"type": "text",
+			"link": "cost",
+			"parent": "bitmap.3",
+			"y": -51,
+			"src": "tiltWarpLarge.fnt",
+			"font": "tiltWarpLarge",
+			"align": 1,
+			"text": "3"
+		}
+	]
+}

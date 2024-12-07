@@ -1,0 +1,83 @@
+
+texture.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+card
+  rotate: false
+  xy: 0,0
+  size: 384,576
+  orig: 384,576
+  offset: 0,0
+  index: -1
+shadow
+  rotate: false
+  xy: 0,576
+  size: 256,256
+  orig: 256,256
+  offset: 0,0
+  index: -1
+sword
+  rotate: false
+  xy: 0,832
+  size: 128,128
+  orig: 128,128
+  offset: 0,0
+  index: -1
+spot
+  rotate: false
+  xy: 0,960
+  size: 104,24
+  orig: 104,24
+  offset: 0,0
+  index: -1
+button-over
+  rotate: false
+  xy: 128,832
+  size: 240,96
+  orig: 240,96
+  offset: 0,0
+  index: -1
+button-select
+  rotate: false
+  xy: 128,928
+  size: 240,96
+  orig: 240,96
+  offset: 0,0
+  index: -1
+button
+  rotate: false
+  xy: 368,928
+  size: 240,96
+  orig: 240,96
+  offset: 0,0
+  index: -1
+enemy
+  rotate: false
+  xy: 608,928
+  size: 79,88
+  orig: 96,88
+  offset: 0,0
+  index: -1
+coin
+  rotate: false
+  xy: 687,928
+  size: 74,86
+  orig: 74,86
+  offset: 0,0
+  index: -1
+cost
+  rotate: false
+  xy: 761,928
+  size: 74,86
+  orig: 74,86
+  offset: 0,0
+  index: -1
+light
+  rotate: false
+  xy: 384,0
+  size: 384,576
+  orig: 384,576
+  offset: 0,0
+  index: -1

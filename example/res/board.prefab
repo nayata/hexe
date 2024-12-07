@@ -1,0 +1,60 @@
+{
+	"name": "prefab",
+	"type": "prefab",
+	"children": [
+		{
+			"name": "prefab",
+			"type": "prefab",
+			"link": "grimCard",
+			"src": "card.prefab"
+		},
+		{
+			"name": "prefab.1",
+			"type": "prefab",
+			"link": "card",
+			"x": 313,
+			"field": [
+				{
+					"name": "description",
+					"type": "text",
+					"value": "Deal 60 Damage to ALL"
+				},
+				{
+					"name": "title",
+					"type": "text",
+					"value": "Blade"
+				},
+				{
+					"name": "image",
+					"type": "bitmap",
+					"value": "sword"
+				}
+			],
+			"src": "card.prefab"
+		},
+		{
+			"name": "prefab.2",
+			"type": "prefab",
+			"link": "card",
+			"x": -310,
+			"field": [
+				{
+					"name": "description",
+					"type": "text",
+					"value": "Get 200 Gold"
+				},
+				{
+					"name": "title",
+					"type": "text",
+					"value": "Gold"
+				},
+				{
+					"name": "image",
+					"type": "bitmap",
+					"value": "coin"
+				}
+			],
+			"src": "card.prefab"
+		}
+	]
+}

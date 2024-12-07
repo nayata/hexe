@@ -1,0 +1,8 @@
+-cp src
+-lib heaps
+-lib hldx
+-lib prefab
+-hl main.hl
+-main App
+-D windowSize=1280x720
+-D windowFixed=0

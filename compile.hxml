@@ -1,0 +1,7 @@
+-cp src
+-lib heaps
+-lib hldx
+-hl HEXE.hl
+-main Editor
+-D windowSize=1600x900
+-D windowFixed=0
