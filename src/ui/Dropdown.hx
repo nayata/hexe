@@ -53,7 +53,7 @@ class Dropdown extends h2d.Object {
 	}
 
 
-	public dynamic function onChange(value:String) {
+	public dynamic function onChange(value:String, type:String) {
 	}
 
 
@@ -121,7 +121,7 @@ class Dropdown extends h2d.Object {
 		if (selected != null) {
 			if (selected.closable) close();
 
-			onChange(selected.text);
+			onChange(selected.text, selected.icon);
 		}
 	}
 

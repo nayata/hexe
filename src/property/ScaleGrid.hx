@@ -2,13 +2,12 @@ package property;
 
 import property.component.Label;
 import property.component.Input;
-import property.component.Number;
 import property.component.Checkbox;
-import property.component.Anchor;
+import property.component.Number;
 import property.component.File;
 
 
-class Bitmap extends Property {
+class ScaleGrid extends Property {
 	var file:Input;
 
 
@@ -26,10 +25,10 @@ class Bitmap extends Property {
 		top += file.height + padding;
 
 
-		// Bitmap size
+		// Size
 		label = new Label("Size", 0, top + half, this);
 
-		var input:Input = set("width", new Number(this));
+		var input = set("width", new Number(this));
 		input.setPosition(second, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
@@ -41,15 +40,17 @@ class Bitmap extends Property {
 		input.onChange = onChange;
 		input.label = "H";
 
-		top += input.height + divider;
+		top += input.height + padding;
 
+		
+		// Border size
+		label = new Label("Border", 0, top + half, this);
 
-		// Bitmap tile pivot
-		label = new Label("Pivot", 0, top + half * 0.5, this);
-
-		input = set("anchor", new Anchor(this));
+		input = set("border", new Number(this));
 		input.setPosition(second, top);
+		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.label = "S";
 
 		top += input.height + divider;
 
@@ -66,13 +67,13 @@ class Bitmap extends Property {
 	override public function select(object:Dynamic) {
 		super.select(object);
 
-		var prefab = (cast object : prefab.Bitmap);
+		var prefab = (cast object : prefab.Image);
 		file.icon = prefab.atlas == "" ? "bitmap" : "texture";
 	}
 
 
 	function onFile(prop:Dynamic) {
-		var prefab = (cast object : prefab.Bitmap);
+		var prefab = (cast object : prefab.Image);
 
 		if (prefab.atlas == "") openBitmap(prop);
 		if (prefab.atlas != "") openTexture(prop);
@@ -104,7 +105,7 @@ class Bitmap extends Property {
 			Editor.ME.texture.onSelect = null;
 		}
 
-		var prefab = (cast object : prefab.Bitmap);
+		var prefab = (cast object : prefab.Image);
 
 		Editor.ME.texture.onSelect = onSelect;
 		Editor.ME.texture.open(prefab.atlas);

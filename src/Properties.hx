@@ -1,11 +1,12 @@
 import property.Property;
 import property.Transform;
 import property.Bitmap;
-import property.Texture;
 import property.Interactive;
+import property.ScaleGrid;
 import property.Graphics;
 import property.Prefab;
 import property.Text;
+import property.Mask;
 import property.Name;
 
 
@@ -52,14 +53,6 @@ class Properties extends h2d.Layers {
 		properties.set("bitmap", element);
 
 
-		// Bitmap Texture Atlas Prefab
-		element = new Texture(this);
-		element.visible = false;
-		element.x = 30;
-		element.y = 346;
-		properties.set("texture", element);
-
-
 		// Text Prefab
 		element = new Text(this);
 		element.visible = false;
@@ -84,6 +77,24 @@ class Properties extends h2d.Layers {
 		element.x = 30;
 		element.y = 346;
 		properties.set("interactive", element);
+
+
+		// ScaleGrid Prefab
+		element = new ScaleGrid(this);
+		element.onFocus = onFocus;
+		element.visible = false;
+		element.x = 30;
+		element.y = 346;
+		properties.set("scalegrid", element);
+
+
+		// Mask Prefab
+		element = new Mask(this);
+		element.onFocus = onFocus;
+		element.visible = false;
+		element.x = 30;
+		element.y = 346;
+		properties.set("mask", element);
 
 
 		// Linked Prefab

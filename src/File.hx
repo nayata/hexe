@@ -82,7 +82,6 @@ class File {
 				var item = new prefab.Bitmap();
 
 				if (entry.atlas != null) {
-					item.type = "texture";
 					item.atlas = entry.atlas;
 					item.path = entry.path;
 				}
@@ -94,6 +93,44 @@ class File {
 				if (entry.height != null) item.height = Std.int(entry.height);
 				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
 				if (entry.dx != null) item.anchor = entry.dx + "," + entry.dy;
+
+				prefab = item;
+			}
+
+
+			// ScaleGrid Prefab
+			if (entry.type == "scalegrid") {
+				var tile:h2d.Tile;
+
+				if (entry.atlas != null) {
+					if (!sys.FileSystem.exists(directory + entry.path)) throw("Could not find atlas " + entry.atlas + ".atlas");
+
+					loadAtlas(directory + entry.path);
+					tile = Assets.atlas.get(entry.atlas).get(entry.src);
+				}
+				else {
+					if (!sys.FileSystem.exists(directory + entry.src)) throw("Could not find image " + entry.src);
+
+					var path = directory + entry.src;
+					var bytes = sys.io.File.getBytes(path);
+					tile = hxd.res.Any.fromBytes(path, bytes).toImage().toTile();
+				}
+
+				var item = new prefab.ScaleGrid();
+
+				if (entry.atlas != null) {
+					item.atlas = entry.atlas;
+					item.path = entry.path;
+				}
+				
+				item.src = entry.src;
+				item.tile = tile;
+
+				item.width = Std.int(entry.width);
+				item.height = Std.int(entry.height);
+
+				if (entry.range != null) item.border = Std.int(entry.range);
+				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
 
 				prefab = item;
 			}
@@ -146,6 +183,17 @@ class File {
 			}
 
 
+			// Mask Prefab
+			if (entry.type == "mask") {
+				var item = new prefab.Mask();
+
+				item.width = Std.int(entry.width);
+				item.height = Std.int(entry.height);
+
+				prefab = item;
+			}
+
+
 			// Linked Prefab
 			if (entry.type == "prefab") {
 				if (!sys.FileSystem.exists(directory + entry.src)) throw("Could not find prefab " + entry.src);
@@ -178,7 +226,7 @@ class File {
 			prefab.object.scaleX = entry.scaleX ?? 1;
 			prefab.object.scaleY = entry.scaleY ?? 1;
 
-			prefab.object.rotation = entry.rotation;
+			prefab.object.rotation = entry.rotation ?? 0;
 
 			if (entry.blendMode != null) {
 				prefab.object.blendMode = haxe.EnumTools.createByName(h2d.BlendMode, entry.blendMode);
@@ -258,7 +306,7 @@ class File {
 
 
 	// Open Bitmap file
-	public function openBitmap() {
+	public function openBitmap(type:String = "bitmap") {
 		var file = openfile("Open Image", "Image Files", ["png", "jpeg", "jpg"]);
 		if (file == null) return;
 
@@ -266,14 +314,21 @@ class File {
 		var tile = hxd.res.Any.fromBytes(file, data).toImage().toTile();
 		var name = haxe.io.Path.withoutDirectory(file).split(".").shift();
 
-		var prefab = new prefab.Bitmap();
-
-		prefab.name = editor.getUID(prefab.type);
-		prefab.object.name = prefab.name;
-		//prefab.link = name; [?]
+		var prefab:prefab.Image = null;
+		switch (type) {
+			case "bitmap":
+				prefab = new prefab.Bitmap();
+			case "scalegrid":
+				prefab = new prefab.ScaleGrid();
+			case "anim":
+			default:
+		}
 
 		prefab.tile = tile;
 		prefab.src = getPath(file);
+
+		prefab.name = editor.getUID(prefab.type);
+		prefab.object.name = prefab.name;
 
 		editor.scene.addChild(prefab.object);
 		editor.add(prefab.object, prefab);
@@ -282,20 +337,27 @@ class File {
 
 
 	// Open Texture image
-	public function openTexture() {
+	public function openTexture(type:String = "bitmap") {
 		if (editor.texture.atlas == null) {
-			openAtlas();
+			openAtlas(type);
 			return;
 		}
 
 		function onSelect(name:String) {
 			var atlas = editor.texture.atlas;
-			var prefab = new prefab.Bitmap();
+
+			var prefab:prefab.Image = null;
+			switch (type) {
+				case "bitmap":
+					prefab = new prefab.Bitmap();
+				case "scalegrid":
+					prefab = new prefab.ScaleGrid();
+				case "anim":
+				default:
+			}
 
 			prefab.name = editor.getUID(prefab.type);
 			prefab.object.name = prefab.name;
-
-			prefab.type = "texture";
 	
 			prefab.tile = atlas.get(name);
 			prefab.atlas = atlas.name;
@@ -396,6 +458,34 @@ class File {
 				object = item;
 			}
 
+			if (entry.type == "scalegrid") {
+				var tile:h2d.Tile;
+
+				if (entry.atlas != null) {
+					if (!sys.FileSystem.exists(path + entry.path)) throw("Could not find atlas " + entry.atlas + ".atlas");
+
+					loadAtlas(path + entry.path);
+					tile = Assets.atlas.get(entry.atlas).get(entry.src);
+				}
+				else {
+					if (!sys.FileSystem.exists(path + entry.src)) throw("Could not find image " + entry.src);
+
+					var bytes = sys.io.File.getBytes(path + entry.src);
+					tile = hxd.res.Any.fromBytes(path + entry.src, bytes).toImage().toTile();
+				}
+
+				var size = entry.range ?? 10;
+				var item = new h2d.ScaleGrid(tile, size, size);
+
+				item.width = entry.width;
+				item.height = entry.height;
+
+				if (entry.smooth != null) item.smooth = entry.smooth == 1 ? true : false;
+
+				hierarchy.set(entry.name, item);
+				object = item;
+			}
+
 			if (entry.type == "text") {
 				var font = hxd.res.DefaultFont.get();
 				if (entry.font != null) font = getFont(path + entry.src);
@@ -417,8 +507,6 @@ class File {
 				object = item;
 			}
 
-
-			// Graphics Prefab
 			if (entry.type == "graphics") {
 				var item = new h2d.Bitmap(h2d.Tile.fromColor(0xFFFFFF, 128, 128));
 
@@ -437,6 +525,12 @@ class File {
 				object = item;
 			}
 
+			if (entry.type == "mask") {
+				var item = new h2d.Mask(Std.int(entry.width), Std.int(entry.height));
+
+				hierarchy.set(entry.name, item);
+				object = item;
+			}
 
 			if (entry.type == "prefab") {
 				if (!sys.FileSystem.exists(path + entry.src)) throw("Could not find prefab " + entry.src);
@@ -454,11 +548,11 @@ class File {
 
 			object.name = entry.link;
 
-			object.x = entry.x;
-			object.y = entry.y;
+			object.x = entry.x ?? 0;
+			object.y = entry.y ?? 0;
 			object.scaleX = entry.scaleX ?? 1;
 			object.scaleY = entry.scaleY ?? 1;
-			object.rotation = entry.rotation;
+			object.rotation = entry.rotation ?? 0;
 
 			if (entry.blendMode != null) object.blendMode = haxe.EnumTools.createByName(h2d.BlendMode, entry.blendMode);
 			object.visible = entry.visible ?? true;
@@ -482,7 +576,7 @@ class File {
 
 
 	// Open Atlas file
-	public function openAtlas() {
+	public function openAtlas(type:String = "bitmap") {
 		var file = openfile("Open Texture Atlas", "Texture Atlas Files", ["atlas"]);
 		if (file == null) return;
 
@@ -499,7 +593,7 @@ class File {
 		var atlas = new Texture.Atlas(name, entry, tile);
 
 		editor.addAtlas(atlas, name, path);
-		openTexture();
+		openTexture(type);
 	}
 
 

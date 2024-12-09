@@ -1,12 +1,8 @@
 package prefab;
-import h2d.col.Point;
 
 
-class Bitmap extends Image {
-	public var dx:Float = 0;
-	public var dy:Float = 0;
-
-	public var anchor(default, set):String = "0,0";
+class ScaleGrid extends Image {
+	public var border(default, set):Int = 10;
 	public var smooth(default, set):Int = 0;
 
 	public var bitmap(default, set):String = "";
@@ -16,25 +12,24 @@ class Bitmap extends Image {
 	public function new() {
 		super();
 
-		object = new h2d.Bitmap();
-		type = "bitmap";
-		link = "bitmap";
+		object = new h2d.ScaleGrid(h2d.Tile.fromColor(0xFFFFFF, 128, 128), 10, 10);
+
+		width = 128;
+		height = 128;
+
+		type = "scalegrid";
+		link = "scalegrid";
 	}
 
 
 	override public function serialize():Dynamic {
 		var data:Dynamic = super.serialize();
 
-		var bitmap = (cast object : h2d.Bitmap);
+		data.width = width;
+		data.height = height;
 
-		if (width != bitmap.tile.width) data.width = width;
-		if (height != bitmap.tile.height) data.height = height;
+		if (border != 10) data.range = border;
 		if (smooth != 0) data.smooth = smooth;
-
-		if (dx != 0 || dy != 0) {
-			data.dx = dx;
-			data.dy = dy;
-		}
 
 		if (atlas != "") data.atlas = atlas;
 		if (path != "") data.path = path;
@@ -46,10 +41,10 @@ class Bitmap extends Image {
 
 
 	override public function clone():Prefab {
-		var prefab = new Bitmap();
+		var prefab = new ScaleGrid();
 
 		prefab.tile = tile.clone();
-
+		
 		prefab.atlas = atlas;
 		prefab.path = path;
 		prefab.src = src;
@@ -57,11 +52,8 @@ class Bitmap extends Image {
 		prefab.width = width;
 		prefab.height = height;
 
-		prefab.anchor = anchor;
+		prefab.border = border;
 		prefab.smooth = smooth;
-
-		prefab.dx = dx;
-		prefab.dy = dy;
 
 		prefab.copy(this);
 
@@ -70,19 +62,11 @@ class Bitmap extends Image {
 
 
 	override function set_tile(v) {
-		var bitmap = (cast object : h2d.Bitmap);
+		var bitmap = (cast object : h2d.ScaleGrid);
 		bitmap.tile = v;
-		
-		bitmap.tile.setCenterRatio(dx, dy);
 
-		bitmap.width = v.width;
-		bitmap.height = v.height;
-
-		width = bitmap.width;
-		height = bitmap.height;
-
-		x = -width * dx;
-		y = -height * dy;
+		bitmap.width = width;
+		bitmap.height = height;
 
 		return tile = v;
 	}
@@ -107,27 +91,16 @@ class Bitmap extends Image {
 	}
 
 
-	function set_anchor(v) {
-		var val = v.split(",");
+	function set_border(v) {
+		var bitmap = (cast object : h2d.ScaleGrid);
+		bitmap.borderWidth = bitmap.borderHeight = v;
 
-		var vx = Std.parseFloat(StringTools.trim(val[0]));
-		var vy = Std.parseFloat(StringTools.trim(val[1]));
-
-		var bitmap = (cast object : h2d.Bitmap);
-		bitmap.tile.setCenterRatio(vx, vy);
-
-		x = -width * vx;
-		y = -height * vy;
-
-		dx = vx;
-		dy = vy;
-
-		return anchor = v;
+		return border = v;
 	}
 
 
 	function set_smooth(v) {
-		var bitmap = (cast object : h2d.Bitmap);
+		var bitmap = (cast object : h2d.ScaleGrid);
 		bitmap.smooth = v == 1 ? true : false;
 
 		return smooth = v;
@@ -137,11 +110,8 @@ class Bitmap extends Image {
 	override function set_width(v) {
 		width = v;
 
-		var bitmap = (cast object : h2d.Bitmap);
+		var bitmap = (cast object : h2d.ScaleGrid);
 		bitmap.width = Std.int(v);
-
-		x = -width * dx;
-		y = -height * dy;
 
 		return v;
 	}
@@ -150,11 +120,8 @@ class Bitmap extends Image {
 	override function set_height(v) {
 		height = v;
 		
-		var bitmap = (cast object : h2d.Bitmap);
+		var bitmap = (cast object : h2d.ScaleGrid);
 		bitmap.height = Std.int(v);
-
-		x = -width * dx;
-		y = -height * dy;
 
 		return v;
 	}

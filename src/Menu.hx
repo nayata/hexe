@@ -61,14 +61,18 @@ class Menu extends h2d.Object {
 		
 		assetMenu.add("Add Object", "object");
 		assetMenu.add("Add Bitmap", "bitmap");
+		assetMenu.add("Add ScaleGrid", "scalegrid");
+		//assetMenu.add("Add Anim", "bitmap");
+
 		assetMenu.add("Add Text", "text");
-		//assetMenu.add("Add Anim");
 		assetMenu.add("Add Interactive", "interactive");
+		
 		assetMenu.add("Add Graphics", "graphics");
-		//assetMenu.add("Add Mask");
+		assetMenu.add("Add Mask", "mask");
 		assetMenu.addDivider();
 
-		assetMenu.add("Add from Texture Atlas", "texture");
+		assetMenu.add("Add from Texture Atlas", "bitmap");
+		assetMenu.add("Add from Texture Atlas", "scalegrid");
 		assetMenu.addDivider();
 
 		assetMenu.add("Place Prefab", "prefab");
@@ -80,7 +84,7 @@ class Menu extends h2d.Object {
 
 
 	// Not Enums for speed
-	function onChange(value:String) {
+	function onChange(value:String, type:String) {
 		switch (value) {
 			case "New" : editor.clear();
 			case "Open" : editor.file.open();
@@ -103,9 +107,11 @@ class Menu extends h2d.Object {
 			case "Add Object" : editor.make("object");
 			case "Add Text" : editor.make("text");
 			case "Add Interactive" : editor.make("interactive");
+			case "Add ScaleGrid" : editor.file.openBitmap("scalegrid");
 			case "Add Graphics" : editor.make("graphics");
+			case "Add Mask" : editor.make("mask");
 
-			case "Add from Texture Atlas" : editor.file.openTexture();
+			case "Add from Texture Atlas" : editor.file.openTexture(type);
 			case "Place Prefab" : editor.file.openPrefab();
 
 			case "Load Texture Atlas" : editor.file.openAtlas();

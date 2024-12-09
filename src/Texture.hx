@@ -108,7 +108,7 @@ class Texture extends h2d.Object {
 	public dynamic function onSelect(name:String) {}
 
 
-	function onChange(value:String) {
+	function onChange(value:String, type:String) {
 		if (name != value) set(value);
 	}
 
