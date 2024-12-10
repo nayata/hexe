@@ -2,15 +2,12 @@ package property.component;
 
 
 class Slider extends TextField {
-	var slider:h2d.Slider;
-
 	public var step:Float = 0.05;
-	public var min:Int = 0;
-	public var max:Int = 1;
 
+	var slider:h2d.Slider;
 	var time:Int = -1;
 	var undo:Float = 0;
-
+	
 
 	public function new(?parent:h2d.Object) {
 		super(parent);
@@ -25,11 +22,17 @@ class Slider extends TextField {
 		slider.x = -slider.width - 10;
 		slider.y = height*0.5 - slider.height*0.5;
 
-		slider.minValue = min;
-		slider.maxValue = max;
+		slider.minValue = 0;
+		slider.maxValue = 1;
 
 		slider.onRelease = sliderRelease;
 		slider.onChange = onSlider;
+	}
+
+
+	public function setSliderRange(min:Float, max:Float) {
+		slider.minValue = min;
+		slider.maxValue = max;
 	}
 
 
@@ -57,7 +60,7 @@ class Slider extends TextField {
 			val = undo;
 		}
 		else {
-			val = hxd.Math.clamp(val, min, max);
+			val = hxd.Math.clamp(val, minimum, maximum);
 			slider.value = val;
 
 			onUpdate({ field : field, to : val });
@@ -70,7 +73,7 @@ class Slider extends TextField {
 			var val = Std.parseFloat(input.text);
 			val = event.wheelDelta > 0 ? val - step : val + step;
 
-			val = hxd.Math.clamp(val, min, max);
+			val = hxd.Math.clamp(val, minimum, maximum);
 			slider.value = val;
 
 			input.text = Std.string(val);

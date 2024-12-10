@@ -32,12 +32,14 @@ class ScaleGrid extends Property {
 		input.setPosition(second, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.minimum = 0;
 		input.label = "W";
 
 		input = set("height", new Number(this));
 		input.setPosition(third, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.minimum = 0;
 		input.label = "H";
 
 		top += input.height + padding;
@@ -50,6 +52,7 @@ class ScaleGrid extends Property {
 		input.setPosition(second, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.minimum = 0;
 		input.label = "S";
 
 		top += input.height + divider;

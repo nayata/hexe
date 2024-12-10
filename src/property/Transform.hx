@@ -97,6 +97,10 @@ class Transform extends Property {
 		input.setPosition(176, 174);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		
+		input.minimum = 0;
+		input.maximum = 1;
+
 		input.field = "alpha";
 		input.label = "%";
 

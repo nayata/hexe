@@ -2,6 +2,9 @@ package property.component;
 
 
 class Input extends h2d.Object {
+	public var minimum:Float = Math.NEGATIVE_INFINITY;
+	public var maximum:Float = Math.POSITIVE_INFINITY;
+	
 	public var width:Float = 32;
 	public var height:Float = 32;
 

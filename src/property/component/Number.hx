@@ -3,8 +3,6 @@ package property.component;
 
 class Number extends TextField {
 	public var step:Int = 1;
-	public var min:Int = 0;
-	public var max:Int = 1;
 
 	var time:Int = -1;
 	var undo:Int = 0;
@@ -25,7 +23,9 @@ class Number extends TextField {
 	override function onWheel(event:hxd.Event) {
 		if (hxd.Timer.frameCount - time < 2) {
 			var val = Std.parseInt(input.text);
+
 			val = event.wheelDelta > 0 ? val - step : val + step;
+			val = Std.int(hxd.Math.clamp(val, minimum, maximum));
 
 			input.text = Std.string(val);
 

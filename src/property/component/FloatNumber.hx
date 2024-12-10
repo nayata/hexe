@@ -3,8 +3,6 @@ package property.component;
 
 class FloatNumber extends TextField {
 	public var step:Float = 0.1;
-	public var min:Int = 0;
-	public var max:Int = 1;
 
 	var time:Int = -1;
 	var undo:Float = 0;

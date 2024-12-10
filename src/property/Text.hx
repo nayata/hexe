@@ -97,6 +97,7 @@ class Text extends Property {
 		input.setPosition(second, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.minimum = -1;
 		input.icon = "wrap";
 
 		over(choice);

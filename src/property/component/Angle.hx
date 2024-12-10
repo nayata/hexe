@@ -3,8 +3,6 @@ package property.component;
 
 class Angle extends TextField {
 	public var step:Float = 1;
-	public var min:Int = -180;
-	public var max:Int = 180;
 
 	var time:Int = -1;
 	var undo:Float = 0;
