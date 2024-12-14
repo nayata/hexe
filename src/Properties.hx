@@ -151,6 +151,10 @@ class Properties extends h2d.Layers {
 
 	public function onChange() {
 		transform.update();
+
+		for (item in properties) {
+			item.update();
+		}
 	}
 
 

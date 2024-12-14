@@ -11,6 +11,7 @@ enum State {
 	Translate;
 	Rotation;
 	Scale;
+	Size;
 	Skew;
 }
 
@@ -55,6 +56,11 @@ class Toolbar extends h2d.Object {
 		item = new Tool(this, 40 * offset++, 0);
 		item.action = Scale;
 		item.setIcon("scale");
+		tools.push(item);
+
+		item = new Tool(this, 40 * offset++, 0);
+		item.action = Size;
+		item.setIcon("size");
 		tools.push(item);
 
 		var check = new CheckBox(this, 40 * offset++, 0);

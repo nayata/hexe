@@ -121,4 +121,14 @@ class ScaleGrid extends Drawable {
 
 		return v;
 	}
+
+
+	override function set_scaleX(v) {
+		return width = v;
+	}
+
+
+	override function set_scaleY(v) {
+		return height = v;
+	}
 }

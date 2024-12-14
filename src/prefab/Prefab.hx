@@ -14,6 +14,9 @@ class Prefab {
 	public var width(default, set):Float = 0;
 	public var height(default, set):Float = 0;
 
+	public var scaleX(get, set):Float;
+	public var scaleY(get, set):Float;
+
 	public var src:String = "";
 	public var locked:Bool = false;
 
@@ -66,12 +69,14 @@ class Prefab {
 	}
 
 
-	function set_width(v) {
-		return width = v;
-	}
+	function set_width(v) return width = v;
+	function set_height(v) return height = v;
 
 
-	function set_height(v) {
-		return height = v;
-	}
+	function get_scaleX() return width;
+	function get_scaleY() return height;
+
+	
+	function set_scaleX(v) return width;
+	function set_scaleY(v) return height;
 }

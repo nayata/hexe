@@ -55,14 +55,14 @@ class Element {
 }
 
 
-private typedef TransformType = { x : Float, y :Float, scaleX : Float, scaleY : Float, rotation : Float };
+private typedef Properties = { x : Float, y :Float, scaleX : Float, scaleY : Float, rotation : Float };
 
 class Transform extends Element {
 	var object:h2d.Object;
-	var from:TransformType;
-	var to:TransformType;
+	var from:Properties;
+	var to:Properties;
 
-	public function new(object:h2d.Object, from:TransformType, to:TransformType) {
+	public function new(object:h2d.Object, from:Properties, to:Properties) {
 		super();
 
 		this.object = object;
@@ -78,7 +78,7 @@ class Transform extends Element {
 		change(to);
 	}
 
-	inline function change(t:TransformType) {
+	inline function change(t:Properties) {
 		object.x = t.x;
 		object.y = t.y;
 		object.scaleX = t.scaleX;
@@ -89,7 +89,38 @@ class Transform extends Element {
 	}
 }
 
-// Done here or the date will be returned and processed in the `Editor` [?]
+
+private typedef Size = { width : Float, height : Float };
+
+class Resize extends Element {
+	var prefab:Prefab;
+	var from:Size;
+	var to:Size;
+
+	public function new(prefab:Prefab, from:Size, to:Size) {
+		super();
+
+		this.prefab = prefab;
+		this.from = from;
+		this.to = to;
+	}
+
+	override public function undo() {
+		change(from);
+	}
+
+	override public function redo() {
+		change(to);
+	}
+
+	inline function change(t:Size) {
+		prefab.scaleX = t.width;
+		prefab.scaleY = t.height;
+
+		Editor.ME.select(prefab.object.name);
+	}
+}
+
 
 private typedef Content = { parent : h2d.Object, index : Int };
 

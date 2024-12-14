@@ -8,6 +8,8 @@ import hxd.Event;
 import h3d.Vector;
 import hxd.Key;
 
+import prefab.Prefab;
+
 import ui.Touch;
 import ui.Grid;
 
@@ -26,6 +28,8 @@ class Control extends h2d.Object {
 	public var zoom:Float = 1;
 
 	public var selected:Null<h2d.Object> = null;
+	public var prefab:Null<Prefab> = null;
+
 	public var autoSelect:Bool = true;
 
 	var selection:Graphics;
@@ -33,8 +37,8 @@ class Control extends h2d.Object {
 
 	var cursor:Cursor;
 
-	var transform = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, rotation : 0.0, mouseX : 0.0, mouseY : 0.0, };
-	var history = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, rotation : 0.0 };
+	var transform = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, width : 1.0, height : 1.0, rotation : 0.0, mouseX : 0.0, mouseY : 0.0, absX : 0.0, absY : 0.0 };
+	var history = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, width : 1.0, height : 1.0, rotation : 0.0 };
 
 	var step:Float = 0;
 	var time:Float = 0;
@@ -68,6 +72,7 @@ class Control extends h2d.Object {
 
 	public function select(object:h2d.Object) {
 		selected = object;
+		prefab = editor.children.get(object.name);
 
 		getSelection();
 		updateCursor();
@@ -76,6 +81,7 @@ class Control extends h2d.Object {
 
 	public function unselect() {
 		selected = null;
+		prefab = null;
 		updateCursor();
 	}
 
@@ -118,11 +124,20 @@ class Control extends h2d.Object {
 				var mat = selected.getAbsPos();
 				transform.x = mouse.x - mat.x;
 				transform.y = mouse.y - mat.y;
+
 				transform.rotation = selected.rotation;
 
 				transform.scaleX = selected.scaleX;
 				transform.scaleY = selected.scaleY;
 
+				transform.width = prefab.scaleX;
+				transform.height = prefab.scaleY;
+
+				var pos = new Point(s2d.mouseX, s2d.mouseY);
+				selected.parent.globalToLocal(pos);
+
+				transform.absX = pos.x;
+				transform.absY = pos.y;
 
 				// Store data for history
 				history.x = selected.x;
@@ -130,6 +145,9 @@ class Control extends h2d.Object {
 
 				history.scaleX = selected.scaleX;
 				history.scaleY = selected.scaleY;
+
+				history.width = prefab.scaleX;
+				history.height = prefab.scaleY;
 
 				history.rotation = selected.rotation;
 			}
@@ -199,6 +217,34 @@ class Control extends h2d.Object {
 					editor.onTransform();
 					getSelection();
 					updateCursor();
+				case Size:
+					var pos = new Point(s2d.mouseX, s2d.mouseY);
+					selected.parent.globalToLocal(pos);
+
+					var dx = (pos.x - transform.absX) * 1 / selected.scaleX;
+					var dy = (pos.y - transform.absY) * 1 / selected.scaleY;
+
+					var transformX = transform.width + dx * 1.0;
+					var transformY = transform.height - dy * 1.0;
+
+					if (cursor.state == XY) {
+						var scaleSign = -1;
+
+						transformX = transform.width + dx * 1.0;
+						transformY = transform.height - dy * scaleSign * 1.0;
+
+						if (Key.isDown(Key.SHIFT)) transformY = transformX * (transform.height / transform.width);
+					}
+
+					transformX = Math.max(transformX, 0);
+					transformY = Math.max(transformY, 0);
+
+					if (cursor.state != Y) prefab.scaleX = snap(transformX, 1);
+					if (cursor.state != X) prefab.scaleY = snap(transformY, 1);
+
+					editor.onTransform();
+					getSelection();
+					updateCursor();
 				default:
 			}
 		}
@@ -230,6 +276,14 @@ class Control extends h2d.Object {
 				var redo = { x : selected.x, y : selected.y, scaleX : selected.scaleX, scaleY : selected.scaleY, rotation : selected.rotation };
 
 				editor.history.add(new History.Transform(selected, undo, redo));
+			}
+
+			// Send Prefab transform to history
+			if (prefab.width != history.width || prefab.height != history.height) {
+				var undo = { width : history.width, height : history.height };
+				var redo = { width : prefab.width, height : prefab.height };
+
+				editor.history.add(new History.Resize(prefab, undo, redo));
 			}
 		}
 
@@ -576,11 +630,10 @@ class Cursor extends h2d.Object {
 				guideX.tile = hxd.Res.scaleX.toTile();
 				guideY.tile = hxd.Res.scaleY.toTile();
 				rotation = transform;
-			/*
-			case Translate : 
-				guideX.tile = hxd.Res.moveX.toTile();
-				guideY.tile = hxd.Res.moveY.toTile();
-				rotation = transform;*/
+			case Size : 
+				guideX.tile = hxd.Res.scaleX.toTile();
+				guideY.tile = hxd.Res.scaleY.toTile();
+				rotation = transform;
 			default:
 				guideX.tile = hxd.Res.moveX.toTile();
 				guideY.tile = hxd.Res.moveY.toTile();
@@ -593,7 +646,7 @@ class Cursor extends h2d.Object {
 
 	function set_transform(v) {
 		if (tool == Scale) rotation = v;
-		//if (tool == Translate) rotation = v; [?]
+		if (tool == Size) rotation = v;
 		return transform = v;
 	}
 
