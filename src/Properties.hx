@@ -1,10 +1,12 @@
 import property.Property;
 import property.Transform;
+import property.Project;
 import property.Bitmap;
 import property.Interactive;
 import property.ScaleGrid;
 import property.Graphics;
 import property.Prefab;
+import property.Anim;
 import property.Text;
 import property.Mask;
 import property.Name;
@@ -21,6 +23,7 @@ class Properties extends h2d.Layers {
 
 	var uid:Name;
 	var transform:Transform;
+	var project:Project;
 	var label:ui.Text;
 	
 	
@@ -28,6 +31,11 @@ class Properties extends h2d.Layers {
 		super(parent);
 
 		editor = Editor.ME;
+
+		// Project Name
+		project = new Project(this);
+		project.x = 30;
+		project.y = 60;
 
 		// Name
 		uid = new Name(this);
@@ -37,7 +45,7 @@ class Properties extends h2d.Layers {
 
 		label = new ui.Text("Properties", 0, -40, uid);
 
-		// Object transform
+		// Object Transform
 		transform = new Transform(this);
 		transform.onFocus = onFocus;
 		transform.visible = false;
@@ -81,11 +89,18 @@ class Properties extends h2d.Layers {
 
 		// ScaleGrid Prefab
 		element = new ScaleGrid(this);
-		element.onFocus = onFocus;
 		element.visible = false;
 		element.x = 30;
 		element.y = 346;
 		properties.set("scalegrid", element);
+
+
+		// Anim Prefab
+		element = new Anim(this);
+		element.visible = false;
+		element.x = 30;
+		element.y = 346;
+		properties.set("anim", element);
 
 
 		// Mask Prefab
@@ -112,6 +127,7 @@ class Properties extends h2d.Layers {
 		var prefab = editor.children.get(object.name);
 
 		transform.select(object);
+		project.select(prefab);
 		uid.select(prefab);
 
 		if (property != null) property.unselect();
@@ -125,6 +141,7 @@ class Properties extends h2d.Layers {
 
 	public function unselect() {
 		transform.unselect();
+		project.unselect();
 		uid.unselect();
 
 		if (property != null) property.unselect();
@@ -139,6 +156,11 @@ class Properties extends h2d.Layers {
 
 	function onFocus(o:h2d.Object) {
 		over(o);
+	}
+
+
+	public function onScene() {
+		project.update();
 	}
 
 

@@ -15,12 +15,17 @@ class Number extends TextField {
 			val = undo;
 		}
 		else {
+			val = Std.int(hxd.Math.clamp(val, minimum, maximum));
+			input.text = Std.string(val);
+			
 			onUpdate({ field : field, to : val });
 		}
 	}
 
 
 	override function onWheel(event:hxd.Event) {
+		if (!enabled) return;
+		
 		if (hxd.Timer.frameCount - time < 2) {
 			var val = Std.parseInt(input.text);
 

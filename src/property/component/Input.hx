@@ -30,19 +30,19 @@ class Input extends h2d.Object {
 	public function blur() {}
 
 
-	public function set_enabled(v) {
+	function set_enabled(v) {
 		return enabled = v;
 	}
 
-	public function set_value(v) {
+	function set_value(v) {
 		return value = v;
 	}
 
-	public function set_label(v) {
+	function set_label(v) {
 		return label = v;
 	}
 
-	public function set_icon(v) {
+	function set_icon(v) {
 		return icon = v;
 	}
 

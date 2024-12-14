@@ -2,15 +2,11 @@ package prefab;
 import h2d.col.Point;
 
 
-class Bitmap extends Image {
+class Bitmap extends Drawable {
 	public var dx:Float = 0;
 	public var dy:Float = 0;
 
 	public var anchor(default, set):String = "0,0";
-	public var smooth(default, set):Int = 0;
-
-	public var bitmap(default, set):String = "";
-	public var image(default, set):String = "";
 
 
 	public function new() {
@@ -88,7 +84,7 @@ class Bitmap extends Image {
 	}
 
 
-	function set_bitmap(v) {
+	override function set_bitmap(v) {
 		var file = Editor.ME.file.directory + v;
 		var data = sys.io.File.getBytes(file);
 		tile = hxd.res.Any.fromBytes(file, data).toImage().toTile();
@@ -99,7 +95,7 @@ class Bitmap extends Image {
 	}
 
 
-	function set_image(v) {
+	override function set_image(v) {
 		tile = Assets.atlas.get(atlas).get(v);
 		src = v;
 
@@ -126,7 +122,7 @@ class Bitmap extends Image {
 	}
 
 
-	function set_smooth(v) {
+	override function set_smooth(v) {
 		var bitmap = (cast object : h2d.Bitmap);
 		bitmap.smooth = v == 1 ? true : false;
 

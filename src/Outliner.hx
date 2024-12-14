@@ -35,7 +35,7 @@ class Outliner extends h2d.Object {
 	public var width:Int = 300;
 	public var height:Int = 30;
 
-	public var position:Int = 200;
+	public var position:Int = 120;
 	public var size:Int = 30;
 
 	var dragStart:Float = 0;

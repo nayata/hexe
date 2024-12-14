@@ -1,12 +1,8 @@
 package prefab;
 
 
-class ScaleGrid extends Image {
+class ScaleGrid extends Drawable {
 	public var border(default, set):Int = 10;
-	public var smooth(default, set):Int = 0;
-
-	public var bitmap(default, set):String = "";
-	public var image(default, set):String = "";
 
 
 	public function new() {
@@ -72,7 +68,7 @@ class ScaleGrid extends Image {
 	}
 
 
-	function set_bitmap(v) {
+	override function set_bitmap(v) {
 		var file = Editor.ME.file.directory + v;
 		var data = sys.io.File.getBytes(file);
 		tile = hxd.res.Any.fromBytes(file, data).toImage().toTile();
@@ -83,7 +79,7 @@ class ScaleGrid extends Image {
 	}
 
 
-	function set_image(v) {
+	override function set_image(v) {
 		tile = Assets.atlas.get(atlas).get(v);
 		src = v;
 
@@ -99,7 +95,7 @@ class ScaleGrid extends Image {
 	}
 
 
-	function set_smooth(v) {
+	override function set_smooth(v) {
 		var bitmap = (cast object : h2d.ScaleGrid);
 		bitmap.smooth = v == 1 ? true : false;
 

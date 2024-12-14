@@ -5,11 +5,13 @@ import prefab.Prefab;
 class File {
 	public var directory:String = "";
 	public var filepath:String = "";
+	
 	public var filename:String = "untitled.prefab";
-	public var defaultFilename:String = "untitled.prefab";
+	public var defaultName:String = "untitled.prefab";
+	public var project:String = "untitled";
 
-	var loadDirectory:String = "";
 	var empty:String = "";
+	var temp:String = "";
 
 	var editor:Editor;
 
@@ -45,7 +47,7 @@ class File {
 		// New Scene
 		editor.clear();
 
-		directory = haxe.io.Path.directory(file).split("\\").join("/")+"/";
+		directory = getDirectory(file);
 		filename = haxe.io.Path.withoutDirectory(file);
 		filepath = file;
 
@@ -131,6 +133,42 @@ class File {
 
 				if (entry.range != null) item.border = Std.int(entry.range);
 				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
+
+				prefab = item;
+			}
+
+
+			// Anim Prefab
+			if (entry.type == "anim") {
+				var item = new prefab.Anim();
+
+				if (entry.atlas != null) {
+					if (!sys.FileSystem.exists(directory + entry.path)) throw("Could not find atlas " + entry.atlas + ".atlas");
+
+					loadAtlas(directory + entry.path);
+
+					item.atlas = entry.atlas;
+					item.image = entry.src;
+					item.path = entry.path;
+				}
+				else {
+					if (!sys.FileSystem.exists(directory + entry.src)) throw("Could not find image " + entry.src);
+
+					var path = directory + entry.src;
+					var bytes = sys.io.File.getBytes(path);
+					var tile:h2d.Tile = hxd.res.Any.fromBytes(path, bytes).toImage().toTile();
+
+					item.row = Std.int(entry.width);
+					item.col = Std.int(entry.height);
+
+					item.tile = tile;
+				}
+
+				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
+
+				item.speed = entry.speed;
+				item.loop = entry.loop;
+				item.src = entry.src;
 
 				prefab = item;
 			}
@@ -287,7 +325,7 @@ class File {
 			hxd.System.allowTimeout = allowTimeout;
 
 			if (file != null) {
-				directory = haxe.io.Path.directory(file).split("\\").join("/")+"/";
+				directory = getDirectory(file);
 				filepath = haxe.io.Path.withoutExtension(file)+".prefab";
 				filename = haxe.io.Path.withoutDirectory(filepath);
 				
@@ -314,13 +352,14 @@ class File {
 		var tile = hxd.res.Any.fromBytes(file, data).toImage().toTile();
 		var name = haxe.io.Path.withoutDirectory(file).split(".").shift();
 
-		var prefab:prefab.Image = null;
+		var prefab:prefab.Drawable = null;
 		switch (type) {
 			case "bitmap":
 				prefab = new prefab.Bitmap();
 			case "scalegrid":
 				prefab = new prefab.ScaleGrid();
 			case "anim":
+				prefab = new prefab.Anim();
 			default:
 		}
 
@@ -346,13 +385,16 @@ class File {
 		function onSelect(name:String) {
 			var atlas = editor.texture.atlas;
 
-			var prefab:prefab.Image = null;
+			var prefab:prefab.Drawable = null;
 			switch (type) {
 				case "bitmap":
 					prefab = new prefab.Bitmap();
 				case "scalegrid":
 					prefab = new prefab.ScaleGrid();
 				case "anim":
+					prefab = new prefab.Anim();
+					prefab.atlas = atlas.name;
+					prefab.image = name;
 				default:
 			}
 
@@ -382,15 +424,15 @@ class File {
 		if (file == null) return;
 
 		var name = haxe.io.Path.withoutDirectory(file).split(".").shift();
-		var path = haxe.io.Path.directory(file).split("\\").join("/")+"/";
+		var path = empty;
 
-		if (directory == empty) loadDirectory = path;
+		if (directory == empty) temp = getDirectory(file);
 		if (directory != empty) path = directory;
 
 		var data = sys.io.File.getContent(file);
 		if (data == empty) return;
 
-		var prefab = loadPrefab(file, path);
+		var prefab = loadPrefab(file, getDirectory(file));
 
 		prefab.name = editor.getUID(prefab.type);
 		prefab.object.name = prefab.name;
@@ -403,7 +445,7 @@ class File {
 
 
 	public function getPrefab(name:String) {
-		var path = directory == empty ? loadDirectory : directory;
+		var path = directory == empty ? temp : directory;
 		return loadPrefab(path + name, path);
 	}
 
@@ -480,6 +522,44 @@ class File {
 				item.width = entry.width;
 				item.height = entry.height;
 
+				if (entry.smooth != null) item.smooth = entry.smooth == 1 ? true : false;
+
+				hierarchy.set(entry.name, item);
+				object = item;
+			}
+
+			if (entry.type == "anim") {
+				var tiles:Array<h2d.Tile> = [];
+
+				if (entry.atlas != null) {
+					if (!sys.FileSystem.exists(path + entry.path)) throw("Could not find atlas " + entry.atlas + ".atlas");
+
+					loadAtlas(path + entry.path);
+
+					tiles = Assets.atlas.get(entry.atlas).getAnim(entry.src);
+					for (t in tiles) t.setCenterRatio(0.5, 0.5);
+				}
+				else {
+					if (!sys.FileSystem.exists(path + entry.src)) throw("Could not find image " + entry.src);
+
+					var bytes = sys.io.File.getBytes(path + entry.src);
+					var tile = hxd.res.Any.fromBytes(path + entry.src, bytes).toImage().toTile();
+
+					var row = Std.int(entry.width);
+					var col = Std.int(entry.height);
+					var w = Std.int(tile.width / row);
+					var h = Std.int(tile.height / col);
+			
+					for (y in 0...col) {    
+						for (x in 0...row) {
+							tiles.push( tile.sub(x * w, y * h, w, h, -(w / 2), -(h / 2)) );
+						}
+					}
+				}
+
+				var item = new h2d.Anim(tiles, entry.speed);
+				item.pause = entry.loop == 0 ? true : false;
+				
 				if (entry.smooth != null) item.smooth = entry.smooth == 1 ? true : false;
 
 				hierarchy.set(entry.name, item);
@@ -658,8 +738,10 @@ class File {
 		var folder = haxe.io.Path.directory(file).split("\\").join("/")+"/";
 		var name = haxe.io.Path.withoutDirectory(file);
 
+		// Set project directory if path has `res`
+		if (directory == empty) setDirectory(file);
 
-		// Prefab not saved: can't build relative path
+		// !detectProject & Prefab not saved: can't build relative path
 		if (directory == empty) return name;
 
 		// External file: can't build relative path
@@ -668,8 +750,52 @@ class File {
 		// Relative path to file
 		if (StringTools.startsWith(folder.toLowerCase(), directory.toLowerCase())) return folder.substr(directory.length) + name;
 
-
 		return name;
+	}
+
+
+	// Get project `res` folder from path
+	public function getDirectory(file:String) {
+		var folder = haxe.io.Path.directory(file).split("\\").join("/")+"/";
+		
+		if (!Config.detectProject) {
+			project = folder.substr(0, folder.length-Config.resourceDir.length-2);
+			return folder;
+		}
+
+		var path = haxe.io.Path.directory(file).split("\\");
+		var res = Config.resourceDir;
+
+		if (path.contains(res)) {
+			folder = empty;
+			for (dir in path) {
+				folder += dir + "/";
+				if (dir != res) project = dir;
+				if (dir == res) break;
+			}
+		}
+		editor.onProject();
+
+		return folder;
+	}
+
+
+	// Set project directory if path has `res`
+	public function setDirectory(file:String) {
+		if (!Config.detectProject) return;
+
+		var path = haxe.io.Path.directory(file).split("\\");
+		var res = Config.resourceDir;
+		
+		if (path.contains(res)) {
+			for (dir in path) {
+				directory += dir + "/";
+				if (dir != res) project = dir;
+				if (dir == res) break;
+			}
+		}
+
+		editor.onProject();
 	}
 
 
@@ -684,7 +810,8 @@ class File {
 
 
 	public function clear() {
-		filename = defaultFilename;
+		filename = defaultName;
+		project = "untitled";
 		directory = "";
 		filepath = "";
 	}
@@ -726,6 +853,9 @@ typedef Data = {
 	@:optional var color : Int;
 	@:optional var align : Int;
 	@:optional var range : Int;
+
+	@:optional var speed : Int;
+	@:optional var loop : Int;
 
 	@:optional var text : String;
 	@:optional var atlas : String;

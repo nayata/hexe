@@ -57,9 +57,10 @@ class Editor extends hxd.App {
 			hxd.Res.initEmbed();
 		#end
 
+		Config.init();
 		Assets.init();
 		
-		grid = new Grid(s2d.width, s2d.height, s2d);
+		grid = new Grid(s2d.width, s2d.height, Config.gridSize, s2d);
 		grid.onMove(200, 200);
 
 		scene = new Object(s2d);
@@ -188,7 +189,13 @@ class Editor extends hxd.App {
 
 	public function onScene() {
 		hxd.Window.getInstance().title = file.filename;
+		property.onScene();
 		unselect();
+	}
+
+
+	public function onProject() {
+		property.onScene();
 	}
 
 
@@ -200,7 +207,7 @@ class Editor extends hxd.App {
 
 	// New Scene
 	public function clear() {
-		hxd.Window.getInstance().title = file.defaultFilename;
+		hxd.Window.getInstance().title = file.defaultName;
 		scene.removeChildren();
 
 		Assets.clear();
@@ -218,6 +225,7 @@ class Editor extends hxd.App {
 
 		clipboard = null;
 
+		property.onScene();
 		control.onScene();
 		unselect();
 	}

@@ -173,13 +173,13 @@ class Select extends Input {
 	}
 
 
-	override public function set_label(v) {
+	override function set_label(v) {
 		text.text = v;
 		return label = v;
 	}
 
 
-	override public function set_icon(v) {
+	override function set_icon(v) {
 		if (tile == null) {
 			tile = new h2d.Bitmap(h2d.Tile.fromColor(Style.icon, 16, 16), this);
 			tile.tile.setCenterRatio();

@@ -12,6 +12,7 @@ class File extends Input {
 
 	var padding:Int = 12;
 	var indent:Int = 30;
+	var max:Int = 16;
 
 
 	public function new(?parent:h2d.Object) {
@@ -32,13 +33,16 @@ class File extends Input {
 	}
 
 
-	override function set_value(v) {
-		text.text = v;
+	override function set_value(v:String) {
+		var str:String = v;
+		if (str.length > max) str = "..." + str.substr(str.length - max);
+		text.text = str;
+
 		return value = v;
 	}
 
 
-	override public function set_label(v) {
+	override function set_label(v) {
 		if (description == null) {
 			description = new h2d.Text(Assets.defaultFont, this);
 			description.textColor = Style.label;
@@ -57,7 +61,7 @@ class File extends Input {
 	}
 
 
-	override public function set_icon(v) {
+	override function set_icon(v) {
 		if (tile == null) {
 			tile = new h2d.Bitmap(h2d.Tile.fromColor(Style.icon, 16, 16), this);
 			tile.tile.setCenterRatio();

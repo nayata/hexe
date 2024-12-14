@@ -37,6 +37,7 @@ class TextField extends Input {
 
 
 	function onWheel(event:hxd.Event) {
+		if (!enabled) return;
 	}
 
 
@@ -50,13 +51,20 @@ class TextField extends Input {
 	}
 
 
+	override function set_enabled(v) {
+		input.canEdit = v;
+		input.textColor = v ? 0xffffff : Style.label;
+		return enabled = v;
+	}
+
+
 	override function set_value(v) {
 		input.text = v;
 		return v;
 	}
 
 
-	override public function set_label(v) {
+	override function set_label(v) {
 		if (description == null) {
 			description = new h2d.Text(Assets.defaultFont, this);
 			description.textColor = Style.label;
@@ -75,7 +83,7 @@ class TextField extends Input {
 	}
 
 
-	override public function set_icon(v) {
+	override function set_icon(v) {
 		if (tile == null) {
 			tile = new h2d.Bitmap(h2d.Tile.fromColor(Style.icon, 16, 16), this);
 			tile.tile.setCenterRatio();

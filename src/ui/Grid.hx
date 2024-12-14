@@ -4,17 +4,21 @@ class Grid extends h2d.Object {
 	public var width:Float = 1600;
 	public var height:Float = 900;
 
+	var cell:Float = 128;
 	var size:Float = 128;
 
 	var grid:h2d.Graphics;
 	var center:h2d.Graphics;
 
 
-	public function new(width:Float, height:Float, ?parent:h2d.Object) {
+	public function new(width:Float, height:Float, cell:Float, ?parent:h2d.Object) {
 		super(parent);
 
 		this.width = width;
 		this.height = height;
+
+		this.cell = cell;
+		size = cell;
 
 		grid = new h2d.Graphics(this);
 		center = new h2d.Graphics(this);
@@ -40,9 +44,9 @@ class Grid extends h2d.Object {
 
 
 	public function onResize(zoom:Float = 1) {
-		size = 128 * zoom;
+		size = cell * zoom;
 
-		if (zoom <= 0.2) size = 512 * zoom;
+		if (zoom <= 0.2) size = (cell*10) * zoom;
 
 		var gridX:Int = Math.round(width / size) + 2;
 		var gridY:Int = Math.round(height / size) + 2;

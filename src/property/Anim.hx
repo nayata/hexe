@@ -7,7 +7,7 @@ import property.component.Number;
 import property.component.File;
 
 
-class ScaleGrid extends Property {
+class Anim extends Property {
 	var file:Input;
 
 
@@ -32,6 +32,7 @@ class ScaleGrid extends Property {
 		input.setPosition(second, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.enabled = false;
 		input.minimum = 0;
 		input.label = "W";
 
@@ -39,23 +40,54 @@ class ScaleGrid extends Property {
 		input.setPosition(third, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.enabled = false;
 		input.minimum = 0;
 		input.label = "H";
 
 		top += input.height + padding;
 
 		
-		// Border size
-		label = new Label("Border", 0, top + half, this);
+		// Total Frames
+		label = new Label("Grid", 0, top + half, this);
 
-		input = set("border", new Number(this));
+		input = set("row", new Number(this));
+		input.setPosition(second, top);
+		input.onUpdate = onUpdate;
+		input.onChange = onChange;
+		input.minimum = 1;
+		input.label = "X";
+
+		input = set("col", new Number(this));
+		input.setPosition(third, top);
+		input.onUpdate = onUpdate;
+		input.onChange = onChange;
+		input.minimum = 1;
+		input.label = "Y";
+
+		top += input.height + padding;
+
+		
+		// Total Frames
+		label = new Label("Speed", 0, top + half, this);
+
+		input = set("speed", new Number(this));
 		input.setPosition(second, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
 		input.minimum = 0;
-		input.label = "S";
+		input.maximum = 60;
 
 		top += input.height + divider;
+
+
+		// Loop
+		label = new Label("Loop", 0, top + half * 0.5, this);
+
+		input = set("loop", new Checkbox(this));
+		input.setPosition(second, top);
+		input.onChange = onChange;
+
+		top += input.height + padding;
 
 
 		// Bitmap smooth
@@ -72,6 +104,15 @@ class ScaleGrid extends Property {
 
 		var prefab = (cast object : prefab.Drawable);
 		file.icon = prefab.atlas == "" ? "bitmap" : "texture";
+
+		registry.get("row").enabled = prefab.atlas == "" ? true : false;
+		registry.get("col").enabled = prefab.atlas == "" ? true : false;
+	}
+
+
+	override function onUpdate(prop:Dynamic) {
+		super.onUpdate(prop);
+		select(object);
 	}
 
 
@@ -97,6 +138,7 @@ class ScaleGrid extends Property {
 
 		onChange({ field : "bitmap", from : file.value, to : src });
 		file.value = src;
+		select(object);
 	}
 
 
@@ -104,6 +146,7 @@ class ScaleGrid extends Property {
 		function onSelect(name:String) {
 			onChange({ field : "image", from : file.value, to : name });
 			file.value = name;
+			select(object);
 
 			Editor.ME.texture.onSelect = null;
 		}

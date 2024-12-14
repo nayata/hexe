@@ -26,10 +26,12 @@ class Menu extends h2d.Object {
 		fileMenu.add("New");
 		fileMenu.add("Open");
 		fileMenu.add("Save");
-
 		fileMenu.add("Save As");
 		fileMenu.addDivider();
+		
 		fileMenu.add("About");
+		fileMenu.addDivider();
+
 		fileMenu.add("Quit");
 
 
@@ -60,19 +62,20 @@ class Menu extends h2d.Object {
 		assetMenu.x = 120 + divider;
 		
 		assetMenu.add("Add Object", "object");
+
 		assetMenu.add("Add Bitmap", "bitmap");
 		assetMenu.add("Add ScaleGrid", "scalegrid");
-		//assetMenu.add("Add Anim", "bitmap");
+		assetMenu.add("Add Anim", "anim");
 
 		assetMenu.add("Add Text", "text");
 		assetMenu.add("Add Interactive", "interactive");
-		
 		assetMenu.add("Add Graphics", "graphics");
 		assetMenu.add("Add Mask", "mask");
 		assetMenu.addDivider();
 
 		assetMenu.add("Add from Texture Atlas", "bitmap");
 		assetMenu.add("Add from Texture Atlas", "scalegrid");
+		assetMenu.add("Add from Texture Atlas", "anim");
 		assetMenu.addDivider();
 
 		assetMenu.add("Place Prefab", "prefab");
@@ -103,11 +106,15 @@ class Menu extends h2d.Object {
 
 			case "Delete" : editor.delete(editor.selected);
 
-			case "Add Bitmap" : editor.file.openBitmap();
+			
 			case "Add Object" : editor.make("object");
+
+			case "Add Bitmap" : editor.file.openBitmap();
+			case "Add ScaleGrid" : editor.file.openBitmap("scalegrid");
+			case "Add Anim" : editor.file.openBitmap("anim");
+			
 			case "Add Text" : editor.make("text");
 			case "Add Interactive" : editor.make("interactive");
-			case "Add ScaleGrid" : editor.file.openBitmap("scalegrid");
 			case "Add Graphics" : editor.make("graphics");
 			case "Add Mask" : editor.make("mask");
 
