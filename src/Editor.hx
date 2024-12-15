@@ -51,11 +51,11 @@ class Editor extends hxd.App {
 		hl.UI.closeConsole();
 		engine.backgroundColor = Style.background;
 		
-		#if( hl && debug )
-			hxd.Res.initLocal();
-		#else
+		//#if( hl && debug )
+			//hxd.Res.initLocal();
+		//#else
 			hxd.Res.initEmbed();
-		#end
+		//#end
 
 		Config.init();
 		Assets.init();

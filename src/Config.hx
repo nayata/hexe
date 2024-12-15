@@ -5,6 +5,8 @@ class Config {
 
 	
 	public static function init() {
+		if (!sys.FileSystem.exists("editor.config")) return;
+
 		var data = haxe.Json.parse(sys.io.File.getContent("editor.config"));
 
 		Config.detectProject = data.auto;
