@@ -368,14 +368,30 @@ class Editor extends hxd.App {
 		var unique = type;
 
 		if (uid.exists(type)) {
-			unique = type + "." + uid[type];
-			uid.set(type, uid[type] + 1);
+			uid.set(type, uid.get(type) + 1);
+			unique = type + "." + uid.get(type);
 		}
 		else {
-			uid.set(type, 1);
+			uid.set(type, 0);
 		}
 
 		return unique;
+	}
+
+
+	public function setUID(name:String) {
+		var entry = name.split(".");
+
+		var type = entry.shift();
+		var link = entry.length > 0 ? Std.parseInt(entry[0]) : 0;
+
+		if (uid.exists(type)) {
+			var unique = Math.max(uid.get(type), link);
+			uid.set(type, Std.int(unique));
+		}
+		else {
+			uid.set(type, Std.int(link));
+		}
 	}
 
 

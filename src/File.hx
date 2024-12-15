@@ -252,7 +252,9 @@ class File {
 
 			if (prefab == null) continue;
 
-			prefab.name = editor.getUID(prefab.type);
+			editor.setUID(entry.name);
+
+			prefab.name = entry.name;
 			prefab.object.name = prefab.name;
 			prefab.link = entry.link;
 
