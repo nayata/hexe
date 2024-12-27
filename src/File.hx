@@ -185,7 +185,7 @@ class File {
 					item.src = entry.src;
 				}
 
-				if (entry.color != null) item.color = StringTools.hex(entry.color);
+				if (entry.color != null) item.color = StringTools.hex(entry.color, 6);
 				if (entry.width != null) item.letterSpacing = Std.int(entry.width);
 				if (entry.height != null) item.lineSpacing = Std.int(entry.height);
 				if (entry.range != null) item.maxWidth = Std.int(entry.range);
@@ -213,7 +213,7 @@ class File {
 			if (entry.type == "graphics") {
 				var item = new prefab.Graphics();
 
-				if (entry.color != null) item.color = StringTools.hex(entry.color);
+				if (entry.color != null) item.color = StringTools.hex(entry.color, 6);
 				if (entry.width != null) item.width = Std.int(entry.width);
 				if (entry.height != null) item.height = Std.int(entry.height);
 
