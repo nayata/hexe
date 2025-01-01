@@ -1,6 +1,7 @@
 import property.Property;
 import property.Transform;
 import property.Project;
+import property.Object;
 import property.Bitmap;
 import property.Interactive;
 import property.ScaleGrid;
@@ -53,8 +54,16 @@ class Properties extends h2d.Layers {
 		transform.y = 120;
 
 
+		// Object Prefab
+		var element:Property = new Object(this);
+		element.visible = false;
+		element.x = 30;
+		element.y = 346;
+		properties.set("object", element);
+
+
 		// Bitmap Prefab
-		var element:Property = new Bitmap(this);
+		element = new Bitmap(this);
 		element.visible = false;
 		element.x = 30;
 		element.y = 346;

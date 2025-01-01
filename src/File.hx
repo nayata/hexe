@@ -59,6 +59,7 @@ class File {
 			// Object Prefab
 			if (entry.type == "object") {
 				var item = new prefab.Object();
+				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
 				prefab = item;
 			}
 
