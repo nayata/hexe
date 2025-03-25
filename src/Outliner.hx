@@ -277,8 +277,10 @@ class Outliner extends h2d.Object {
 	function onUp(event:Event) {
 		// Move object to the end of the hierarchy if the mouse.y > nodes.height
 
+		var mouseY = event.relY - container.y;
+
 		if (touch.left && selected != null && highlighted == null) {
-			if (event.relY > nodes.length * size) {
+			if (mouseY > nodes.length * size) {
 				var object = editor.children.get(selected.name).object;
 
 				moveObject(object, editor.scene, editor.scene.children.length);
@@ -297,7 +299,7 @@ class Outliner extends h2d.Object {
 		if (selected != null && highlighted != null) {
 			if (selected == highlighted) return;
 
-			var area = Math.abs(highlighted.y - event.relY) / size;
+			var area = Math.abs(highlighted.y - mouseY) / size;
 
 			var object = editor.children.get(selected.name).object;
 			var nextObject:Object;
