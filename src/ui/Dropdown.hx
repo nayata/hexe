@@ -49,7 +49,7 @@ class Dropdown extends h2d.Object {
 
 		filter = new h2d.filter.DropShadow(5, Math.PI/4, 0, 0.25, 20.0, 1, 1.0, true);
 
-		setSize(60, 40);
+		setSize(label.textWidth + 32, 40);
 	}
 
 
