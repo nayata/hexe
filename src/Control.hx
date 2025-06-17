@@ -266,7 +266,7 @@ class Control extends h2d.Object {
 			var transformChanged = false;
 
 			if (selected.x != history.x || selected.y != history.y) transformChanged = true;
-			if (selected.scaleX != history.scaleX || selected.scaleX != history.scaleX) transformChanged = true;
+			if (selected.scaleX != history.scaleX || selected.scaleY != history.scaleY) transformChanged = true;
 			if (selected.rotation != history.rotation) transformChanged = true;
 
 			
