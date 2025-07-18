@@ -39,6 +39,7 @@ class Outliner extends h2d.Object {
 	public var size:Int = 30;
 
 	var dragStart:Float = 0;
+	var dragScroll = 0;
 
 	
 	public function new(?parent:h2d.Object) {
@@ -187,6 +188,20 @@ class Outliner extends h2d.Object {
 	}
 
 
+	function scrollOnDrag() {
+		if (selected == null) return;
+		if (dragScroll == 0) return;
+
+		if (height <= dragger.y && container.y == 0) return;
+
+		container.y -= dragScroll * 10;
+		container.y = Math.max(-(height - position), container.y);
+		container.y = Math.min(0, container.y);
+
+		onScroll();
+	}
+
+
 	public function unselect() {
 		selection.visible = false;
 		selected = null;
@@ -237,7 +252,13 @@ class Outliner extends h2d.Object {
 		if (!touch.left) return;
 
 		if (selected != null) {
-			ghost.x = editor.s2d.mouseX - x + 5; // [fixed position]
+			dragScroll = 0;
+
+			if (event.relY > scroller.height - 15) dragScroll = 1;
+			if (event.relY < 15) dragScroll = -1;
+
+			// Selected ghost
+			ghost.x = editor.s2d.mouseX - x + 5;
 			ghost.y = editor.s2d.mouseY - y + 5;
 
 			ghost.x = event.relX + 5;
@@ -276,7 +297,6 @@ class Outliner extends h2d.Object {
 	
 	function onUp(event:Event) {
 		// Move object to the end of the hierarchy if the mouse.y > nodes.height
-
 		var mouseY = event.relY - container.y;
 
 		if (touch.left && selected != null && highlighted == null) {
@@ -288,14 +308,14 @@ class Outliner extends h2d.Object {
 		}
 
 		// Hide hovers and reset mouse down
-		
 		highlight.visible = false;
 		cursor.visible = false;
 		ghost.visible = false;
 		touch.left = false;
 
-		// Get the new position and move object
+		dragScroll = 0;
 
+		// Get the new position and move object
 		if (selected != null && highlighted != null) {
 			if (selected == highlighted) return;
 
@@ -544,6 +564,12 @@ class Outliner extends h2d.Object {
 		}
 
 		return distance;
+	}
+
+
+	override function sync(ctx:h2d.RenderContext) {
+		super.sync(ctx);
+		scrollOnDrag();
 	}
 }
 
