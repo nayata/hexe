@@ -209,7 +209,7 @@ class Outliner extends h2d.Object {
 
 	
 	function onDown(event:Event) {
-		if (highlighted != null) {
+		if (highlighted != null && event.button == 0) {
 			editor.select(highlighted.name);
 
 			draged = highlighted.name;
@@ -239,7 +239,6 @@ class Outliner extends h2d.Object {
 				highlighted = node;
 			}
 		}
-
 
 		// Highlight picked node
 		if (!touch.left) {
@@ -294,7 +293,7 @@ class Outliner extends h2d.Object {
 		}
 	}
 
-	
+
 	function onUp(event:Event) {
 		// Move object to the end of the hierarchy if the mouse.y > nodes.height
 		var mouseY = event.relY - container.y;
@@ -308,6 +307,7 @@ class Outliner extends h2d.Object {
 		}
 
 		// Hide hovers and reset mouse down
+		
 		highlight.visible = false;
 		cursor.visible = false;
 		ghost.visible = false;
@@ -316,6 +316,7 @@ class Outliner extends h2d.Object {
 		dragScroll = 0;
 
 		// Get the new position and move object
+
 		if (selected != null && highlighted != null) {
 			if (selected == highlighted) return;
 

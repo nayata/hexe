@@ -10,7 +10,7 @@ class Project extends Property {
 	public function new(?parent:h2d.Object) {
 		super(parent);
 
-		var label = new ui.Text("Properties", 0, -40, this);
+		var label = new ui.Text("Project", 0, -40, this);
 
 		text = new Label("untitled", 30, 6, this);
 

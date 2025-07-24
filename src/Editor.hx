@@ -32,6 +32,7 @@ class Editor extends hxd.App {
 	public var sidebar:Sidebar;
 	public var property:Properties;
 	public var texture:Texture;
+	public var motion:Motion;
 
 	public var menu:Menu;
 	public var view:Button;
@@ -51,11 +52,11 @@ class Editor extends hxd.App {
 		hl.UI.closeConsole();
 		engine.backgroundColor = Style.background;
 		
-		#if( hl && debug )
+		//#if( hl && debug )
+			//hxd.Res.initEmbed();
+		//#else
 			hxd.Res.initLocal();
-		#else
-			hxd.Res.initEmbed();
-		#end
+		//#end
 
 		Config.init();
 		Assets.init();
@@ -71,6 +72,8 @@ class Editor extends hxd.App {
 		control.onKeyboard = onKeyboard;
 		control.width = s2d.width - 300;
 		control.height = s2d.height;
+
+		motion = new Motion(s2d);
 
 		sidebar = new Sidebar(s2d);
 
@@ -92,6 +95,9 @@ class Editor extends hxd.App {
 		menu = new Menu(s2d);
 		menu.x = 10;
 		menu.y = 10;
+
+		menu.addChild(motion.menu);
+		motion.menu.x = menu.width;
 
 		view = new Button("Actual Size", s2d);
 		view.onChange = control.onView;
@@ -119,12 +125,16 @@ class Editor extends hxd.App {
 		grid.height = HEIGHT;
 
 		control.width = WIDTH - sidebar.width;
-		control.height = HEIGHT;
+		control.height = motion.enabled ? HEIGHT - motion.height : HEIGHT;
 		control.onResize();
 
 		sidebar.height = HEIGHT;
 		sidebar.x = WIDTH - sidebar.width;
 		sidebar.onResize();
+
+		motion.width = WIDTH - sidebar.width;
+		motion.y = HEIGHT - motion.height;
+		motion.onResize();
 
 		outliner.onResize();
 		property.onResize();
@@ -157,6 +167,7 @@ class Editor extends hxd.App {
 		control.select(selected);
 
 		property.select(selected);
+		motion.select(selected);
 	}
 
 
@@ -165,6 +176,7 @@ class Editor extends hxd.App {
 		control.unselect();
 
 		property.unselect();
+		motion.unselect();
 
 		selected = null;
 	}
@@ -199,6 +211,12 @@ class Editor extends hxd.App {
 	}
 
 
+	public function onAnimation() {
+		control.height = motion.enabled ? HEIGHT - motion.height : HEIGHT;
+		motion.y = HEIGHT - motion.height;
+	}
+
+
 	public function onName() {
 		if (selected == null) return;
 		outliner.rename(selected.name, children.get(selected.name).link);
@@ -218,6 +236,7 @@ class Editor extends hxd.App {
 		outliner.clear();
 		property.clear();
 		history.clear();
+		motion.clear();
 
 		texture.clear();
 		file.clear();
@@ -272,6 +291,7 @@ class Editor extends hxd.App {
 		if (object == null) return;
 
 		outliner.delete(object);
+		motion.delete(object);
 			
 		// Remove Object and Prefab
 		// Object childs prefabs still exist in the `children` list

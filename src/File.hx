@@ -167,7 +167,7 @@ class File {
 
 				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
 
-				item.speed = entry.speed;
+				item.speed = Std.int(entry.speed);
 				item.loop = entry.loop;
 				item.src = entry.src;
 
@@ -287,6 +287,25 @@ class File {
 			editor.add(prefab.object, prefab, false);
 		}
 
+		// Animation
+		if (scene.animation != null) {
+			editor.motion.duration = scene.duration;
+			editor.motion.speed = scene.speed;
+			editor.motion.loop = scene.loop == 1 ? true : false;
+
+			for (entry in scene.animation) {
+				if (editor.motion.has(entry.name)) editor.motion.add(entry.name, entry.type, entry.ease ?? "linear", entry.from, entry.start);
+			}
+
+			editor.motion.onScene();
+		}
+		if (scene.events != null) {
+			for (entry in scene.events) {
+				editor.motion.add(entry.name, "event", "linear", 0, entry.start);
+			}
+			editor.motion.onEvent();
+		}
+
 		editor.onScene();
 	}
 
@@ -304,8 +323,36 @@ class File {
 
 		data.name = "prefab";
 		data.type = "prefab";
+
+		var animation = [];
+		var events = [];
+
+		if (editor.motion.enabled) {
+			data.type = "animation";
+
+			data.duration = editor.motion.duration;
+			data.speed = editor.motion.speed;
+			data.loop = editor.motion.loop ? 1 : 0;
+		}
+
 		data.children = children;
 
+		if (editor.motion.enabled) {
+			var timeline = editor.motion.animation.timeline;
+
+			for (frame in timeline.frame) {
+				if (editor.motion.has(frame.name)) animation.push(frame.serialize());
+			}
+
+			for (event in timeline.event) {
+				events.push(event.serialize());
+			}
+
+			data.animation = animation;
+			data.events = events;
+		}
+
+		// JSON data
 		var json = Json.stringify(data, "\t");
 
 		// Saving file
@@ -829,6 +876,9 @@ typedef Data = {
 	@:optional var children : Array<Data>;
 	@:optional var parent : String;
 
+	@:optional var animation : Array<Frame>;
+	@:optional var events : Array<Frame>;
+
 	@:optional var field : Array<Field>;
 
 	@:optional var x : Float;
@@ -855,11 +905,24 @@ typedef Data = {
 	@:optional var align : Int;
 	@:optional var range : Int;
 
-	@:optional var speed : Int;
+	@:optional var duration : Int;
+	@:optional var speed : Float;
 	@:optional var loop : Int;
 
 	@:optional var text : String;
 	@:optional var atlas : String;
 	@:optional var font : String;
 	@:optional var path : String;
+}
+
+typedef Frame = {
+	var name : String;
+	var type : String;
+
+	@:optional var ease : String;
+
+	var from : Float;
+	var to : Float;
+	var start : Float;
+	var end : Float;
 }

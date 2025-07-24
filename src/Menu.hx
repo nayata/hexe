@@ -10,8 +10,10 @@ class Menu extends h2d.Object {
 	var fileMenu:ui.Dropdown;
 	var editMenu:ui.Dropdown;
 	var assetMenu:ui.Dropdown;
+	var motionMenu:ui.Dropdown;
 
 	var divider:Int = 0;
+	public var width:Float = 0;
 
 	
 	public function new(?parent:h2d.Object) {
@@ -38,7 +40,7 @@ class Menu extends h2d.Object {
 		// Edit
 		editMenu = new ui.Dropdown(this, "Edit");
 		editMenu.onChange = onChange;
-		editMenu.x = 60 + divider;
+		editMenu.x = fileMenu.x + fileMenu.width + divider;
 
 		editMenu.add("Undo", "undo", "Ctrl+Z", false);
 		editMenu.add("Redo", "redo", "Ctrl+Y", false);
@@ -59,7 +61,7 @@ class Menu extends h2d.Object {
 		// Asset
 		assetMenu = new ui.Dropdown(this, "Asset");
 		assetMenu.onChange = onChange;
-		assetMenu.x = 120 + divider;
+		assetMenu.x = editMenu.x + editMenu.width + divider;
 		
 		assetMenu.add("Add Object", "object");
 
@@ -83,6 +85,17 @@ class Menu extends h2d.Object {
 		
 		assetMenu.add("Load Texture Atlas", "load");
 		assetMenu.add("Load Font", "load");
+
+
+		// Animation
+		motionMenu = new ui.Dropdown(this, "Animation");
+		motionMenu.onChange = onChange;
+		motionMenu.x = assetMenu.x + assetMenu.width + divider;
+		
+		motionMenu.add("New Animation", "add");
+		motionMenu.add("Remove", "delete");
+
+		width = motionMenu.x + motionMenu.width + divider;
 	}
 
 
@@ -106,7 +119,6 @@ class Menu extends h2d.Object {
 
 			case "Delete" : editor.delete(editor.selected);
 
-			
 			case "Add Object" : editor.make("object");
 
 			case "Add Bitmap" : editor.file.openBitmap();
@@ -123,6 +135,10 @@ class Menu extends h2d.Object {
 
 			case "Load Texture Atlas" : editor.file.openAtlas();
 			case "Load Font" : editor.file.openFont();
+
+			case "New Animation" : editor.motion.onAnimation(true);
+			case "Remove" : editor.motion.onAnimation();
+			
 			default:
 		}
 	}

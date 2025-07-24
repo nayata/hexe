@@ -49,7 +49,7 @@ class Dropdown extends h2d.Object {
 
 		filter = new h2d.filter.DropShadow(5, Math.PI/4, 0, 0.25, 20.0, 1, 1.0, true);
 
-		setSize(label.textWidth + 32, 40);
+		setSize(label.textWidth + 34, 40);
 	}
 
 
@@ -145,7 +145,7 @@ class Dropdown extends h2d.Object {
 
 
 	function onOver(e:hxd.Event) {
-		if (items.length <= 1) return;
+		if (items.length < 1) return;
 
 		input.width = wide;
 		input.height = dividers + items.length * size + size;

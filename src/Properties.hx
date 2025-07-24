@@ -1,5 +1,6 @@
 import property.Property;
 import property.Transform;
+import property.Animation;
 import property.Project;
 import property.Object;
 import property.Bitmap;
@@ -24,6 +25,7 @@ class Properties extends h2d.Layers {
 
 	var uid:Name;
 	var transform:Transform;
+	var animation:Animation;
 	var project:Project;
 	var label:ui.Text;
 	
@@ -37,6 +39,11 @@ class Properties extends h2d.Layers {
 		project = new Project(this);
 		project.x = 30;
 		project.y = 60;
+
+		// Animation
+		animation = new Animation(this);
+		animation.x = 30;
+		animation.y = 160;
 
 		// Name
 		uid = new Name(this);
@@ -136,6 +143,7 @@ class Properties extends h2d.Layers {
 		var prefab = editor.children.get(object.name);
 
 		transform.select(object);
+		animation.select(object);
 		project.select(prefab);
 		uid.select(prefab);
 
@@ -150,6 +158,7 @@ class Properties extends h2d.Layers {
 
 	public function unselect() {
 		transform.unselect();
+		animation.unselect();
 		project.unselect();
 		uid.unselect();
 
@@ -173,6 +182,7 @@ class Properties extends h2d.Layers {
 
 
 	public function onScene() {
+		animation.update();
 		project.update();
 	}
 

@@ -21,7 +21,7 @@ class Transform extends Property {
 		var input:Input = new Number(this);
 		input.setPosition(74, 0);
 		input.onUpdate = onUpdate;
-		input.onChange = onChange;
+		input.onChange = onTransform;
 		input.field = "x";
 		input.label = "X";
 
@@ -31,7 +31,7 @@ class Transform extends Property {
 		input = new Number(this);
 		input.setPosition(160, 0);
 		input.onUpdate = onUpdate;
-		input.onChange = onChange;
+		input.onChange = onTransform;
 		input.field = "y";
 		input.label = "Y";
 
@@ -44,7 +44,7 @@ class Transform extends Property {
 		input = new FloatNumber(this);
 		input.setPosition(74, 38);
 		input.onUpdate = onUpdate;
-		input.onChange = onChange;
+		input.onChange = onTransform;
 		input.field = "scaleX";
 		input.label = "X";
 
@@ -54,7 +54,7 @@ class Transform extends Property {
 		input = new FloatNumber(this);
 		input.setPosition(160, 38);
 		input.onUpdate = onUpdate;
-		input.onChange = onChange;
+		input.onChange = onTransform;
 		input.field = "scaleY";
 		input.label = "Y";
 
@@ -67,7 +67,7 @@ class Transform extends Property {
 		input = new Angle(this);
 		input.setPosition(74, 76);
 		input.onUpdate = onUpdate;
-		input.onChange = onChange;
+		input.onChange = onTransform;
 		input.field = "rotation";
 		input.icon = "angle";
 
@@ -96,7 +96,7 @@ class Transform extends Property {
 		input = new Slider(this);
 		input.setPosition(176, 174);
 		input.onUpdate = onUpdate;
-		input.onChange = onChange;
+		input.onChange = onTransform;
 		
 		input.minimum = 0;
 		input.maximum = 1;
@@ -109,5 +109,19 @@ class Transform extends Property {
 
 		// Dropdown over all
 		over(choice);
+	}
+
+
+	function onTransform(prop:Dynamic) {
+		if (object == null) return;
+		if (prop.from == prop.to) return;
+
+		Reflect.setProperty(object, prop.field, prop.to);
+		Editor.ME.onProperty();
+
+		var element = new History.Property(object, prop.field, prop.from, prop.to);
+
+		Editor.ME.motion.onProperty(element, object, prop.field, prop.from, prop.to);
+		Editor.ME.history.add(element);
 	}
 }

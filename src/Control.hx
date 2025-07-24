@@ -275,7 +275,10 @@ class Control extends h2d.Object {
 				var undo = { x : history.x, y : history.y, scaleX : history.scaleX, scaleY : history.scaleY, rotation : history.rotation };
 				var redo = { x : selected.x, y : selected.y, scaleX : selected.scaleX, scaleY : selected.scaleY, rotation : selected.rotation };
 
-				editor.history.add(new History.Transform(selected, undo, redo));
+				var element = new History.Transform(selected, undo, redo);
+
+				editor.motion.onTransform(element, selected, undo, redo);
+				editor.history.add(element);
 			}
 
 			// Send Prefab transform to history
