@@ -78,15 +78,23 @@ class Motion extends h2d.Object {
 		grip = new h2d.Bitmap(h2d.Tile.fromColor(Style.border, 4, height), this);
 
 		control = new h2d.Object(this);
-		control.y = 10;
+		control.y = 5;
 
 		var icon = new Icon("menu", control);
 		icon.onChange = onToggle;
-		icon.x = 22; icon.y = 6;
+		icon.x = 22;
 
-		var button = new ui.Button("Play", control);
+		var button = new Icon("play", control);
 		button.onChange = play;
-		button.x = 60;
+		button.x = 110;
+
+		button = new Icon("prev", control);
+		button.onChange = prev;
+		button.x = 80;
+
+		button = new Icon("next", control);
+		button.onChange = next;
+		button.x = 140;
 
 		scroller = new h2d.Mask(width - indent, height, this);
 		view = new Object(scroller);
@@ -118,6 +126,22 @@ class Motion extends h2d.Object {
 
 			onUpdate();
 		}
+	}
+
+
+	function prev() {
+		playing = false;
+		frame = 0;
+		time = 0;
+		onUpdate();
+	}
+
+
+	function next() {
+		playing = false;
+		frame = fromTime(duration);
+		time = fromFrame(frame);
+		onUpdate();
 	}
 
 
@@ -724,7 +748,6 @@ class Motion extends h2d.Object {
 
 	function onToggle() {
 		height = height != 280 ? 280 : 40;
-		control.y = height == 280 ? 10 : 0;
 
 		editor.onAnimation();
 		onResize();
