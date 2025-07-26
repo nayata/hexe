@@ -382,7 +382,9 @@ class Motion extends h2d.Object {
 		var name = editor.selected != null ? editor.selected.name : "";
 
 		switch (type) {
-			case "copy":
+			case "copy": 
+				if (clipboard.length > 0) clipboard = [];
+
 				for (entry in tracker.selected) {
 					clipboard.push(entry);
 				}

@@ -22,16 +22,16 @@ class Menu extends h2d.Object {
 		keyframeMenu.add("Select All", "wrap", "", false);
 		keyframeMenu.addDivider();
 
-		keyframeMenu.add("Cut", "", "Ctrl+X");
+		keyframeMenu.add("Cut");
 		keyframeMenu.get("Cut").padding = Style.menuPadding;
 
-		keyframeMenu.add("Copy", "", "Ctrl+C");
+		keyframeMenu.add("Copy");
 		keyframeMenu.get("Copy").padding = Style.menuPadding;
 
-		keyframeMenu.add("Paste", "", "Ctrl+V");
+		keyframeMenu.add("Paste");
 		keyframeMenu.get("Paste").padding = Style.menuPadding;
 
-		keyframeMenu.add("Delete", "delete", "Delete");
+		keyframeMenu.add("Delete", "delete");
 
 
 		// Easing
