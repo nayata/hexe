@@ -709,6 +709,7 @@ class Motion extends h2d.Object {
 
 	public function onScene() {
 		frameDuration = fromTime(duration);
+		duration = fromFrame(frameDuration);
 		timeline.duration = duration;
 
 		menu.visible = true;

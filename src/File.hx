@@ -905,7 +905,7 @@ typedef Data = {
 	@:optional var align : Int;
 	@:optional var range : Int;
 
-	@:optional var duration : Int;
+	@:optional var duration : Float;
 	@:optional var speed : Float;
 	@:optional var loop : Int;
 

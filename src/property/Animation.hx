@@ -64,7 +64,7 @@ class Animation extends Property {
 
 
 	override public function update() {
-		registry.get("duration").value = Std.string(Editor.ME.motion.duration * 30);
+		registry.get("duration").value = Std.string(Editor.ME.motion.frameDuration);
 		registry.get("speed").value = Std.string(Editor.ME.motion.speed);
 		registry.get("loop").value = Editor.ME.motion.loop ? "1" : "0";
 
