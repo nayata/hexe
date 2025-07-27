@@ -1,0 +1,14 @@
+{
+	"name": "prefab",
+	"type": "prefab",
+	"children": [
+		{
+			"name": "bitmap.12",
+			"type": "bitmap",
+			"link": "bitmap",
+			"scaleX": 3.56,
+			"scaleY": 3.56,
+			"src": "ch.png"
+		}
+	]
+}

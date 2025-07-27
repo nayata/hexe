@@ -1,0 +1,46 @@
+{
+	"name": "prefab",
+	"type": "prefab",
+	"children": [
+		{
+			"name": "bitmap",
+			"type": "bitmap",
+			"link": "bitmap",
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "button.png"
+		},
+		{
+			"name": "bitmap.1",
+			"type": "bitmap",
+			"link": "over",
+			"visible": false,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "button-over.png"
+		},
+		{
+			"name": "text",
+			"type": "text",
+			"link": "label",
+			"y": -28,
+			"scaleX": 0.5,
+			"scaleY": 0.5,
+			"src": "tiltWarpLarge.fnt",
+			"font": "tiltWarpLarge",
+			"align": 1,
+			"text": "text"
+		},
+		{
+			"name": "interactive",
+			"type": "interactive",
+			"link": "input",
+			"x": -117,
+			"y": -44,
+			"scaleX": 3.65,
+			"scaleY": 1.39,
+			"width": 64,
+			"height": 64
+		}
+	]
+}

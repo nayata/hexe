@@ -1,0 +1,230 @@
+{
+	"name": "prefab",
+	"type": "animation",
+	"duration": 4,
+	"speed": 1,
+	"loop": 0,
+	"children": [
+		{
+			"name": "graphics",
+			"type": "graphics",
+			"link": "graphics",
+			"color": 1315860,
+			"width": 1600,
+			"height": 900
+		},
+		{
+			"name": "mask",
+			"type": "mask",
+			"link": "mask",
+			"x": 770,
+			"y": 303,
+			"width": 554,
+			"height": 288
+		},
+		{
+			"name": "bitmap.1",
+			"type": "bitmap",
+			"link": "bitmap",
+			"parent": "mask",
+			"x": 11.9999999297697,
+			"y": 148,
+			"scaleX": 0.5,
+			"scaleY": 0.5,
+			"dx": 0,
+			"dy": 0.5,
+			"src": "haxe-text-large.png"
+		},
+		{
+			"name": "bitmap",
+			"type": "bitmap",
+			"link": "bitmap",
+			"x": 636.051899357243,
+			"y": 450,
+			"scaleX": 0.5,
+			"scaleY": 0.5,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "haxe-logo-large.png"
+		},
+		{
+			"name": "graphics.1",
+			"type": "graphics",
+			"link": "graphics",
+			"color": 1315860,
+			"width": 1600,
+			"height": 900
+		}
+	],
+	"animation": [
+		{
+			"name": "graphics.1",
+			"type": "alpha",
+			"from": 1,
+			"to": 0,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap",
+			"type": "scaleX",
+			"ease": "easeOutBack",
+			"from": 1,
+			"to": 0.5,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap",
+			"type": "scaleY",
+			"ease": "easeOutBack",
+			"from": 1,
+			"to": 0.5,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "graphics.1",
+			"type": "y",
+			"from": 0,
+			"to": 0,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "bitmap.1",
+			"type": "scaleX",
+			"from": 0.5,
+			"to": 0.5,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "bitmap.1",
+			"type": "scaleY",
+			"from": 0.5,
+			"to": 0.5,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "bitmap.1",
+			"type": "x",
+			"from": -542,
+			"to": -542,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.1",
+			"type": "y",
+			"from": 148,
+			"to": 148,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "mask",
+			"type": "x",
+			"from": 770,
+			"to": 770,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "mask",
+			"type": "y",
+			"from": 303,
+			"to": 303,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "bitmap",
+			"type": "x",
+			"from": 800,
+			"to": 800,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "graphics.1",
+			"type": "alpha",
+			"from": 0,
+			"to": 0,
+			"start": 0.667,
+			"end": 2.666
+		},
+		{
+			"name": "bitmap",
+			"type": "scaleX",
+			"from": 0.5,
+			"to": 0.5,
+			"start": 0.667,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap",
+			"type": "scaleY",
+			"from": 0.5,
+			"to": 0.5,
+			"start": 0.667,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap",
+			"type": "x",
+			"from": 800,
+			"to": 636,
+			"start": 0.667,
+			"end": 1
+		},
+		{
+			"name": "bitmap.1",
+			"type": "x",
+			"ease": "easeInOut",
+			"from": -542,
+			"to": 12,
+			"start": 0.667,
+			"end": 1
+		},
+		{
+			"name": "bitmap.1",
+			"type": "x",
+			"from": 12,
+			"to": 12,
+			"start": 1,
+			"end": 1
+		},
+		{
+			"name": "bitmap",
+			"type": "x",
+			"from": 636,
+			"to": 636,
+			"start": 1,
+			"end": 1
+		},
+		{
+			"name": "graphics.1",
+			"type": "alpha",
+			"from": 0,
+			"to": 1,
+			"start": 2.666,
+			"end": 3.333
+		},
+		{
+			"name": "graphics.1",
+			"type": "alpha",
+			"from": 1,
+			"to": 1,
+			"start": 3.333,
+			"end": 3.333
+		}
+	],
+	"events": [
+		{
+			"name": "next",
+			"start": 4
+		}
+	]
+}

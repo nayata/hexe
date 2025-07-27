@@ -70,7 +70,7 @@ class Lib {
 	/**
 		Animation
 	**/
-	public static function motion(path:String, ?parent:h2d.Object, ?field:Array<Field>):Animation {
+	public static function animate(path:String, ?parent:h2d.Object, ?field:Array<Field>):Animation {
 		var prefab = new Animation(parent);
 
 		prefab.hierarchy = get(path, prefab, field);

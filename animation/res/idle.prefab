@@ -1,0 +1,354 @@
+{
+	"name": "prefab",
+	"type": "animation",
+	"duration": 1.333,
+	"speed": 1,
+	"loop": 1,
+	"children": [
+		{
+			"name": "bitmap",
+			"type": "bitmap",
+			"link": "bitmap",
+			"scaleX": 2.56,
+			"scaleY": 2.56,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "ch.png"
+		},
+		{
+			"name": "bitmap.1",
+			"type": "bitmap",
+			"link": "reference",
+			"visible": false,
+			"dx": 0.5,
+			"dy": 1,
+			"src": "template.png"
+		},
+		{
+			"name": "bitmap.8",
+			"type": "bitmap",
+			"link": "sword",
+			"x": 5,
+			"y": -124.795784439453,
+			"rotation": 0.332020264899483,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "Layer 7.png"
+		},
+		{
+			"name": "bitmap.6",
+			"type": "bitmap",
+			"link": "right",
+			"x": 28.3003003003003,
+			"y": -27,
+			"rotation": -0.044634906433412,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "Layer 2.png"
+		},
+		{
+			"name": "bitmap.4",
+			"type": "bitmap",
+			"link": "left",
+			"x": -33.0495495495495,
+			"y": -51,
+			"rotation": -0.0205226132726028,
+			"dx": 0.5,
+			"dy": 0,
+			"src": "Layer 1.png"
+		},
+		{
+			"name": "bitmap.3",
+			"type": "bitmap",
+			"link": "body",
+			"x": -5.65015015015015,
+			"y": -113.3003003003,
+			"dx": 0.5,
+			"dy": 0,
+			"src": "Layer 3.png"
+		},
+		{
+			"name": "bitmap.2",
+			"type": "bitmap",
+			"link": "head",
+			"y": -99.2507507507508,
+			"scaleX": 1.0104954954955,
+			"scaleY": 0.989504504504505,
+			"dx": 0.5,
+			"dy": 1,
+			"src": "Layer 6.png"
+		}
+	],
+	"animation": [
+		{
+			"name": "bitmap.2",
+			"type": "y",
+			"ease": "easeInOut",
+			"from": -101,
+			"to": -96,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.2",
+			"type": "scaleX",
+			"ease": "easeInOut",
+			"from": 1,
+			"to": 1.03,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.2",
+			"type": "scaleY",
+			"ease": "easeInOut",
+			"from": 1,
+			"to": 0.97,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.8",
+			"type": "y",
+			"ease": "easeOut",
+			"from": -119,
+			"to": -128,
+			"start": 0,
+			"end": 0.533
+		},
+		{
+			"name": "bitmap.3",
+			"type": "y",
+			"from": -114,
+			"to": -112,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.3",
+			"type": "x",
+			"from": -6,
+			"to": -5,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.4",
+			"type": "rotation",
+			"from": 0,
+			"to": -0.0586612036032339,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.4",
+			"type": "x",
+			"from": -32,
+			"to": -35,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.6",
+			"type": "x",
+			"from": 29,
+			"to": 27,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap.6",
+			"type": "rotation",
+			"from": 0,
+			"to": -0.127583037273186,
+			"start": 0,
+			"end": 0.667
+		},
+		{
+			"name": "bitmap",
+			"type": "alpha",
+			"from": 1,
+			"to": 1,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "bitmap.6",
+			"type": "y",
+			"from": -27,
+			"to": -27,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "bitmap.4",
+			"type": "y",
+			"from": -51,
+			"to": -51,
+			"start": 0,
+			"end": 0
+		},
+		{
+			"name": "bitmap.8",
+			"type": "y",
+			"ease": "easeIn",
+			"from": -128,
+			"to": -119,
+			"start": 0.533,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.3",
+			"type": "x",
+			"from": -5,
+			"to": -6,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.3",
+			"type": "y",
+			"from": -112,
+			"to": -114,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.2",
+			"type": "y",
+			"from": -96,
+			"to": -101,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.2",
+			"type": "scaleX",
+			"from": 1.03,
+			"to": 1,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.2",
+			"type": "scaleY",
+			"from": 0.97,
+			"to": 1,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.4",
+			"type": "x",
+			"from": -35,
+			"to": -32,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.4",
+			"type": "rotation",
+			"from": -0.0586612036032339,
+			"to": 0,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.6",
+			"type": "rotation",
+			"from": -0.127583037273186,
+			"to": 0,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.6",
+			"type": "x",
+			"from": 27,
+			"to": 29,
+			"start": 0.667,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.2",
+			"type": "y",
+			"from": -101,
+			"to": -101,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.2",
+			"type": "scaleY",
+			"from": 1,
+			"to": 1,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.2",
+			"type": "scaleX",
+			"from": 1,
+			"to": 1,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.8",
+			"type": "y",
+			"from": -119,
+			"to": -119,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.3",
+			"type": "x",
+			"from": -6,
+			"to": -6,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.3",
+			"type": "y",
+			"from": -114,
+			"to": -114,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.4",
+			"type": "x",
+			"from": -32,
+			"to": -32,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.4",
+			"type": "rotation",
+			"from": 0,
+			"to": 0,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.6",
+			"type": "x",
+			"from": 29,
+			"to": 29,
+			"start": 1.333,
+			"end": 1.333
+		},
+		{
+			"name": "bitmap.6",
+			"type": "rotation",
+			"from": 0,
+			"to": 0,
+			"start": 1.333,
+			"end": 1.333
+		}
+	],
+	"events": []
+}

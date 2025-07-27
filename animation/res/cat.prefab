@@ -1,0 +1,77 @@
+{
+	"name": "prefab",
+	"type": "prefab",
+	"children": [
+		{
+			"name": "bitmap",
+			"type": "bitmap",
+			"link": "bitmap",
+			"scaleX": 2.56,
+			"scaleY": 2.56,
+			"alpha": 0.3,
+			"visible": false,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "ch.png"
+		},
+		{
+			"name": "bitmap.1",
+			"type": "bitmap",
+			"link": "reference",
+			"visible": false,
+			"dx": 0.5,
+			"dy": 1,
+			"src": "template.png"
+		},
+		{
+			"name": "bitmap.8",
+			"type": "bitmap",
+			"link": "sword",
+			"x": 5,
+			"y": -119,
+			"rotation": 0.351058097152894,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "Layer 7.png"
+		},
+		{
+			"name": "bitmap.4",
+			"type": "bitmap",
+			"link": "left",
+			"x": -32,
+			"y": -51,
+			"dx": 0.5,
+			"dy": 0,
+			"src": "Layer 1.png"
+		},
+		{
+			"name": "bitmap.6",
+			"type": "bitmap",
+			"link": "right",
+			"x": 29,
+			"y": -27,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "Layer 2.png"
+		},
+		{
+			"name": "bitmap.3",
+			"type": "bitmap",
+			"link": "body",
+			"x": -6,
+			"y": -114,
+			"dx": 0.5,
+			"dy": 0,
+			"src": "Layer 3.png"
+		},
+		{
+			"name": "bitmap.2",
+			"type": "bitmap",
+			"link": "head",
+			"y": -101,
+			"dx": 0.5,
+			"dy": 1,
+			"src": "Layer 6.png"
+		}
+	]
+}

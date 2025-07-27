@@ -35,10 +35,13 @@ class Animation extends Prefab {
 		}
 
 		if (time >= animation.duration) {
+			if (!animation.loop) playing = false;
+
 			if (animation.loop) {
 				for (event in animation.event) event.done = false;
 				time = 0;
 			}
+
 			onEnd();
 		}
 	}
