@@ -338,12 +338,11 @@ class Control extends h2d.Object {
 
 
 	function onWheel(event:Event) {
-		zoom -= event.wheelDelta * 0.05; // TODO: correct power depend on `touch.hasFocus`
+		var factor = Math.pow(1.1, -event.wheelDelta); // 10% per tick
+		zoom *= factor;
 
 		if (zoom < 0.05) zoom = 0.05;
 		if (zoom > 5) zoom = 5;
-
-		zoom = snap(zoom, 0.01);
 
 		var ratio = 1 - zoom / scene.scaleX;
 
