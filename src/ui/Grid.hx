@@ -8,7 +8,9 @@ class Grid extends h2d.Object {
 	var size:Float = 128;
 
 	var grid:h2d.Graphics;
-	var center:h2d.Graphics;
+
+	var axisX:h2d.Bitmap;
+	var axisY:h2d.Bitmap;
 
 
 	public function new(width:Float, height:Float, cell:Float, ?parent:h2d.Object) {
@@ -21,7 +23,18 @@ class Grid extends h2d.Object {
 		size = cell;
 
 		grid = new h2d.Graphics(this);
-		center = new h2d.Graphics(this);
+		
+		axisX = new h2d.Bitmap(h2d.Tile.fromColor(Style.guideX, 1, 1), this);
+		axisY = new h2d.Bitmap(h2d.Tile.fromColor(Style.guideY, 1, 1), this);
+
+		axisX.smooth = false;
+		axisY.smooth = false;
+
+		axisX.width = width;
+		axisX.height = 1;
+
+		axisY.width = 1;
+		axisY.height = height;
 
 		onResize();
 	}
@@ -31,15 +44,8 @@ class Grid extends h2d.Object {
 		grid.x = -size + wrap(relX, 0, size);
 		grid.y = -size + wrap(relY, 0, size);
 
-		center.clear();
-
-		center.lineStyle(1, Style.guideY);
-		center.moveTo(relX, 0); 
-		center.lineTo(relX, height);
-
-		center.lineStyle(1, Style.guideX);
-		center.moveTo(0, relY); 
-		center.lineTo(width, relY);
+		axisX.setPosition(0, relY); 
+		axisY.setPosition(relX, 0); 
 	}
 
 
@@ -63,6 +69,9 @@ class Grid extends h2d.Object {
 				grid.lineTo(width + size, y * size);
 			}
 		}
+
+		axisX.width = width;
+		axisY.height = height;
 	}
 
 
