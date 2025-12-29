@@ -65,7 +65,7 @@ class Prefab extends Property {
 	override public function select(object:Dynamic) {
 		prefab = (cast object : prefab.Linked);
 
-		label.text = "Prefab: " + prefab.src;
+		label.text = prefab.src;
 		reference.value = prefab.path;
 
 		var i = 0;
