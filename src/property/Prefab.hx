@@ -3,6 +3,7 @@ package property;
 import property.component.Label;
 import property.component.Input;
 import property.component.TextArea;
+import property.component.Text;
 import property.component.File;
 
 import ui.Scroll;
@@ -10,6 +11,7 @@ import ui.Scroll;
 
 class Prefab extends Property {
 	var prefab:Null<prefab.Linked> = null;
+	var reference:Text;
 	
 	var bitmap:Array<Input> = [];
 	var text:Array<Input> = [];
@@ -23,8 +25,16 @@ class Prefab extends Property {
 	public function new(?parent:h2d.Object) {
 		super(parent);
 
+		reference = new Text(this);
+		reference.onUpdate = onChange;
+		reference.label = "Class";
+		reference.value = "Prefab";
+		reference.y = full;
+		reference.setSize(240, 40);
+		set("path", reference);
+
 		scroll = new Scroll(this);
-		scroll.y = full;
+		scroll.y = full+60;
 
 		scroll.width = 240 + 14;
 		scroll.height = 42 * 6 - 6;
@@ -55,7 +65,8 @@ class Prefab extends Property {
 	override public function select(object:Dynamic) {
 		prefab = (cast object : prefab.Linked);
 
-		label.text = prefab.src;
+		label.text = "Prefab: " + prefab.src;
+		reference.value = prefab.path;
 
 		var i = 0;
 		for (field in prefab.field) {
@@ -106,6 +117,8 @@ class Prefab extends Property {
 
 	override public function unselect() {
 		super.unselect();
+
+		reference.blur();
 		
 		for (input in text) {
 			input.visible = false;
@@ -124,6 +137,7 @@ class Prefab extends Property {
 	
 
 	override function onChange(prop:Dynamic) {
+		if (prefab != null) prefab.path = prop.to;
 	}
 
 

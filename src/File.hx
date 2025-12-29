@@ -246,6 +246,7 @@ class File {
 					}
 				}
 
+				item.path = entry.path ?? "Prefab";
 				item.src = entry.src;
 
 				prefab = item;

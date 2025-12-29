@@ -3,6 +3,8 @@ package prefab;
 typedef Field = { name : String, type : String, data : String, original : String, value : String };
 
 class Linked extends Prefab {
+	public var path:String = "Prefab";
+
 	public var bitmap:Map<String, h2d.Bitmap> = new Map();
 	public var text:Map<String, h2d.Text> = new Map();
 
@@ -31,6 +33,7 @@ class Linked extends Prefab {
 		}
 
 		if (fields.length > 0) data.field = fields;
+		data.path = path == "" ? "Prefab" : path;
 		data.src = src;
 
 		return data;
@@ -62,6 +65,7 @@ class Linked extends Prefab {
 	override public function clone():Prefab {
 		var prefab = Editor.ME.file.getPrefab(src);
 		prefab.link = link;
+		prefab.path = path;
 		prefab.src = src;
 		prefab.copy(this);
 
