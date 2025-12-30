@@ -52,6 +52,12 @@ Use `hxe.Lib` to load and add a prefab instance to the scene. Note: the prefab n
 var object:hxe.Prefab = hxe.Lib.load("myPrefab", s2d);
 ```
 
+Prefabs can also be instantiated directly.
+
+```haxe
+var object = new hxe.Prefab("myPrefab", s2d);
+```
+
 # Documentation
 
 * [Introduction](https://nayata.github.io/hexe)  
