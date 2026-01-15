@@ -346,7 +346,7 @@ class File {
 
 
 	// Open Bitmap file
-	public function openBitmap(type:String = "bitmap") {
+	public function openBitmap(type:String = "bitmap", ?highlighted = false) {
 		var file = openfile("Open Image", "Image Files", ["png", "jpeg", "jpg"]);
 		if (file == null) return;
 
@@ -371,16 +371,16 @@ class File {
 		prefab.name = editor.getUID(prefab.type);
 		prefab.object.name = prefab.name;
 
-		editor.scene.addChild(prefab.object);
+		editor.addChild(prefab.object, highlighted);
 		editor.add(prefab.object, prefab);
 	}
 
 
 
 	// Open Texture image
-	public function openTexture(type:String = "bitmap") {
+	public function openTexture(type:String = "bitmap", ?highlighted = false) {
 		if (editor.texture.atlas == null) {
-			openAtlas(type);
+			openAtlas(type, highlighted);
 			return;
 		}
 
@@ -408,7 +408,7 @@ class File {
 			prefab.path = Assets.atlasPath.get(atlas.name);
 			prefab.src = name;
 	
-			editor.scene.addChild(prefab.object);
+			editor.addChild(prefab.object, highlighted);
 			editor.add(prefab.object, prefab);
 
 			// Clear onSelect
@@ -421,7 +421,7 @@ class File {
 
 
 	// Open Prefab file
-	public function openPrefab() {
+	public function openPrefab(?highlighted = false) {
 		var file = openfile("Open File", "Prefab Files", ["prefab", "json"]);
 		if (file == null) return;
 
@@ -441,7 +441,7 @@ class File {
 		prefab.link = name;
 		prefab.src = getPath(file);
 
-		editor.scene.addChild(prefab.object);
+		editor.addChild(prefab.object, highlighted);
 		editor.add(prefab.object, prefab);
 	}
 
@@ -658,7 +658,7 @@ class File {
 
 
 	// Open Atlas file
-	public function openAtlas(type:String = "bitmap") {
+	public function openAtlas(type:String = "bitmap", ?highlighted = false) {
 		var file = openfile("Open Texture Atlas", "Texture Atlas Files", ["atlas"]);
 		if (file == null) return;
 
@@ -675,7 +675,7 @@ class File {
 		var atlas = new Texture.Atlas(name, entry, tile);
 
 		editor.addAtlas(atlas, name, path);
-		openTexture(type);
+		openTexture(type, highlighted);
 	}
 
 

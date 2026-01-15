@@ -209,7 +209,7 @@ class Outliner extends h2d.Object {
 
 	
 	function onDown(event:Event) {
-		if (highlighted != null) {
+		if (highlighted != null && event.button == 0) {
 			editor.select(highlighted.name);
 
 			draged = highlighted.name;
@@ -223,6 +223,13 @@ class Outliner extends h2d.Object {
 			}
 
 			touch.left = true;
+		}
+
+		if (highlighted != null && event.button == 1) {
+			editor.select(highlighted.name);
+			editor.context.open();
+
+			touch.right = true;
 		}
 	}
 
@@ -312,6 +319,7 @@ class Outliner extends h2d.Object {
 		cursor.visible = false;
 		ghost.visible = false;
 		touch.left = false;
+		touch.right = false;
 
 		dragScroll = 0;
 

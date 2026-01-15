@@ -27,6 +27,7 @@ class Editor extends hxd.App {
 
 	public var control:Control;
 	public var outliner:Outliner;
+	public var context:Context;
 
 	public var toolbar:Toolbar;
 	public var sidebar:Sidebar;
@@ -77,6 +78,8 @@ class Editor extends hxd.App {
 		outliner = new Outliner(sidebar);
 		outliner.onSize = onScroll;
 		outliner.y = 60;
+
+		context = new Context(s2d);
 
 		property = new Properties(sidebar);
 		property.y = 300;
@@ -255,6 +258,17 @@ class Editor extends hxd.App {
 
 
 	/* ------------------------------ Objects actions ------------------------------ */
+	public function addChild(object:Object, ?highlighted = false) {
+		var container:Object = scene;
+
+		if (highlighted && selected != null) {
+			container = children.get(selected.name).locked ? selected.parent : selected;
+		}
+
+		container.addChild(object);
+	}
+
+
 	public function add(object:Object, prefab:Prefab, keep:Bool = true) {
 		hierarchy.push(object);
 		children.set(object.name, prefab);
@@ -288,7 +302,7 @@ class Editor extends hxd.App {
 
 
 	/* ------------------------------ Clipboard actions ------------------------------ */
-	public function onClipboard(type:String) {
+	public function onClipboard(type:String, ?highlighted = false) {
 		switch (type) {
 			case "copy":
 				if (selected != null) clipboard = children.get(selected.name);
@@ -305,7 +319,7 @@ class Editor extends hxd.App {
 						prefab.name = getUID(prefab.type);
 						prefab.object.name = prefab.name;
 				
-						scene.addChild(prefab.object);
+						addChild(prefab.object, highlighted);
 						add(prefab.object, prefab);
 					}
 				}
@@ -316,7 +330,7 @@ class Editor extends hxd.App {
 
 	/* ------------------------------ ASSETS ------------------------------ */
 
-	public function make(type:String) {
+	public function make(type:String, ?highlighted = false) {
 		var prefab:Prefab;
 
 		switch (type) {
@@ -339,7 +353,7 @@ class Editor extends hxd.App {
 		prefab.name = getUID(prefab.type);
 		prefab.object.name = prefab.name;
 
-		scene.addChild(prefab.object);
+		addChild(prefab.object, highlighted);
 		add(prefab.object, prefab);
 	}
 
