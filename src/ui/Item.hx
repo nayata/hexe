@@ -18,7 +18,7 @@ class Item extends h2d.Object {
 
 	public var text(get, set):String;
 
-	public var checkable:Bool = true;
+	public var checkable:Bool = false;
 	public var closable:Bool = true;
 
 
