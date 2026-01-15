@@ -25,19 +25,22 @@ class Control extends h2d.Object {
 
 	public var width(default, set):Float = 0;
 	public var height(default, set):Float = 0;
+
+	public var gridSize(default, set):Int = 32;
 	public var zoom:Float = 1;
 
 	public var selected:Null<h2d.Object> = null;
 	public var prefab:Null<Prefab> = null;
 
 	public var autoSelect:Bool = true;
+	public var snapToGrid:Bool = false;
 
 	var selection:Graphics;
 	var bound:Bounds;
 
 	var cursor:Cursor;
 
-	var transform = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, width : 1.0, height : 1.0, rotation : 0.0, mouseX : 0.0, mouseY : 0.0, absX : 0.0, absY : 0.0 };
+	var transform = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, rotation : 0.0, aspect : 0.0, mouseX : 0.0, mouseY : 0.0, absX : 0.0, absY : 0.0 };
 	var history = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, width : 1.0, height : 1.0, rotation : 0.0 };
 
 	var step:Float = 0;
@@ -130,9 +133,6 @@ class Control extends h2d.Object {
 				transform.scaleX = selected.scaleX;
 				transform.scaleY = selected.scaleY;
 
-				transform.width = prefab.scaleX;
-				transform.height = prefab.scaleY;
-
 				var pos = new Point(s2d.mouseX, s2d.mouseY);
 				selected.parent.globalToLocal(pos);
 
@@ -150,6 +150,27 @@ class Control extends h2d.Object {
 				history.height = prefab.scaleY;
 
 				history.rotation = selected.rotation;
+
+				if (editor.toolbar.tool == Size) {
+					mouse = scene.globalToLocal(new Point(s2d.mouseX, s2d.mouseY));
+
+					var w = prefab.width  * selected.scaleX;
+					var h = prefab.height * selected.scaleY;
+				
+					var centerX = selected.x - w * (prefab.pivotX - 0.5);
+					var centerY = selected.y - h * (prefab.pivotY - 0.5);
+
+					transform.aspect = w / h;
+
+					transform.absX = mouse.x > centerX ? 1 : -1;
+					transform.absY = mouse.y > centerY ? 1 : -1;
+	
+					transform.x = transform.absX > 0 ? centerX - w * 0.5 : centerX + w * 0.5;
+					transform.y = transform.absY > 0 ? centerY - h * 0.5 : centerY + h * 0.5;
+				
+					transform.scaleX = selected.scaleX;
+					transform.scaleY = selected.scaleY;
+				}
 			}
 
 			touch.left = true;
@@ -173,7 +194,6 @@ class Control extends h2d.Object {
 
 		if (touch.left && selected != null) {
 			var mouse = new Point(s2d.mouseX, s2d.mouseY);
-
 			var tool = editor.toolbar.tool;
 
 			switch (tool) {
@@ -182,11 +202,12 @@ class Control extends h2d.Object {
 
 					selected.parent.globalToLocal(pos);
 
-					if (cursor.state != Y) selected.x = snap(pos.x);
-					if (cursor.state != X) selected.y = snap(pos.y);
+					if (cursor.state != Y) selected.x = snap(pos.x, snapToGrid ? gridSize : 1);
+					if (cursor.state != X) selected.y = snap(pos.y, snapToGrid ? gridSize : 1);
 
 					editor.onTransform();
 					updateCursor();
+
 				case Rotation:
 					var center = selected.localToGlobal();
 					var startAngle = Math.atan2(transform.mouseY - center.y, transform.mouseX - center.x);
@@ -197,6 +218,7 @@ class Control extends h2d.Object {
 					editor.onTransform();
 					getSelection();
 					updateCursor();
+
 				case Scale:
 					var dx = mouse.x - transform.mouseX;
 					var dy = mouse.y - transform.mouseY;
@@ -217,34 +239,37 @@ class Control extends h2d.Object {
 					editor.onTransform();
 					getSelection();
 					updateCursor();
+
 				case Size:
-					var pos = new Point(s2d.mouseX, s2d.mouseY);
-					selected.parent.globalToLocal(pos);
+					mouse = scene.globalToLocal(new Point(s2d.mouseX, s2d.mouseY));
 
-					var dx = (pos.x - transform.absX) * 1 / selected.scaleX;
-					var dy = (pos.y - transform.absY) * 1 / selected.scaleY;
+					var mouseX = snap(mouse.x, snapToGrid ? gridSize : 1);
+					var mouseY = snap(mouse.y, snapToGrid ? gridSize : 1);
 
-					var transformX = transform.width + dx * 1.0;
-					var transformY = transform.height - dy * 1.0;
+					var w = Math.abs(mouseX - transform.x);
+					var h = Math.abs(mouseY - transform.y);
 
-					if (cursor.state == XY) {
-						var scaleSign = -1;
-
-						transformX = transform.width + dx * 1.0;
-						transformY = transform.height - dy * scaleSign * 1.0;
-
-						if (Key.isDown(Key.SHIFT)) transformY = transformX * (transform.height / transform.width);
+					if (Key.isDown(Key.SHIFT) || prefab.fixed) {
+						if (w / h > transform.aspect) {
+							h = w / transform.aspect;
+						} else {
+							w = h * transform.aspect;
+						}
 					}
+				
+					if (cursor.state != Y) prefab.width = w / transform.scaleX;
+					if (cursor.state != X) prefab.height = h / transform.scaleY;
 
-					transformX = Math.max(transformX, 0);
-					transformY = Math.max(transformY, 0);
+					if (cursor.state != Y) prefab.width = snap(prefab.width, 1);
+					if (cursor.state != X) prefab.height = snap(prefab.height, 1);
 
-					if (cursor.state != Y) prefab.scaleX = snap(transformX, 1);
-					if (cursor.state != X) prefab.scaleY = snap(transformY, 1);
+					selected.x = transform.absX > 0 ? transform.x + w * prefab.pivotX : transform.x - w * (1 - prefab.pivotX);
+					selected.y = transform.absY > 0 ? transform.y + h * prefab.pivotY : transform.y - h * (1 - prefab.pivotY);
 
 					editor.onTransform();
 					getSelection();
 					updateCursor();
+					
 				default:
 			}
 		}
@@ -464,6 +489,12 @@ class Control extends h2d.Object {
 		height = v;
 		touch.height = height;
 		return v;
+	}
+
+
+	function set_gridSize(v) {
+		gridSize = Std.int(v / 4);
+		return gridSize;
 	}
 
 

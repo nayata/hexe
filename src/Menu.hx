@@ -54,7 +54,11 @@ class Menu extends h2d.Object {
 		editMenu.get("Paste").padding = Style.menuPadding;
 
 		editMenu.add("Delete", "delete", "Delete");
+		editMenu.addDivider();
 
+		editMenu.add("Snap To Grid", "checkmark");
+		editMenu.get("Snap To Grid").checkable = true;
+		editMenu.get("Snap To Grid").checked = false;
 
 		// Asset
 		assetMenu = new ui.Dropdown(this, "Asset");
@@ -123,6 +127,10 @@ class Menu extends h2d.Object {
 
 			case "Load Texture Atlas" : editor.file.openAtlas();
 			case "Load Font" : editor.file.openFont();
+
+
+			case "Snap To Grid" : editor.snapToGrid(!editor.control.snapToGrid);
+
 			default:
 		}
 	}

@@ -119,6 +119,7 @@ class Dropdown extends h2d.Object {
 		if (!panel.visible) return;
 
 		if (selected != null) {
+			if (selected.checkable) selected.checked = !selected.checked;
 			if (selected.closable) close();
 
 			onChange(selected.text, selected.icon);

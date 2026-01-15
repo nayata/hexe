@@ -13,10 +13,12 @@ class Item extends h2d.Object {
 
 	public var icon(default, set):String = "";
 	public var shortcut(default, set):String = "";
+	public var checked(default, set):Bool = false;
 	public var padding(default, set):Int = 0;
 
 	public var text(get, set):String;
 
+	public var checkable:Bool = true;
 	public var closable:Bool = true;
 
 
@@ -106,6 +108,12 @@ class Item extends h2d.Object {
 		description.y = height*0.5 - description.textHeight*0.5;
 
 		return shortcut = v;
+	}
+
+
+	function set_checked(v) {
+		if (tile != null) tile.visible = v;
+		return checked = v;
 	}
 
 

@@ -70,6 +70,7 @@ class Editor extends hxd.App {
 
 		control = new Control(s2d);
 		control.onKeyboard = onKeyboard;
+		control.gridSize = Config.gridSize;
 		control.width = s2d.width - 300;
 		control.height = s2d.height;
 
@@ -205,6 +206,11 @@ class Editor extends hxd.App {
 	public function onName() {
 		if (selected == null) return;
 		outliner.rename(selected.name, children.get(selected.name).link);
+	}
+
+
+	public function snapToGrid(value:Bool) {
+		control.snapToGrid = value;
 	}
 
 
