@@ -44,6 +44,8 @@ class Menu extends h2d.Object {
 		editMenu.add("Redo", "redo", "Ctrl+Y", false);
 		editMenu.addDivider();
 
+		editMenu.add("Duplicate", "duplicate", "Ctrl+D");
+
 		editMenu.add("Cut", "", "Ctrl+X");
 		editMenu.get("Cut").padding = Style.menuPadding;
 
@@ -104,10 +106,11 @@ class Menu extends h2d.Object {
 			case "Undo" : editor.history.undo();
 			case "Redo" : editor.history.redo();
 
+			case "Duplicate" : editor.onClipboard("duplicate");
 			case "Cut" : editor.onClipboard("cut");
 			case "Copy" : editor.onClipboard("copy");
 			case "Paste" : editor.onClipboard("paste");
-
+			
 			case "Delete" : editor.delete(editor.selected);
 
 			

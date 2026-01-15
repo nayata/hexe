@@ -251,6 +251,10 @@ class Editor extends hxd.App {
 			case Key.Y if (Key.isDown(Key.CTRL)):
 				history.redo();
 
+			case Key.D if (Key.isDown(Key.CTRL)):
+				onClipboard("copy");
+				onClipboard("paste");
+
 			case Key.C if (Key.isDown(Key.CTRL)):
 				onClipboard("copy");
 			case Key.X if (Key.isDown(Key.CTRL)):
@@ -325,6 +329,19 @@ class Editor extends hxd.App {
 						prefab.name = getUID(prefab.type);
 						prefab.object.name = prefab.name;
 				
+						addChild(prefab.object, highlighted);
+						add(prefab.object, prefab);
+					}
+				}
+			case "duplicate":
+				if (selected != null) {
+					clipboard = children.get(selected.name);
+
+					var prefab = clipboard.clone();
+					if (prefab != null) {
+						prefab.name = getUID(prefab.type);
+						prefab.object.name = prefab.name;
+					
 						addChild(prefab.object, highlighted);
 						add(prefab.object, prefab);
 					}

@@ -64,6 +64,7 @@ class Context extends h2d.Object {
 		addDivider();
 
 		// Clipboard
+		add("Duplicate", "duplicate", "Ctrl+D");
 		add("Cut", "", "Ctrl+X");
 		get("Cut").padding = Style.menuPadding;
 
@@ -187,6 +188,7 @@ class Context extends h2d.Object {
 			case "Add from Texture Atlas" : editor.file.openTexture(type, true);
 			case "Place Prefab" : editor.file.openPrefab(true);
 
+			case "Duplicate" : editor.onClipboard("duplicate", true);
 			case "Cut" : editor.onClipboard("cut");
 			case "Copy" : editor.onClipboard("copy");
 			case "Paste" : editor.onClipboard("paste", true);
