@@ -17,8 +17,13 @@ class Prefab {
 	public var scaleX(get, set):Float;
 	public var scaleY(get, set):Float;
 
-	public var src:String = "";
+	public var pivotX:Float = 0;
+	public var pivotY:Float = 0;
+
 	public var locked:Bool = false;
+	public var fixed:Bool = false;
+
+	public var src:String = "";
 
 
 	public function new() {}

@@ -32,7 +32,7 @@ class Interactive extends Property {
 		// isEllipse
 		label = new Label("isEllipse", 0, top + half * 0.5, this);
 
-		input = set("smooth", new Checkbox(this));
+		input = set("mode", new Checkbox(this));
 		input.setPosition(second, top);
 		input.onChange = onChange;
 	}

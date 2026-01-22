@@ -11,7 +11,7 @@ class Object extends Property {
 
 		var label = new Label("Marker", 0, half * 0.5, this);
 
-		var input = set("smooth", new Checkbox(this));
+		var input = set("mode", new Checkbox(this));
 		input.setPosition(second, top);
 		input.onChange = onChange;
 	}

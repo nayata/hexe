@@ -2,7 +2,7 @@ package prefab;
 
 
 class Object extends Prefab {
-	public var smooth(default, set):Int = 0;
+	public var mode(default, set):Int = 0;
 
 	public function new() {
 		super();
@@ -15,7 +15,7 @@ class Object extends Prefab {
 
 	override public function serialize():Dynamic {
 		var data:Dynamic = super.serialize();
-		if (smooth != 0) data.smooth = smooth;
+		if (mode != 0) data.mode = mode;
 
 		return data;
 	}
@@ -23,13 +23,13 @@ class Object extends Prefab {
 
 	override public function clone():Prefab {
 		var prefab = new Object();
-		prefab.smooth = smooth;
+		prefab.mode = mode;
 		prefab.copy(this);
 		return prefab;
 	}
 
 
-	function set_smooth(v) {
+	function set_mode(v) {
 		var container = (cast object : Container);
 		container.marker = v == 1 ? true : false;
 
@@ -42,7 +42,7 @@ class Object extends Prefab {
 		y = -size * 0.5;
 
 		container.tile.setCenterRatio();
-		return smooth = v;
+		return mode = v;
 	}
 }
 

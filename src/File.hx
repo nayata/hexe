@@ -59,7 +59,7 @@ class File {
 			// Object Prefab
 			if (entry.type == "object") {
 				var item = new prefab.Object();
-				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
+				if (entry.mode != null) item.mode = Std.int(entry.mode);
 				prefab = item;
 			}
 
@@ -202,7 +202,7 @@ class File {
 			if (entry.type == "interactive") {
 				var item = new prefab.Interactive();
 
-				if (entry.smooth != null) item.smooth = entry.smooth;
+				if (entry.mode != null) item.mode = Std.int(entry.mode);
 				item.width = Std.int(entry.width);
 				item.height = Std.int(entry.height);
 
@@ -228,6 +228,24 @@ class File {
 
 				item.width = Std.int(entry.width);
 				item.height = Std.int(entry.height);
+
+				prefab = item;
+			}
+
+
+			// Collider Prefab
+			if (entry.type == "collider") {
+				var item = new prefab.Collider();
+
+				item.body = Std.int(entry.body);
+				item.shape = Std.int(entry.shape);
+
+				item.width = Std.int(entry.width);
+				item.height = Std.int(entry.height);
+
+				if (entry.mode != null) item.mode = Std.int(entry.mode);
+				if (entry.text != null) item.text = entry.text;
+				if (entry.color != null) item.color = StringTools.hex(entry.color, 6);
 
 				prefab = item;
 			}
@@ -863,4 +881,8 @@ typedef Data = {
 	@:optional var atlas : String;
 	@:optional var font : String;
 	@:optional var path : String;
+
+	@:optional var body : Int;
+	@:optional var shape : Int;
+	@:optional var mode : Int;
 }

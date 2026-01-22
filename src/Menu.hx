@@ -84,6 +84,9 @@ class Menu extends h2d.Object {
 		assetMenu.add("Add from Texture Atlas", "anim");
 		assetMenu.addDivider();
 
+		assetMenu.add("Add Collider", "collider");
+		assetMenu.addDivider();
+
 		assetMenu.add("Place Prefab", "prefab");
 		assetMenu.addDivider();
 		
@@ -126,6 +129,8 @@ class Menu extends h2d.Object {
 			case "Add Mask" : editor.make("mask");
 
 			case "Add from Texture Atlas" : editor.file.openTexture(type);
+			
+			case "Add Collider" : editor.make("collider");
 			case "Place Prefab" : editor.file.openPrefab();
 
 			case "Load Texture Atlas" : editor.file.openAtlas();

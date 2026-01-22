@@ -3,7 +3,7 @@ import h2d.col.Point;
 
 
 class Interactive extends Prefab {
-	public var smooth(default, set):Int = 0;
+	public var mode(default, set):Int = 0;
 
 
 	public function new() {
@@ -23,7 +23,7 @@ class Interactive extends Prefab {
 	override public function serialize():Dynamic {
 		var data:Dynamic = super.serialize();
 
-		if (smooth != 0) data.smooth = smooth;
+		if (mode != 0) data.mode = mode;
 		data.width = width;
 		data.height = height;
 
@@ -34,7 +34,7 @@ class Interactive extends Prefab {
 	override public function clone():Prefab {
 		var prefab = new Interactive();
 
-		prefab.smooth = smooth;
+		prefab.mode = mode;
 		prefab.width = width;
 		prefab.height = height;
 
@@ -44,8 +44,8 @@ class Interactive extends Prefab {
 	}
 
 
-	function set_smooth(v) {
-		return smooth = v;
+	function set_mode(v) {
+		return mode = v;
 	}
 
 

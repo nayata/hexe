@@ -59,6 +59,7 @@ class Context extends h2d.Object {
 		add("Add from Texture Atlas", "scalegrid");
 		add("Add from Texture Atlas", "anim");
 
+		add("Add Collider", "collider");
 		add("Place Prefab", "prefab");
 
 		addDivider();
@@ -186,6 +187,8 @@ class Context extends h2d.Object {
 			case "Add Mask" : editor.make("mask", true);
 
 			case "Add from Texture Atlas" : editor.file.openTexture(type, true);
+
+			case "Add Collider" : editor.make("collider", true);
 			case "Place Prefab" : editor.file.openPrefab(true);
 
 			case "Duplicate" : editor.onClipboard("duplicate", true);

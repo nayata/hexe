@@ -6,6 +6,7 @@ import property.Bitmap;
 import property.Interactive;
 import property.ScaleGrid;
 import property.Graphics;
+import property.Collider;
 import property.Prefab;
 import property.Anim;
 import property.Text;
@@ -119,6 +120,14 @@ class Properties extends h2d.Layers {
 		element.x = 30;
 		element.y = 346;
 		properties.set("mask", element);
+
+
+		// Collider Prefab
+		element = new Collider(this);
+		element.visible = false;
+		element.x = 30;
+		element.y = 346;
+		properties.set("collider", element);
 
 
 		// Linked Prefab

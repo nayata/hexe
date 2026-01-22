@@ -52,11 +52,7 @@ class Editor extends hxd.App {
 		hl.UI.closeConsole();
 		engine.backgroundColor = Style.background;
 		
-		#if( hl && debug )
-			hxd.Res.initLocal();
-		#else
-			hxd.Res.initEmbed();
-		#end
+		hxd.Res.initLocal();
 
 		Config.init();
 		Assets.init();
@@ -369,6 +365,8 @@ class Editor extends hxd.App {
 				prefab = new prefab.Graphics();
 			case "mask":
 				prefab = new prefab.Mask();
+			case "collider":
+				prefab = new prefab.Collider();
 			default:
 				prefab = new Prefab();
 		}
