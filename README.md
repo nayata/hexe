@@ -63,5 +63,6 @@ var object = new hxe.Prefab("myPrefab", s2d);
 * [Introduction](https://nayata.github.io/hexe)  
 * [Quick Start](https://nayata.github.io/hexe/#quick-start)  
 * [Working with editor](https://nayata.github.io/hexe/#working-with-editor)  
+* [Using Collider Prefabs for Echo Physics](https://nayata.github.io/hexe-echo)  
 * [In-game implementation](https://nayata.github.io/hexe-lib)  
 * [API](https://nayata.github.io/hexe-api)
