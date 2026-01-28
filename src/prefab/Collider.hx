@@ -69,6 +69,8 @@ class Collider extends Prefab {
 		if (text != "empty" && text != "") data.text = text;
 		if (color != "0496ff") data.color = Editor.ME.getColor(color);
 
+		if (!object.visible) data.visible = false;
+
 		return data;
 	}
 
