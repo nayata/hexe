@@ -15,7 +15,7 @@ class App extends hxd.App {
 		hxd.Res.initLocal();
 
 		// Add `card.prefab`
-		card = hxe.Lib.load("card", s2d);
+		card = new Prefab("card", s2d);
 		card.x = s2d.width * 0.5;
 		card.y = s2d.height * 0.5 - 64;
 
@@ -28,7 +28,7 @@ class App extends hxd.App {
 		trace(type);
 
 		// Add `button.prefab`
-		button = hxe.Lib.load("button", s2d);
+		button = new Prefab("button", s2d);
 		button.x = s2d.width * 0.5;
 		button.y = s2d.height - 128;
 
