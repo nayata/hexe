@@ -6,6 +6,7 @@ class Select extends Input {
 	var face:h2d.ScaleGrid;
 
 	var input:h2d.Interactive;
+	var highlight:h2d.Bitmap;
 	var panel:h2d.Object;
 
 	var tile:h2d.Bitmap;
@@ -25,8 +26,10 @@ class Select extends Input {
 
 		back = new h2d.ScaleGrid(Assets.icon("input"), 10, 10, this);
 
-		face = new h2d.ScaleGrid(Assets.icon("select"), 10, 10, this);
-		face.filter = new h2d.filter.DropShadow(5, Math.PI/4, 0, 0.25, 20.0, 1, 1.0, true);
+		highlight = new h2d.Bitmap(h2d.Tile.fromColor(0x3F3F3F, 166, 32), this);
+		highlight.visible = false;
+
+		face = new h2d.ScaleGrid(Assets.icon("focus"), 10, 10, this);
 		face.visible = false;
 
 		input = new h2d.Interactive(0, 0, this);
@@ -113,6 +116,9 @@ class Select extends Input {
 				node.alpha = 0.75;
 			}
 		}
+
+		highlight.visible = selected != null ? true : false;
+		highlight.y = selected != null ? selected.y + 3 : 0;
 	}
 
 
@@ -124,8 +130,9 @@ class Select extends Input {
 	function open() {
 		if (items.length < 2) return;
 		
-		face.height = 15 + items.length * size;
-		input.height = 15 + items.length * size;
+		back.height = 12 + items.length * size;
+		face.height = 12 + items.length * size;
+		input.height = 12 + items.length * size;
 
 		face.visible = true;
 		panel.visible = true;
@@ -144,7 +151,10 @@ class Select extends Input {
 	function close() {
 		if (selected != null) selected.alpha = 0.75;
 
+		back.height = height;
 		input.height = height;
+
+		highlight.visible = false;
 
 		face.visible = false;
 		panel.visible = false;
