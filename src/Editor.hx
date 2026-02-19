@@ -52,16 +52,15 @@ class Editor extends hxd.App {
 		hl.UI.closeConsole();
 		engine.backgroundColor = Style.background;
 		
-		hxd.Res.initLocal();
+		hxd.Res.initEmbed();
 
 		Config.init();
 		Assets.init();
 		
 		grid = new Grid(s2d.width, s2d.height, Config.gridSize, s2d);
-		grid.onMove(200, 200);
 
 		scene = new Object(s2d);
-		scene.x = scene.y = 200;
+		scene.x = scene.y = 192;
 		scene.name = "root";
 
 		control = new Control(s2d);
@@ -94,7 +93,7 @@ class Editor extends hxd.App {
 		menu.y = 10;
 
 		view = new Button("Actual Size", s2d);
-		view.onChange = control.onView;
+		view.onChange = control.actualSize;
 		view.x = s2d.width - view.width;
 		view.y = 10;
 
@@ -112,13 +111,15 @@ class Editor extends hxd.App {
 		WIDTH = hxd.Window.getInstance().width;
 		HEIGHT = hxd.Window.getInstance().height;
 
-		toolbar.x = (WIDTH - sidebar.width) * 0.5 - toolbar.width * 0.5 + toolbar.height;
-		view.x = WIDTH - sidebar.width - view.width;
+		var width = sidebar.visible ? WIDTH - sidebar.width : WIDTH;
+
+		toolbar.x = width * 0.5 - toolbar.width * 0.5;
+		view.x = width - view.width;
 
 		grid.width = WIDTH;
 		grid.height = HEIGHT;
 
-		control.width = WIDTH - sidebar.width;
+		control.width = width;
 		control.height = HEIGHT;
 		control.onResize();
 
@@ -210,6 +211,22 @@ class Editor extends hxd.App {
 	}
 
 
+	public function toggleSidebar() {
+		sidebar.visible = !sidebar.visible;
+		onResize();
+	}
+
+
+	public function toggleGrid() {
+		grid.visible = !grid.visible;
+	}
+
+
+	public function gridAtTop(value:Bool) {
+		s2d.addChildAt(grid, value ? 1 : 0);
+	}
+
+
 	// New Scene
 	public function clear() {
 		hxd.Window.getInstance().title = file.defaultName;
@@ -257,6 +274,11 @@ class Editor extends hxd.App {
 				onClipboard("cut");
 			case Key.V if (Key.isDown(Key.CTRL)):
 				onClipboard("paste");
+
+			case Key.A : 
+				control.actualSize();
+			case Key.F : 
+				control.fitView();
 
 			default:
 		}

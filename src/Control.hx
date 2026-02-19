@@ -27,7 +27,7 @@ class Control extends h2d.Object {
 	public var height(default, set):Float = 0;
 
 	public var gridSize(default, set):Int = 32;
-	public var zoom:Float = 1;
+	public var zoom:Zoom = new Zoom();
 
 	public var selected:Null<h2d.Object> = null;
 	public var prefab:Null<Prefab> = null;
@@ -42,9 +42,6 @@ class Control extends h2d.Object {
 
 	var transform = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, rotation : 0.0, aspect : 0.0, mouseX : 0.0, mouseY : 0.0, absX : 0.0, absY : 0.0 };
 	var history = { x : 0.0, y : 0.0, scaleX : 1.0, scaleY : 1.0, width : 1.0, height : 1.0, rotation : 0.0 };
-
-	var step:Float = 0;
-	var time:Float = 0;
 
 	
 	public function new(?parent:h2d.Object) {
@@ -364,19 +361,19 @@ class Control extends h2d.Object {
 
 	function onWheel(event:Event) {
 		var factor = Math.pow(1.1, -event.wheelDelta); // 10% per tick
-		zoom *= factor;
+		zoom.value *= factor;
 
-		if (zoom < 0.05) zoom = 0.05;
-		if (zoom > 5) zoom = 5;
+		if (zoom.value < 0.05) zoom.value = 0.05;
+		if (zoom.value > 5) zoom.value = 5;
 
-		var ratio = 1 - zoom / scene.scaleX;
+		var ratio = 1 - zoom.value / scene.scaleX;
 
 		scene.x += (s2d.mouseX - scene.x) * ratio;
 		scene.y += (s2d.mouseY - scene.y) * ratio;
 		
-		scene.scaleX = scene.scaleY = zoom;
+		scene.scaleX = scene.scaleY = zoom.value;
 
-		grid.onResize(zoom);
+		grid.onResize(zoom.value);
 		grid.onMove(scene.x, scene.y);
 
 		getSelection();
@@ -501,66 +498,89 @@ class Control extends h2d.Object {
 	override function sync( ctx : h2d.RenderContext ) {
 		super.sync(ctx);
 
-		if (time < 0) return;
+		if (zoom.time >= zoom.duration) return;
+    	
+		var t = zoom.time / zoom.duration;
+		t = 1 - Math.pow(1 - t, 3);
+	
+		zoom.value = zoom.from + (zoom.to - zoom.from) * t;
+	
+		scene.x = zoom.start.x + (zoom.target.x - zoom.start.x) * t;
+		scene.y = zoom.start.y + (zoom.target.y - zoom.start.y) * t;
 
-		zoom += step;
-		if (time == 0) zoom = 1;
+		scene.scaleX = scene.scaleY = zoom.value;
 
-		var ratio = 1 - zoom / scene.scaleX;
+		zoom.time++;
 
-		scene.x += (width * 0.5 - scene.x) * ratio;
-		scene.y += (height * 0.5 - scene.y) * ratio;
+		if (zoom.time == zoom.duration) {
+			zoom.value = zoom.to;
+			scene.scaleX = scene.scaleY = zoom.value;
+			scene.x = zoom.target.x;
+			scene.y = zoom.target.y;
+		}
 
-		scene.scaleX = scene.scaleY = zoom;
-
-		grid.onResize(zoom);
+		grid.onResize(zoom.value);
 		grid.onMove(scene.x, scene.y);
 
 		getSelection();
 		updateCursor();
-
-		time--;
 	}
 
 
-	public function onView() {
-		if (zoom == 1) return;
+	public function actualSize() {
+		if (zoom.value == 1) return;
 
-		step = (1 - zoom) / 6;
-		time = 6;
-	}
-
-
-	public function onScene() {
-		zoom = 1;
-
-		scene.scaleX = scene.scaleY = zoom;
-		scene.x = scene.y = 200;
-
-		grid.onResize(zoom);
-		grid.onMove(scene.x, scene.y);
-
-		getSelection();
-		updateCursor();
+		zoom.from = zoom.value;
+		zoom.to = 1;
+	
+		zoom.start.x = scene.x;
+		zoom.start.y = scene.y;
+	
+		zoom.target.x = width * 0.5 - (width * 0.5 - scene.x) * (1 / zoom.value);
+		zoom.target.y = height * 0.5 - (height * 0.5 - scene.y) * (1 / zoom.value);
+	
+		zoom.time = 0;
 	}
 
 
 	public function fitView() {
-		zoom = 1;
-		scene.scaleX = scene.scaleY = zoom;
+		if (scene.numChildren == 0) return;
 
-		if (scene.numChildren > 0) {
-			scene.syncPos();
-			var view = scene.getBounds(scene);
+		scene.syncPos();
+		var view = scene.getBounds(scene);
 
-			scene.x = width * 0.5;
-			scene.y = height * 0.5;
+		if (view.width <= 0 || view.height <= 0) return;
 
-			scene.x -= view.getCenter().x;
-			scene.y -= view.getCenter().y;
-		}
+		var padding = 100.0;
+		
+		var w = width - padding;
+		var h = height - padding;
+		
+		var zoomX = w / view.width;
+		var zoomY = h / view.height;
+		
+		var center = view.getCenter();
 
-		grid.onResize(zoom);
+		zoom.from = zoom.value;
+		zoom.to = Math.min(zoomX, zoomY);
+		
+		zoom.start.x = scene.x;
+		zoom.start.y = scene.y;
+
+		zoom.target.x = width * 0.5 - center.x * zoom.to;
+		zoom.target.y = height * 0.5 - center.y * zoom.to;
+
+		zoom.time = 0;
+	}
+
+
+	public function onScene() {
+		zoom.value = 1;
+
+		scene.scaleX = scene.scaleY = zoom.value;
+		scene.x = scene.y = 192;
+
+		grid.onResize(zoom.value);
 		grid.onMove(scene.x, scene.y);
 
 		getSelection();
@@ -569,14 +589,30 @@ class Control extends h2d.Object {
 
 
 	public function onResize() {
-		scene.scaleX = scene.scaleY = zoom;
+		scene.scaleX = scene.scaleY = zoom.value;
 
-		grid.onResize(zoom);
+		grid.onResize(zoom.value);
 		grid.onMove(scene.x, scene.y);
 
 		getSelection();
 		updateCursor();
 	}
+}
+
+
+class Zoom {
+	public var value:Float = 1;
+
+	public var duration:Float = 6;
+	public var time:Float = 6;
+
+	public var from:Float = 1.0;
+	public var to:Float = 1.0;
+
+	public var start = new Point();
+	public var target = new Point();
+	
+	public function new() {}
 }
 
 

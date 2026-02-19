@@ -10,6 +10,7 @@ class Menu extends h2d.Object {
 	var fileMenu:ui.Dropdown;
 	var editMenu:ui.Dropdown;
 	var assetMenu:ui.Dropdown;
+	var viewMenu:ui.Dropdown;
 
 	var divider:Int = 0;
 
@@ -38,7 +39,7 @@ class Menu extends h2d.Object {
 		// Edit
 		editMenu = new ui.Dropdown(this, "Edit");
 		editMenu.onChange = onChange;
-		editMenu.x = 60 + divider;
+		editMenu.x = fileMenu.x + fileMenu.width + divider;
 
 		editMenu.add("Undo", "undo", "Ctrl+Z", false);
 		editMenu.add("Redo", "redo", "Ctrl+Y", false);
@@ -62,10 +63,11 @@ class Menu extends h2d.Object {
 		editMenu.get("Snap To Grid").checkable = true;
 		editMenu.get("Snap To Grid").checked = false;
 
+
 		// Asset
 		assetMenu = new ui.Dropdown(this, "Asset");
 		assetMenu.onChange = onChange;
-		assetMenu.x = 120 + divider;
+		assetMenu.x = editMenu.x + editMenu.width + divider;
 		
 		assetMenu.add("Add Object", "object");
 
@@ -92,6 +94,27 @@ class Menu extends h2d.Object {
 		
 		assetMenu.add("Load Texture Atlas", "load");
 		assetMenu.add("Load Font", "load");
+
+
+		// View
+		viewMenu = new ui.Dropdown(this, "View");
+		viewMenu.onChange = onChange;
+		viewMenu.x = assetMenu.x + assetMenu.width + divider;
+
+		viewMenu.add("Actual Size", "", "A");
+		viewMenu.add("Fit on Screen", "", "F");
+		viewMenu.addDivider();
+
+		viewMenu.add("Toggle Properties");
+		viewMenu.addDivider();
+
+		viewMenu.add("Show Grid", "checkmark", "", false);
+		viewMenu.get("Show Grid").checkable = true;
+		viewMenu.get("Show Grid").checked = true;
+
+		viewMenu.add("Grid at Top", "checkmark", "", false);
+		viewMenu.get("Grid at Top").checkable = true;
+		viewMenu.get("Grid at Top").checked = false;
 	}
 
 
@@ -138,6 +161,14 @@ class Menu extends h2d.Object {
 
 
 			case "Snap To Grid" : editor.snapToGrid(!editor.control.snapToGrid);
+
+			case "Actual Size" : editor.control.actualSize();
+			case "Fit on Screen" : editor.control.fitView();
+
+			case "Toggle Properties" : editor.toggleSidebar();
+
+			case "Show Grid" : editor.toggleGrid();
+			case "Grid at Top" : editor.gridAtTop(viewMenu.get("Grid at Top").checked);
 
 			default:
 		}
