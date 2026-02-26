@@ -178,9 +178,18 @@ class Outliner extends h2d.Object {
 		if (selected == null) return;
 		if (height <= position) return;
 
-		if (selected.y + container.y >= 0 && selected.y + container.y - size <= position) return;
+		var top = selected.y + container.y;
+		var bottom = top + size;
+	
+		if (top >= 0 && bottom <= position) return;
 
-		container.y = -selected.y + position - size;
+		if (top < 0) {
+			container.y = -selected.y;
+		}
+		else if (bottom > position) {
+			container.y = -selected.y + position - size;
+		}
+	
 		container.y = Math.max(-(height - position), container.y);
 		container.y = Math.min(0, container.y);
 
