@@ -25,6 +25,7 @@ class Outliner extends h2d.Object {
 
 	var scrollBar:h2d.Bitmap;
 	var barCursor:h2d.Bitmap;
+	var barHandle:h2d.Interactive;
 
 	var nodes:Array<Node> = [];
 
@@ -39,6 +40,7 @@ class Outliner extends h2d.Object {
 	public var size:Int = 30;
 
 	var dragStart:Float = 0;
+	var dragOffset:Float = 0;
 	var dragScroll = 0;
 
 	
@@ -90,6 +92,10 @@ class Outliner extends h2d.Object {
 
 		scrollBar.x = width - scrollBar.width;
 		scrollBar.visible = false;
+
+		barHandle = new h2d.Interactive(10, 60, scrollBar);
+		barHandle.onPush = onScrollHandle;
+		barHandle.cursor = Button;
 
 		ghost = new Node(this);
 		ghost.addChildAt(new Bitmap(h2d.Tile.fromColor(Style.selection, width, size)), 0);
@@ -474,6 +480,41 @@ class Outliner extends h2d.Object {
 	}
 
 
+	function onScrollHandle(event:hxd.Event) {
+		dragOffset = event.relY;
+
+		barHandle.startCapture(function(event) {
+			switch(event.kind) {
+				case EPush:
+					var point = scrollBar.globalToLocal(new Point(editor.s2d.mouseX, editor.s2d.mouseY));
+					dragOffset = point.y - barCursor.y;
+	
+				case EMove:
+					var point = scrollBar.globalToLocal(new Point(editor.s2d.mouseX, editor.s2d.mouseY));
+					var cursor = point.y - dragOffset;
+
+					var max = scrollBar.height - barCursor.height;
+					if (max <= 0) return;
+
+					cursor = hxd.Math.clamp(cursor, 0, max);
+
+					barCursor.y = cursor;
+					barHandle.y = cursor;
+
+					container.y = -((cursor / max) * (height - position));
+					container.y = hxd.Math.clamp(container.y, -(height - position), 0);
+	
+				case ERelease, EReleaseOutside:
+					editor.s2d.stopCapture();
+		
+				default:
+			}
+			
+			event.propagate = false;
+		});
+	}
+
+
 	function onDragger() {
 		position = Std.int(dragger.y);
 
@@ -504,12 +545,14 @@ class Outliner extends h2d.Object {
 			scrollBar.visible = true;
 			scrollBar.height = Math.ceil(position);
 			barCursor.height = hxd.Math.imax(1, Std.int(position * (1 - (height - position) / height)));
+			barHandle.height = barCursor.height;
 		}
 
 		if (dragger.y < 1) scrollBar.visible = false;
 
 		var paddingTop = Std.int(container.y * (position - barCursor.height) / (height - position));
 		barCursor.y = -paddingTop;
+		barHandle.y = barCursor.y;
 	}
 
 
