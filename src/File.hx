@@ -244,6 +244,7 @@ class File {
 				item.height = Std.int(entry.height);
 
 				if (entry.mode != null) item.mode = Std.int(entry.mode);
+				if (entry.data != null) item.data = entry.data;
 				if (entry.text != null) item.text = entry.text;
 				if (entry.color != null) item.color = StringTools.hex(entry.color, 6);
 
@@ -877,6 +878,7 @@ typedef Data = {
 	@:optional var speed : Int;
 	@:optional var loop : Int;
 
+	@:optional var data : String;
 	@:optional var text : String;
 	@:optional var atlas : String;
 	@:optional var font : String;

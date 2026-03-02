@@ -96,13 +96,23 @@ class Collider extends Property {
 
 		label = new Label("Data", 0, tall * 0.5, prop);
 
-		input = set("text", new TextArea(prop));
+		input = set("data", new TextArea(prop));
 		input.setPosition(second, 0);
 		input.onChange = onChange;
 		input.icon = "wrap";
 		input.setSize(166, 40);
 
 		top = input.height + padding;
+
+		label = new Label("Text", 0, top + tall * 0.5, prop);
+
+		input = set("text", new TextArea(prop));
+		input.setPosition(second, top);
+		input.onChange = onChange;
+		input.icon = "wrap";
+		input.setSize(166, 40);
+
+		top = top + input.height + padding;
 
 		// Color
 		label = new Label("Color", 0, top + half, prop);

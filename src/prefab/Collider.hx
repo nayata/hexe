@@ -16,6 +16,8 @@ class Collider extends Prefab {
 	public var mode(default, set):Int = 0;
 
 	public var color(default, set):String = "0496ff";
+	
+	public var data:String = "empty";
 	public var text:String = "empty";
 	
 	var graphics:Polygon;
@@ -66,8 +68,10 @@ class Collider extends Prefab {
 			data.path = verticesToString(graphics.vertices);
 		}
 
+		if (this.data != "empty" && this.data != "") data.data = this.data;
 		if (text != "empty" && text != "") data.text = text;
-		if (color != "0496ff") data.color = Editor.ME.getColor(color);
+
+		if (!palette.contains(color)) data.color = Editor.ME.getColor(color);
 
 		if (!object.visible) data.visible = false;
 
@@ -85,6 +89,7 @@ class Collider extends Prefab {
 		prefab.height = height;
 
 		prefab.mode = mode;
+		prefab.data = data;
 		prefab.text = text;
 		prefab.color = color;
 
