@@ -50,8 +50,37 @@ class Option extends Select {
 	}
 
 
+	function ensureItems(index:Int) {
+		while (index >= items.length) {
+			var item = new Element(panel);
+
+			item.value = items.length;
+			item.label = "Unknown " + items.length;
+		
+			item.x = 20;
+			item.y = 2 + items.length * size;
+		
+			item.width = width;
+			item.height = size;
+		
+			item.alpha = 0.75;
+		
+			var label = new h2d.Text(Assets.defaultFont, item);
+			label.textColor = Style.input;
+			label.textAlign = h2d.Text.Align.Left;
+			label.smooth = true;
+			label.text = "Unknown " + items.length;
+		
+			items.push(item);
+		}
+	}
+
+
 	override function set_value(v) {
 		last = Std.parseInt(v);
+
+		ensureItems(last);
+
 		text.text = items[last].label;
 		return v;
 	}
