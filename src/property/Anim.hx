@@ -86,6 +86,7 @@ class Anim extends Property {
 		input = set("loop", new Checkbox(this));
 		input.setPosition(second, top);
 		input.onChange = onChange;
+		input.value = "true";
 
 		top += input.height + padding;
 

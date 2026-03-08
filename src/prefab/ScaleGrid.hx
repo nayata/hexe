@@ -23,10 +23,10 @@ class ScaleGrid extends Drawable {
 
 		data.width = width;
 		data.height = height;
-
+		
+		if (smooth != false) data.smooth = smooth;
 		if (border != 10) data.range = border;
-		if (smooth != 0) data.smooth = smooth;
-
+		
 		if (atlas != "") data.atlas = atlas;
 		if (path != "") data.path = path;
 
@@ -95,9 +95,9 @@ class ScaleGrid extends Drawable {
 	}
 
 
-	override function set_smooth(v) {
+	override function set_smooth(v:Bool) {
 		var bitmap = (cast object : h2d.ScaleGrid);
-		bitmap.smooth = v == 1 ? true : false;
+		bitmap.smooth = v;
 
 		return smooth = v;
 	}

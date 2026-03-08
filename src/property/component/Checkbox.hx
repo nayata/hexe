@@ -7,8 +7,8 @@ class Checkbox extends Input {
 
 	var input:h2d.Interactive;
 
-	var checked:Int = 0;
-	var undo:Int = 0;
+	var checked:Bool = false;
+	var undo:Bool = false;
 
 
 	public function new(?parent:h2d.Object) {
@@ -27,17 +27,17 @@ class Checkbox extends Input {
 
 
 	function onClick(event:hxd.Event) {
-		checked = checked == 1 ? 0 : 1;
-		face.visible = checked == 1 ? true : false;
+		checked = !checked;
+		face.visible = checked;
 
 		onChange({ field : field, from : undo, to : checked });
 	}
 
 
 	override function set_value(v) {
-		checked = Std.parseInt(v);
+		checked = v == "true" ? true : false;
 		
-		face.visible = checked == 1 ? true : false;
+		face.visible = checked;
 		undo = checked;
 
 		return v;

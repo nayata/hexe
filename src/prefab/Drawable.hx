@@ -7,7 +7,7 @@ class Drawable extends Prefab {
 	public var bitmap(default, set):String = "";
 	public var image(default, set):String = "";
 
-	public var smooth(default, set):Int = 0;
+	public var smooth(default, set):Bool = false;
 
 	public var atlas:String = "";
 	public var path:String = "";
@@ -28,7 +28,7 @@ class Drawable extends Prefab {
 	}
 
 
-	function set_smooth(v) {
+	function set_smooth(v:Bool) {
 		return smooth = v;
 	}
 }

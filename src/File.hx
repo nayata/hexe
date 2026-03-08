@@ -59,7 +59,7 @@ class File {
 			// Object Prefab
 			if (entry.type == "object") {
 				var item = new prefab.Object();
-				if (entry.mode != null) item.mode = Std.int(entry.mode);
+				if (entry.mode != null) item.mode = true;
 				prefab = item;
 			}
 
@@ -94,8 +94,9 @@ class File {
 
 				if (entry.width != null) item.width = Std.int(entry.width);
 				if (entry.height != null) item.height = Std.int(entry.height);
-				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
 				if (entry.dx != null) item.anchor = entry.dx + "," + entry.dy;
+
+				item.smooth = entry.smooth ?? false;
 
 				prefab = item;
 			}
@@ -133,7 +134,7 @@ class File {
 				item.height = Std.int(entry.height);
 
 				if (entry.range != null) item.border = Std.int(entry.range);
-				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
+				item.smooth = entry.smooth ?? false;
 
 				prefab = item;
 			}
@@ -165,7 +166,7 @@ class File {
 					item.tile = tile;
 				}
 
-				if (entry.smooth != null) item.smooth = Std.int(entry.smooth);
+				item.smooth = entry.smooth ?? false;
 
 				item.speed = entry.speed;
 				item.loop = entry.loop;
@@ -202,7 +203,7 @@ class File {
 			if (entry.type == "interactive") {
 				var item = new prefab.Interactive();
 
-				if (entry.mode != null) item.mode = Std.int(entry.mode);
+				if (entry.mode != null) item.mode = true;
 				item.width = Std.int(entry.width);
 				item.height = Std.int(entry.height);
 
@@ -509,13 +510,14 @@ class File {
 				if (entry.width != null) item.width = entry.width;
 				if (entry.height != null) item.height = entry.height;
 
-				if (entry.smooth != null) item.smooth = entry.smooth == 1 ? true : false;
 				if (entry.dx != null) item.tile.setCenterRatio(entry.dx, entry.dy);
 
 				if (entry.atlas != null) {
 					prefab.bitmap.set(entry.link, item);
 					prefab.field.set(entry.link, { name : entry.link, type : "bitmap", data : entry.atlas, original : entry.src, value : entry.src });
 				}
+
+				item.smooth = entry.smooth ?? false;
 
 				hierarchy.set(entry.name, item);
 				object = item;
@@ -543,7 +545,7 @@ class File {
 				item.width = entry.width;
 				item.height = entry.height;
 
-				if (entry.smooth != null) item.smooth = entry.smooth == 1 ? true : false;
+				item.smooth = entry.smooth ?? false;
 
 				hierarchy.set(entry.name, item);
 				object = item;
@@ -579,9 +581,9 @@ class File {
 				}
 
 				var item = new h2d.Anim(tiles, entry.speed);
-				item.pause = entry.loop == 0 ? true : false;
+				item.pause = entry.loop ? false : true;
 				
-				if (entry.smooth != null) item.smooth = entry.smooth == 1 ? true : false;
+				item.smooth = entry.smooth ?? false;
 
 				hierarchy.set(entry.name, item);
 				object = item;
@@ -866,7 +868,7 @@ typedef Data = {
 	@:optional var width : Float;
 	@:optional var height : Float;
 
-	@:optional var smooth : Int;
+	@:optional var smooth : Bool;
 	
 	@:optional var dx : Float;
 	@:optional var dy : Float;
@@ -876,7 +878,7 @@ typedef Data = {
 	@:optional var range : Int;
 
 	@:optional var speed : Int;
-	@:optional var loop : Int;
+	@:optional var loop : Bool;
 
 	@:optional var data : String;
 	@:optional var text : String;

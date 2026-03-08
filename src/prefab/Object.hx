@@ -2,7 +2,7 @@ package prefab;
 
 
 class Object extends Prefab {
-	public var mode(default, set):Int = 0;
+	public var mode(default, set):Bool = false;
 
 	public function new() {
 		super();
@@ -15,7 +15,7 @@ class Object extends Prefab {
 
 	override public function serialize():Dynamic {
 		var data:Dynamic = super.serialize();
-		if (mode != 0) data.mode = mode;
+		if (mode) data.mode = 1;
 
 		return data;
 	}
@@ -31,7 +31,7 @@ class Object extends Prefab {
 
 	function set_mode(v) {
 		var container = (cast object : Container);
-		container.marker = v == 1 ? true : false;
+		container.marker = v;
 
 		var size = container.marker ? 64 : 0;
 

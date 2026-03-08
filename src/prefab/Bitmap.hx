@@ -25,7 +25,7 @@ class Bitmap extends Drawable {
 
 		if (width != bitmap.tile.width) data.width = width;
 		if (height != bitmap.tile.height) data.height = height;
-		if (smooth != 0) data.smooth = smooth;
+		if (smooth != false) data.smooth = smooth;
 
 		if (dx != 0 || dy != 0) {
 			data.dx = dx;
@@ -122,9 +122,9 @@ class Bitmap extends Drawable {
 	}
 
 
-	override function set_smooth(v) {
+	override function set_smooth(v:Bool) {
 		var bitmap = (cast object : h2d.Bitmap);
-		bitmap.smooth = v == 1 ? true : false;
+		bitmap.smooth = v;
 
 		return smooth = v;
 	}

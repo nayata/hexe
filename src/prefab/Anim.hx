@@ -7,7 +7,7 @@ class Anim extends Drawable {
 	public var col(default, set):Int = 1;
 
 	public var speed(default, set):Int = 30;
-	public var loop(default, set):Int = 1;
+	public var loop(default, set):Bool = true;
 
 
 	public function new() {
@@ -26,10 +26,11 @@ class Anim extends Drawable {
 		data.width = row;
 		data.height = col;
 
+		if (smooth != false) data.smooth = smooth;
+
 		data.speed = speed;
 		data.loop = loop;
-
-		if (smooth != 0) data.smooth = smooth;
+		
 		if (atlas != "") data.atlas = atlas;
 		if (path != "") data.path = path;
 
@@ -82,7 +83,7 @@ class Anim extends Drawable {
 		}
 
 		anim.play(tiles);
-		anim.pause = loop == 0 ? true : false;
+		anim.pause = loop ? false : true;
 
 		x = -width * 0.5;
 		y = -height * 0.5;
@@ -126,7 +127,7 @@ class Anim extends Drawable {
 
 	function set_loop(v) {
 		var anim = (cast object : h2d.Anim);
-		anim.pause = v == 0 ? true : false;
+		anim.pause = v ? false : true;
 		return loop = v;
 	}
 
@@ -149,7 +150,7 @@ class Anim extends Drawable {
 		for (t in tiles) t.setCenterRatio(0.5, 0.5);
 
 		anim.play(tiles);
-		anim.pause = loop == 0 ? true : false;
+		anim.pause = loop ? false : true;
 
 		width = anim.getFrame().width;
 		height = anim.getFrame().height;
@@ -163,9 +164,9 @@ class Anim extends Drawable {
 	}
 
 
-	override function set_smooth(v) {
+	override function set_smooth(v:Bool) {
 		var anim = (cast object : h2d.Anim);
-		anim.smooth = v == 1 ? true : false;
+		anim.smooth = v;
 
 		return smooth = v;
 	}

@@ -3,7 +3,7 @@ import h2d.col.Point;
 
 
 class Interactive extends Prefab {
-	public var mode(default, set):Int = 0;
+	public var mode(default, set):Bool = false;
 
 
 	public function new() {
@@ -23,7 +23,7 @@ class Interactive extends Prefab {
 	override public function serialize():Dynamic {
 		var data:Dynamic = super.serialize();
 
-		if (mode != 0) data.mode = mode;
+		if (mode) data.mode = 1;
 		data.width = width;
 		data.height = height;
 
