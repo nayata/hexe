@@ -1,36 +1,28 @@
 import h2d.Object;
 import h2d.Bitmap;
 import h2d.Graphics;
-
-import h2d.col.Bounds;
 import h2d.col.Point;
 import hxd.Event;
-import h3d.Vector;
-import hxd.Key;
 
 import ui.Touch;
 
 
+class Texture extends ui.Window {
+	public var atlas:Atlas;
 
-class Texture extends h2d.Object {
 	var editor:Editor;
 	var s2d:h2d.Scene;
 
 	var touch:Touch;
-	var select:ui.Dropdown;
-
-	public var width(default, set):Float = 0;
-	public var height(default, set):Float = 0;
-	public var zoom:Float = 1;
-
-	public var atlas:Atlas;
+	var select:ui.List;
+	
 	var selected:Null<String> = null;
 
 	var view:Object;
-	var back:Bitmap;
 	var image:Bitmap;
 
 	var selection:Graphics;
+	var zoom:Float = 1;
 
 
 	public function new(?parent:h2d.Object) {
@@ -39,32 +31,23 @@ class Texture extends h2d.Object {
 		editor = Editor.ME;
 		s2d = editor.s2d;
 
-		touch = new Touch(width, height, this);
+		touch = backdrop;
+		touch.backgroundColor = 0x60000000;
+		touch.onClick = onClick;
 		touch.onPush = onDown;
 		touch.onMove = onMove;
 		touch.onRelease = onUp;
-		//touch.onWheel = onWheel;
+		touch.onWheel = onWheel;
 
-		touch.backgroundColor = 0x60000000;
+		view = new h2d.Object(content);
 
-		view = new h2d.Object(this);
-		view.filter = new h2d.filter.DropShadow(5, Math.PI/4, 0, 0.25, 20.0, 1, 1.0, true);
-
-		back = new Bitmap(h2d.Tile.fromColor(Style.selection, 128, 128), view);
+		background.tile = h2d.Tile.fromColor(Style.selection, 128, 128);
 		image = new Bitmap(h2d.Tile.fromColor(Style.white, 128, 128), view);
 
 		selection = new Graphics(view);
 
-		select = new ui.Dropdown(this, "Texture");
-		select.onChange = onChange;
-		select.setSize(100, 40);
-
-		select.x = 10;
-		select.y = 50;
-
-		var icon = new h2d.Bitmap(Assets.icon("texture"), select);
-		icon.tile.setCenterRatio();
-		icon.x = icon.y = 20;
+		select = new ui.List(header);
+		select.onSelect = onChange;
 
 		visible = false;
 	}
@@ -75,30 +58,34 @@ class Texture extends h2d.Object {
 
 		image.tile = atlas.tile;
 
-		back.width = atlas.tile.width;
-		back.height = atlas.tile.height;
+		width = Std.int(atlas.tile.width);
+		height = Std.int(atlas.tile.height);
 
 		selection.visible = false;
 
 		if (select.get(name) == null) select.add(name);
-		setLabel(name);
+		select.set(name);
 		
 		onResize();
 	}
 
 
-	public function open(?name:String) {
+	override public function open(?name:String) {
 		if (atlas == null && name == null) return;
 		if (name != null && atlas.name != name) set(name);
 		
 		touch.focus(); // TODO: Lock `Control` scroll
+
+		view.x = 0;
+		view.y = 0;
+
 		visible = true;
 
 		onResize();
 	}
 
 
-	public function close() {
+	override public function close() {
 		selected = null;
 		selection.visible = false;
 		visible = false;
@@ -108,20 +95,23 @@ class Texture extends h2d.Object {
 	public dynamic function onSelect(name:String) {}
 
 
-	function onChange(value:String, type:String) {
+	function onChange(value:String) {
 		if (name != value) set(value);
 	}
 
 
-	function setLabel(value:String) {
-		select.label.text = value;
-		select.setSize(select.label.textWidth + 60, 40);
-		select.label.x = 36;
+	function onClick(event:Event) {
 	}
-
 
 	function onDown(event:Event) {
 		if (event.button == 0) {
+			var mx = s2d.mouseX;
+			var my = s2d.mouseY;
+
+			if (mx < window.x || mx > window.x + width || my < window.y - header.height || my > window.y + height - header.height) {
+				close();
+			}
+
 			if (selected != null && selected != "") {
 				onSelect(selected);
 				close();
@@ -129,7 +119,6 @@ class Texture extends h2d.Object {
 			else {
 				close();
 			}
-
 			touch.left = true;
 		}
 
@@ -148,18 +137,17 @@ class Texture extends h2d.Object {
 
 			var mouse = view.globalToLocal(new Point(s2d.mouseX, s2d.mouseY));
 			selected = getObject(mouse.x, mouse.y);
+
+			selection.visible = selected != null && selected != "";
 		}
 
 		if (touch.right) {
 			view.x = snap(s2d.mouseX - touch.position.x);
 			view.y = snap(s2d.mouseY - touch.position.y);
-
-			select.x = view.x;
-			select.y = view.y - 40;
 		}
 	}
 
-	
+
 	function onUp(event:Event) {
 		touch.left = false;
 		touch.right = false;
@@ -167,21 +155,25 @@ class Texture extends h2d.Object {
 
 
 	function onWheel(event:Event) {
-		zoom -= event.wheelDelta * 0.05;
+		var oldZoom = view.scaleX;
 
+		zoom -= event.wheelDelta * 0.05;
+	
 		if (zoom < 0.05) zoom = 0.05;
 		if (zoom > 5) zoom = 5;
-
+	
 		zoom = snap(zoom, 0.01);
-
-		var ratio = 1 - zoom / view.scaleX;
-
-		view.x += (s2d.mouseX - view.x) * ratio;
-		view.y += (s2d.mouseY - view.y) * ratio;
-		
+	
+		var mx = s2d.mouseX - window.x;
+		var my = s2d.mouseY - window.y;
+	
+		var ratio = zoom / oldZoom;
+	
+		view.x = mx - (mx - view.x) * ratio;
+		view.y = my - (my - view.y) * ratio;
+	
 		view.scaleX = view.scaleY = zoom;
 	}
-
 
 
 	function getObject(x : Float, y : Float):String {
@@ -230,48 +222,37 @@ class Texture extends h2d.Object {
 	}
 
 
-	function set_width(v) {
-		width = v;
-		touch.width = width;
-		return v;
-	}
-
-
-	function set_height(v) {
-		height = v;
-		touch.height = height;
-		return v;
-	}
-
-
 	public function onView() {
 		zoom = 1;
 	}
 
 
-	public function onResize() {
+	override public function onResize() {
 		var safeBorder = 128;
 
-		var w = width - safeBorder;
-		var h = height - safeBorder;
+		var w = image.tile.width;
+		var w = image.tile.height;
 
-		var sx = w / image.tile.width;
-		var sy = h / image.tile.height;
-
+		var sx:Float = (editor.WIDTH - safeBorder) / w;
+		var sy:Float = (editor.HEIGHT - safeBorder) / w;
+	
 		zoom = Math.min(sx, sy);
 		zoom = Math.min(zoom, 1);
-
+	
+		width = Std.int(w * zoom);
+		height = Std.int(w * zoom);
+	
 		view.scaleX = view.scaleY = zoom;
+	
+		window.x = (editor.WIDTH - width) * 0.5;
+		window.y = header.height * 0.5 + (editor.HEIGHT - height) * 0.5;
 
-		view.x = width * 0.5 - (image.tile.width * zoom) * 0.5;
-		view.y = height * 0.5 - (image.tile.height * zoom) * 0.5;
-
-		select.x = view.x;
-		select.y = view.y - 40;
+		backdrop.width = editor.WIDTH;
+		backdrop.height = editor.HEIGHT;
 	}
 
 
-	public function clear() {
+	override public function clear() {
 		image.tile = h2d.Tile.fromColor(Style.white, 128, 128);
 		
 		select.clear();
@@ -427,5 +408,4 @@ class Atlas {
 			if( tl.length > 1 && tl[0] == null ) tl.shift();
 		return contents;
 	}
-
 }

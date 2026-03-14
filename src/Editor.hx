@@ -129,9 +129,7 @@ class Editor extends hxd.App {
 
 		outliner.onResize();
 		property.onResize();
-
-		texture.width = WIDTH;
-		texture.height = HEIGHT;
+		texture.onResize();
 	}
 
 
