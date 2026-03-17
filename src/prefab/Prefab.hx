@@ -1,5 +1,8 @@
 package prefab;
 
+import filter.Filter;
+import filter.Matrix;
+
 
 class Prefab {
 	public var object:h2d.Object;
@@ -25,8 +28,12 @@ class Prefab {
 
 	public var src:String = "";
 
+	public var filter:Filter;
+	public var matrix:Matrix;
+
 
 	public function new() {}
+
 
 
 	public function serialize():Dynamic {
@@ -49,6 +56,9 @@ class Prefab {
 		if (object.blendMode != h2d.BlendMode.Alpha) data.blendMode = Std.string(object.blendMode);
 		if (object.alpha != 1) data.alpha = object.alpha;
 		if (!object.visible) data.visible = false;
+
+		if (filter != null) data.filter = filter.serialize();
+		if (matrix != null) data.matrix = matrix.serialize();
 
 		return data;
 	}
@@ -77,10 +87,8 @@ class Prefab {
 	function set_width(v) return width = v;
 	function set_height(v) return height = v;
 
-
 	function get_scaleX() return width;
 	function get_scaleY() return height;
-
 	
 	function set_scaleX(v) return width;
 	function set_scaleY(v) return height;

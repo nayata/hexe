@@ -360,6 +360,9 @@ class Control extends h2d.Object {
 
 
 	function onWheel(event:Event) {
+		var focus = s2d.getInteractive(s2d.mouseX, s2d.mouseY);
+		if (focus != null && focus != touch) return;
+
 		var factor = Math.pow(1.1, -event.wheelDelta); // 10% per tick
 		zoom.value *= factor;
 

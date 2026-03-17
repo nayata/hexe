@@ -33,6 +33,7 @@ class Editor extends hxd.App {
 	public var sidebar:Sidebar;
 	public var property:Properties;
 	public var texture:Texture;
+	public var effect:Effects;
 
 	public var menu:Menu;
 	public var view:Button;
@@ -98,6 +99,7 @@ class Editor extends hxd.App {
 		view.y = 10;
 
 		texture = new Texture(s2d);
+		effect = new Effects(s2d);
 
 		onResize();
 	}

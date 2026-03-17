@@ -288,9 +288,10 @@ class File {
 
 			prefab.object.rotation = entry.rotation ?? 0;
 
-			if (entry.blendMode != null) {
-				prefab.object.blendMode = haxe.EnumTools.createByName(h2d.BlendMode, entry.blendMode);
-			}
+			if (entry.blendMode != null) prefab.object.blendMode = haxe.EnumTools.createByName(h2d.BlendMode, entry.blendMode);
+
+			if (entry.filter != null) prefab.filter = new filter.Filter(prefab, entry.filter);
+			if (entry.matrix != null) prefab.matrix = new filter.Matrix(prefab, entry.matrix);
 
 			prefab.object.alpha = entry.alpha ?? 1;
 			prefab.object.visible = entry.visible ?? true;
@@ -517,6 +518,7 @@ class File {
 					prefab.field.set(entry.link, { name : entry.link, type : "bitmap", data : entry.atlas, original : entry.src, value : entry.src });
 				}
 
+				if (entry.matrix != null) item.adjustColor(entry.matrix);
 				item.smooth = entry.smooth ?? false;
 
 				hierarchy.set(entry.name, item);
@@ -545,6 +547,7 @@ class File {
 				item.width = entry.width;
 				item.height = entry.height;
 
+				if (entry.matrix != null) item.adjustColor(entry.matrix);
 				item.smooth = entry.smooth ?? false;
 
 				hierarchy.set(entry.name, item);
@@ -583,6 +586,7 @@ class File {
 				var item = new h2d.Anim(tiles, entry.speed);
 				item.pause = entry.loop ? false : true;
 				
+				if (entry.matrix != null) item.adjustColor(entry.matrix);
 				item.smooth = entry.smooth ?? false;
 
 				hierarchy.set(entry.name, item);
@@ -658,6 +662,8 @@ class File {
 			object.rotation = entry.rotation ?? 0;
 
 			if (entry.blendMode != null) object.blendMode = haxe.EnumTools.createByName(h2d.BlendMode, entry.blendMode);
+			if (entry.filter != null) object.filter = filter.Filter.build(entry.filter);
+
 			object.visible = entry.visible ?? true;
 			object.alpha = entry.alpha ?? 1;
 
@@ -842,6 +848,7 @@ class File {
 
 
 typedef Field = { name : String, type : String, data : String, original : String, value : String };
+typedef Entry = { name : String, prop : Dynamic };
 
 typedef Data = {
 	var name : String;
@@ -852,6 +859,9 @@ typedef Data = {
 	@:optional var parent : String;
 
 	@:optional var field : Array<Field>;
+
+	@:optional var filter : Array<Entry>;
+	@:optional var matrix : h3d.Matrix.ColorAdjust;
 
 	@:optional var x : Float;
 	@:optional var y : Float;

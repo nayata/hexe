@@ -10,6 +10,7 @@ class Menu extends h2d.Object {
 	var fileMenu:ui.Dropdown;
 	var editMenu:ui.Dropdown;
 	var assetMenu:ui.Dropdown;
+	var effectMenu:ui.Dropdown;
 	var viewMenu:ui.Dropdown;
 
 	var divider:Int = 0;
@@ -96,10 +97,22 @@ class Menu extends h2d.Object {
 		assetMenu.add("Load Font", "load");
 
 
+		// Effects
+		effectMenu = new ui.Dropdown(this, "Effect");
+		effectMenu.onChange = onChange;
+		effectMenu.x = assetMenu.x + assetMenu.width + divider;
+
+		effectMenu.add("Adjust Color", "bitmap");
+		effectMenu.add("Drop Shadow", "object");
+		effectMenu.add("Outline", "object");
+		effectMenu.add("Glow", "object");
+		effectMenu.add("Blur", "object");
+
+
 		// View
 		viewMenu = new ui.Dropdown(this, "View");
 		viewMenu.onChange = onChange;
-		viewMenu.x = assetMenu.x + assetMenu.width + divider;
+		viewMenu.x = effectMenu.x + effectMenu.width + divider;
 
 		viewMenu.add("Actual Size", "", "A");
 		viewMenu.add("Fit on Screen", "", "F");
@@ -169,6 +182,13 @@ class Menu extends h2d.Object {
 
 			case "Show Grid" : editor.toggleGrid();
 			case "Grid at Top" : editor.gridAtTop(viewMenu.get("Grid at Top").checked);
+
+
+			case "Adjust Color" : editor.effect.open("Color");
+			case "Drop Shadow" : editor.effect.open("DropShadow");
+			case "Outline" : editor.effect.open("Outline");
+			case "Glow" : editor.effect.open("Glow");
+			case "Blur" : editor.effect.open("Blur");
 
 			default:
 		}
