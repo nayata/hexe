@@ -15,15 +15,22 @@ class FloatNumber extends TextField {
 			val = undo;
 		}
 		else {
+			val = hxd.Math.clamp(val, minimum, maximum);
+			input.text = Std.string(val);
+			
 			onUpdate({ field : field, to : val });
 		}
 	}
 
 
 	override function onWheel(event:hxd.Event) {
+		if (!enabled) return;
+		
 		if (hxd.Timer.frameCount - time < 2) {
 			var val = Std.parseFloat(input.text);
+
 			val = event.wheelDelta > 0 ? val - step : val + step;
+			val = hxd.Math.clamp(val, minimum, maximum);
 
 			input.text = Std.string(val);
 

@@ -5,9 +5,9 @@ class Window extends h2d.Object {
 
 	var window:h2d.Object;
 
-	var background:h2d.Bitmap;
-	var content:h2d.Mask;
-	var header:Header;
+	public var background:h2d.Bitmap;
+	public var content:ui.Mask;
+	public var header:Header;
 	
 
 	public var width(default, set):Int = 340;
@@ -26,12 +26,12 @@ class Window extends h2d.Object {
 		
 		background = new h2d.Bitmap(h2d.Tile.fromColor(Style.menu, width, height), window);
 		background.filter = new h2d.filter.DropShadow(5, Math.PI/4, 0, 0.25, 20.0, 1, 1.0, true);
-
-		content = new h2d.Mask(width, height, window);
 		
 		header = new Header(window);
 		header.handle.onPush = onDrag;
 		header.window = this;
+
+		content = new ui.Mask(width, height, window);
 
 		background.y = header.y = -header.height;
 	}
@@ -69,13 +69,7 @@ class Window extends h2d.Object {
 
 
 	public function open(?prop:String) {}
-
-
-	public function close() {
-		remove();
-	}
-
-
+	public dynamic function close() {}
 	public function clear() {}
 
 

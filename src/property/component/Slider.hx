@@ -30,6 +30,12 @@ class Slider extends TextField {
 	}
 
 
+	public function setSliderSize(w:Float, h:Float) {
+		slider.width = w;
+		slider.x = -slider.width - 10;
+	}
+
+
 	public function setSliderRange(min:Float, max:Float) {
 		slider.minValue = min;
 		slider.maxValue = max;
