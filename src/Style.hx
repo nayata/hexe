@@ -14,6 +14,7 @@ class Style {
 	// Text
 	public static var title:Int = 0x9a9aa0;
 	public static var label:Int = 0x999999;
+	public static var props:Int = 0xCFCFCF;
 	public static var input:Int = 0xffffff;
 
 

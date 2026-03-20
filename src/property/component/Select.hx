@@ -176,6 +176,9 @@ class Select extends Input {
 		input.width = width;
 		input.height = height;
 
+		highlight.width = width;
+		highlight.height = highlight.tile.height;
+
 		if (tile != null) {
 			tile.x = width - tile.tile.width * 0.5 - padding;
 			tile.y = height * 0.5;

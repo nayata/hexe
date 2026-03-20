@@ -102,11 +102,11 @@ class Menu extends h2d.Object {
 		effectMenu.onChange = onChange;
 		effectMenu.x = assetMenu.x + assetMenu.width + divider;
 
-		effectMenu.add("Adjust Color", "bitmap");
-		effectMenu.add("Drop Shadow", "object");
-		effectMenu.add("Outline", "object");
-		effectMenu.add("Glow", "object");
-		effectMenu.add("Blur", "object");
+		effectMenu.add("Adjust Color", "effect");
+		effectMenu.add("Drop Shadow", "effect");
+		effectMenu.add("Outline", "effect");
+		effectMenu.add("Glow", "effect");
+		effectMenu.add("Blur", "effect");
 
 
 		// View
@@ -184,7 +184,7 @@ class Menu extends h2d.Object {
 			case "Grid at Top" : editor.gridAtTop(viewMenu.get("Grid at Top").checked);
 
 
-			case "Adjust Color" : editor.effect.open("Color");
+			case "Adjust Color" : editor.effect.open("ColorMatrix");
 			case "Drop Shadow" : editor.effect.open("DropShadow");
 			case "Outline" : editor.effect.open("Outline");
 			case "Glow" : editor.effect.open("Glow");

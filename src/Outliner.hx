@@ -43,6 +43,8 @@ class Outliner extends h2d.Object {
 	var dragOffset:Float = 0;
 	var dragScroll = 0;
 
+	var clickTime:Int = -1;
+
 	
 	public function new(?parent:h2d.Object) {
 		super(parent);
@@ -180,6 +182,16 @@ class Outliner extends h2d.Object {
 	}
 
 
+	public function update(prefab:prefab.Prefab) {
+		for (node in nodes) {
+			if (node.name == prefab.object.name) {
+				//node.adjustment = prefab.filter != null && prefab.filter.notEmpty();
+				node.visibility = prefab.object.visible;
+			}
+		}
+	}
+
+
 	function scrollToSelected() {
 		if (selected == null) return;
 		if (height <= position) return;
@@ -237,6 +249,13 @@ class Outliner extends h2d.Object {
 				highlighted.visibility = object.visible;
 			}
 
+			// Double Click
+			var current = Math.abs(clickTime - hxd.Timer.frameCount);
+			if (current < 20) {
+				onDoubleClick();
+			}
+
+			clickTime = hxd.Timer.frameCount;
 			touch.left = true;
 		}
 
@@ -574,6 +593,10 @@ class Outliner extends h2d.Object {
 	}
 
 
+	public dynamic function onDoubleClick() {
+	}
+
+
 	public function getHierarchy(object:h2d.Object) {
 		var all:Array<Object> = getAllChildren(object);
 		all.remove(object);
@@ -643,6 +666,7 @@ class Node extends h2d.Object {
 	var height:Float = 30;
 
 	public var visibility(default, set):Bool = true;
+	public var adjustment(default, set):Bool = false;
 	public var padding(default, set):Int = 0;
 
 	public var icon(never, set):String;
@@ -681,6 +705,11 @@ class Node extends h2d.Object {
 		view.tile.setCenterRatio();
 
 		return visibility = v;
+	}
+
+
+	function set_adjustment(v) {
+		return adjustment = v;
 	}
 
 
