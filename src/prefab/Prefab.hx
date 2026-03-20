@@ -1,7 +1,6 @@
 package prefab;
 
-import filter.Filter;
-import filter.Matrix;
+import effect.Filter;
 
 
 class Prefab {
@@ -27,9 +26,7 @@ class Prefab {
 	public var fixed:Bool = false;
 
 	public var src:String = "";
-
 	public var filter:Filter;
-	public var matrix:Matrix;
 
 
 	public function new() {}
@@ -57,8 +54,7 @@ class Prefab {
 		if (object.alpha != 1) data.alpha = object.alpha;
 		if (!object.visible) data.visible = false;
 
-		if (filter != null) data.filter = filter.serialize();
-		if (matrix != null) data.matrix = matrix.serialize();
+		if (filter != null && filter.notEmpty()) data.filter = filter.serialize();
 
 		return data;
 	}
