@@ -35,6 +35,8 @@ class Control extends h2d.Object {
 	public var autoSelect:Bool = true;
 	public var snapToGrid:Bool = false;
 
+	public var showSelection:Bool = true;
+
 	var selection:Graphics;
 	var bound:Bounds;
 
@@ -440,7 +442,7 @@ class Control extends h2d.Object {
 			selection.drawRect(-w*0.5, -h*0.5, w, h);
 	
 			selection.setPosition(bound.getCenter().x, bound.getCenter().y);
-			selection.visible = true;
+			if (showSelection) selection.visible = true;
 
 			var absRotation = selected.rotation;
 
@@ -465,7 +467,7 @@ class Control extends h2d.Object {
 			cursor.x = point.x;
 			cursor.y = point.y;
 
-			cursor.visible = true;
+			if (showSelection) cursor.visible = true;
 
 			bound = selected.getBounds();
 			selection.setPosition(bound.getCenter().x, bound.getCenter().y);
@@ -574,6 +576,16 @@ class Control extends h2d.Object {
 		zoom.target.y = height * 0.5 - center.y * zoom.to;
 
 		zoom.time = 0;
+	}
+
+
+	public function toggleSelection() {
+		showSelection = !showSelection;
+
+		if (selected != null) {
+			selection.visible = showSelection;
+			cursor.visible = showSelection;
+		}
 	}
 
 

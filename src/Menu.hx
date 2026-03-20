@@ -121,6 +121,10 @@ class Menu extends h2d.Object {
 		viewMenu.add("Toggle Properties");
 		viewMenu.addDivider();
 
+		viewMenu.add("Show Selection", "checkmark", "", false);
+		viewMenu.get("Show Selection").checkable = true;
+		viewMenu.get("Show Selection").checked = true;
+
 		viewMenu.add("Show Grid", "checkmark", "", false);
 		viewMenu.get("Show Grid").checkable = true;
 		viewMenu.get("Show Grid").checked = true;
@@ -180,6 +184,7 @@ class Menu extends h2d.Object {
 
 			case "Toggle Properties" : editor.toggleSidebar();
 
+			case "Show Selection" : editor.control.toggleSelection();
 			case "Show Grid" : editor.toggleGrid();
 			case "Grid at Top" : editor.gridAtTop(viewMenu.get("Grid at Top").checked);
 
