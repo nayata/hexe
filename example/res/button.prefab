@@ -11,18 +11,18 @@
 			"src": "button.png"
 		},
 		{
-			"name": "bitmap.1",
+			"name": "over",
 			"type": "bitmap",
-			"link": "over",
+			"link": "bitmap.1",
 			"visible": false,
 			"dx": 0.5,
 			"dy": 0.5,
 			"src": "button-over.png"
 		},
 		{
-			"name": "text",
+			"name": "label",
 			"type": "text",
-			"link": "label",
+			"link": "text",
 			"y": -28,
 			"scaleX": 0.5,
 			"scaleY": 0.5,
@@ -32,9 +32,9 @@
 			"text": "text"
 		},
 		{
-			"name": "interactive",
+			"name": "input",
 			"type": "interactive",
-			"link": "input",
+			"link": "interactive",
 			"x": -117,
 			"y": -44,
 			"scaleX": 3.65,

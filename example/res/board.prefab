@@ -3,15 +3,16 @@
 	"type": "prefab",
 	"children": [
 		{
-			"name": "prefab",
+			"name": "grimCard",
 			"type": "prefab",
-			"link": "grimCard",
+			"link": "prefab",
+			"path": "Prefab",
 			"src": "card.prefab"
 		},
 		{
-			"name": "prefab.1",
+			"name": "card",
 			"type": "prefab",
-			"link": "card",
+			"link": "prefab.1",
 			"x": 313,
 			"field": [
 				{
@@ -30,12 +31,13 @@
 					"value": "sword"
 				}
 			],
+			"path": "Prefab",
 			"src": "card.prefab"
 		},
 		{
-			"name": "prefab.2",
+			"name": "card",
 			"type": "prefab",
-			"link": "card",
+			"link": "prefab.2",
 			"x": -310,
 			"field": [
 				{
@@ -54,6 +56,7 @@
 					"value": "coin"
 				}
 			],
+			"path": "Prefab",
 			"src": "card.prefab"
 		}
 	]
