@@ -46,7 +46,7 @@ class Collider extends Property {
 		var choice = new Option(panel);
 		registry.set("body", choice);
 		choice.setPosition(second, top);
-		choice.add(["Static", "Dynamic", "Kinematic", "Sensor"]);
+		choice.add(Config.collider);
 		choice.onFocus = onFocus;
 		choice.onChange = onChange;
 		choice.field = "body";
@@ -105,7 +105,7 @@ class Collider extends Property {
 		top = input.height + padding;
 
 		label = new Label("Text", 0, top + tall * 0.5, prop);
-
+		
 		input = set("text", new TextArea(prop));
 		input.setPosition(second, top);
 		input.onChange = onChange;

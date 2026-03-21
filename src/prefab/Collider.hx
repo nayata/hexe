@@ -9,8 +9,6 @@ class Collider extends Prefab {
 	public static inline var POLYGON:Int = 2;
 	public static inline var CAPSULE:Int = 3;
 
-	static var palette:Array<String> = ["0496ff", "d81159", "b000d3", "80bc00", "7029cf", "ffffff"];
-
 	public var shape(default, set):Int = 0;
 	public var body(default, set):Int = 0;
 	public var mode(default, set):Int = 0;
@@ -46,9 +44,9 @@ class Collider extends Prefab {
 	override public function serialize():Dynamic {
 		var data:Dynamic = {};
 
-		data.name = name;
+		data.name = link;
 		data.type = type;
-		data.link = link;
+		data.link = name;
 
 		if (object.parent.name != "root") data.parent = object.parent.name;
 
@@ -71,8 +69,7 @@ class Collider extends Prefab {
 		if (this.data != "empty" && this.data != "") data.data = this.data;
 		if (text != "empty" && text != "") data.text = text;
 
-		if (!palette.contains(color)) data.color = Editor.ME.getColor(color);
-
+		if (!Config.palette.contains(color)) data.color = Editor.ME.getColor(color);
 		if (!object.visible) data.visible = false;
 
 		return data;
@@ -103,7 +100,7 @@ class Collider extends Prefab {
 		if (shape == CAPSULE && height < width) height = width;
 
 		body = v;
-		color = palette[body];
+		color = Config.palette[body] ?? "7029cf";
 		fixed = shape == SPHERE;
 
 		return body;
@@ -116,7 +113,6 @@ class Collider extends Prefab {
 
 		shape = v;
 		fixed = shape == SPHERE;
-
 		graphics.shape = v;
 		graphics.render();
 

@@ -36,9 +36,9 @@ class Prefab {
 	public function serialize():Dynamic {
 		var data:Dynamic = {};
 
-		data.name = name;
+		data.name = link;
 		data.type = type;
-		data.link = link;
+		data.link = name;
 
 		if (object.parent.name != "root") data.parent = object.parent.name;
 

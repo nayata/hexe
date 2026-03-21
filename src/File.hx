@@ -274,11 +274,11 @@ class File {
 
 			if (prefab == null) continue;
 
-			editor.setUID(entry.name);
+			editor.setUID(entry.link);
 
-			prefab.name = entry.name;
+			prefab.name = entry.link;
 			prefab.object.name = prefab.name;
-			prefab.link = entry.link;
+			prefab.link = entry.name;
 
 			prefab.object.x = entry.x ?? 0;
 			prefab.object.y = entry.y ?? 0;
@@ -485,7 +485,7 @@ class File {
 
 			if (entry.type == "object") {
 				var item = new h2d.Object();
-				hierarchy.set(entry.name, item);
+				hierarchy.set(entry.link, item);
 				object = item;
 			}
 
@@ -513,13 +513,13 @@ class File {
 				if (entry.dx != null) item.tile.setCenterRatio(entry.dx, entry.dy);
 
 				if (entry.atlas != null) {
-					prefab.bitmap.set(entry.link, item);
-					prefab.field.set(entry.link, { name : entry.link, type : "bitmap", data : entry.atlas, original : entry.src, value : entry.src });
+					prefab.bitmap.set(entry.name, item);
+					prefab.field.set(entry.name, { name : entry.name, type : "bitmap", data : entry.atlas, original : entry.src, value : entry.src });
 				}
 
 				item.smooth = entry.smooth ?? false;
 
-				hierarchy.set(entry.name, item);
+				hierarchy.set(entry.link, item);
 				object = item;
 			}
 
@@ -547,7 +547,7 @@ class File {
 
 				item.smooth = entry.smooth ?? false;
 
-				hierarchy.set(entry.name, item);
+				hierarchy.set(entry.link, item);
 				object = item;
 			}
 
@@ -585,7 +585,7 @@ class File {
 				
 				item.smooth = entry.smooth ?? false;
 
-				hierarchy.set(entry.name, item);
+				hierarchy.set(entry.link, item);
 				object = item;
 			}
 
@@ -603,10 +603,10 @@ class File {
 				if (entry.height != null) item.lineSpacing = entry.height;
 				if (entry.range != null) item.maxWidth = entry.range;
 
-				prefab.text.set(entry.link, item);
-				prefab.field.set(entry.link, { name : entry.link, type : "text", data : empty, original : item.text, value : item.text });
+				prefab.text.set(entry.name, item);
+				prefab.field.set(entry.name, { name : entry.name, type : "text", data : empty, original : item.text, value : item.text });
 				
-				hierarchy.set(entry.name, item);
+				hierarchy.set(entry.link, item);
 				object = item;
 			}
 
@@ -624,14 +624,14 @@ class File {
 
 				item.smooth = false;
 				
-				hierarchy.set(entry.name, item);
+				hierarchy.set(entry.link, item);
 				object = item;
 			}
 
 			if (entry.type == "mask") {
 				var item = new h2d.Mask(Std.int(entry.width), Std.int(entry.height));
 
-				hierarchy.set(entry.name, item);
+				hierarchy.set(entry.link, item);
 				object = item;
 			}
 
@@ -649,7 +649,7 @@ class File {
 
 			if (object == null) continue;
 
-			object.name = entry.link;
+			object.name = entry.name;
 
 			object.x = entry.x ?? 0;
 			object.y = entry.y ?? 0;
