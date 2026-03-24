@@ -26,7 +26,7 @@ class Style {
 
 	// Dropdown menu
 	public static var menu:Int = 0x373737;
-	public static var text:Int = 0x999999;
+	public static var text:Int = 0xAAAAAA;
 	public static var divider:Int = 0x303030;
 	public static var shortcut:Int = 0x8B8B8B;
 	public static var over:Int = 0x3d3d3d;
