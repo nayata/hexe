@@ -162,6 +162,7 @@ class Context extends h2d.Object {
 		y = editor.s2d.mouseY - 5;
 
 		if (x + width > editor.WIDTH) x = editor.WIDTH - width - 20;
+		if (y + input.height > editor.HEIGHT) y = editor.HEIGHT - input.height - 20;
 		
 		visible = true;
 	}
