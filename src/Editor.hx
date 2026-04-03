@@ -360,7 +360,9 @@ class Editor extends hxd.App {
 						prefab.name = getUID(prefab.type);
 						prefab.object.name = prefab.name;
 					
-						addChild(prefab.object, highlighted);
+						var container:Object = highlighted ? selected.parent : scene;
+
+						container.addChild(prefab.object);
 						add(prefab.object, prefab);
 					}
 				}
