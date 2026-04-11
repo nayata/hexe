@@ -8,7 +8,6 @@ class Dragger extends h2d.Object {
 	var icon:h2d.Bitmap;
 
 	var moving(default, null): Bool;
-	var time:Int = -1;
 
 	public var width(default, set):Float = 300;
 	public var height(default, set):Float = 40;
@@ -65,8 +64,6 @@ class Dragger extends h2d.Object {
 		if (event.button != 0) return;
 		event.propagate = false;
 
-		time = hxd.Timer.frameCount;
-
 		startMove();
 		onDrag();
 	}
@@ -89,7 +86,6 @@ class Dragger extends h2d.Object {
 					moving = false;
 					input.stopCapture();
 
-					//if (Math.abs(time - hxd.Timer.frameCount) < 20) toggle();
 				case EMove:
 					position = scene.mouseY - dragStart;
 

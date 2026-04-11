@@ -308,11 +308,33 @@ class File {
 			editor.add(prefab.object, prefab, false);
 		}
 
+
+		// Animation
+		if (scene.animation != null) {
+			editor.motion.duration = scene.duration;
+			editor.motion.speed = scene.speed;
+			editor.motion.loop = scene.loop;
+
+			for (entry in scene.animation) {
+				if (editor.motion.has(entry.name)) editor.motion.add(entry.name, entry.type, entry.ease ?? "linear", entry.from, entry.start);
+			}
+
+			for (entry in scene.events) {
+				editor.motion.add(entry.name, "event", "linear", 0, entry.start);
+			}
+
+			editor.motion.onScene();
+			editor.motion.onEvent();
+		}
+
 		editor.onScene();
 	}
 
 
 	public function save(?newFile:Bool = false) {
+		// Advance animation to first frame
+		if (editor.motion.enabled) editor.motion.onHistory(0);
+
 		// Prepare scene data
 		var children = [];
 
@@ -325,7 +347,20 @@ class File {
 
 		data.name = "prefab";
 		data.type = "prefab";
+
+		if (editor.motion.enabled) {
+			data.type = "animation";
+			data.duration = editor.motion.duration;
+			data.speed = editor.motion.speed;
+			data.loop = editor.motion.loop;
+		}
+
 		data.children = children;
+
+		if (editor.motion.enabled) {
+			data.animation = editor.motion.serialize();
+			data.events = editor.motion.animation.serialize();
+		}
 
 		var json = Json.stringify(data, "\t");
 
@@ -857,6 +892,9 @@ typedef Data = {
 	@:optional var field : Array<Field>;
 	@:optional var filter : Array<Entry>;
 
+	@:optional var animation : Array<Frame>;
+	@:optional var events : Array<Frame>;
+
 	@:optional var x : Float;
 	@:optional var y : Float;
 	@:optional var scaleX : Float;
@@ -881,7 +919,8 @@ typedef Data = {
 	@:optional var align : Int;
 	@:optional var range : Int;
 
-	@:optional var speed : Int;
+	@:optional var duration : Float;
+	@:optional var speed : Float;
 	@:optional var loop : Bool;
 
 	@:optional var data : String;
@@ -893,4 +932,16 @@ typedef Data = {
 	@:optional var body : Int;
 	@:optional var shape : Int;
 	@:optional var mode : Int;
+}
+
+typedef Frame = {
+	var name : String;
+	var type : String;
+
+	@:optional var ease : String;
+
+	var from : Float;
+	var to : Float;
+	var start : Float;
+	var end : Float;
 }

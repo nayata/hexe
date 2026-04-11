@@ -300,6 +300,7 @@ class Control extends h2d.Object {
 				var redo = { x : selected.x, y : selected.y, scaleX : selected.scaleX, scaleY : selected.scaleY, rotation : selected.rotation };
 
 				editor.history.add(new History.Transform(selected, undo, redo));
+				editor.motion.onTransform(selected, undo, redo);
 			}
 
 			// Send Prefab transform to history
@@ -344,6 +345,7 @@ class Control extends h2d.Object {
 		var redo = { x : selected.x, y : selected.y, scaleX : selected.scaleX, scaleY : selected.scaleY, rotation : selected.rotation };
 
 		editor.history.add(new History.Transform(selected, undo, redo));
+		editor.motion.onTransform(selected, undo, redo);
 	}
 
 

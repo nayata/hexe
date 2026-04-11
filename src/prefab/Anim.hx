@@ -6,7 +6,7 @@ class Anim extends Drawable {
 	public var row(default, set):Int = 1;
 	public var col(default, set):Int = 1;
 
-	public var speed(default, set):Int = 30;
+	public var speed(default, set):Float = 30;
 	public var loop(default, set):Bool = true;
 
 

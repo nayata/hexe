@@ -1,13 +1,14 @@
 package ui;
 
 class Icon extends h2d.Object {
-	var input:h2d.Interactive;
-	var image:h2d.Bitmap;
+	public var input:h2d.Interactive;
+	public var image:h2d.Bitmap;
 
 	public var width:Float = 32;
 	public var height:Float = 32;
 
 	public var icon(default, set):String = "";
+	public var value:String = "";
 
 
 	public function new(icon:String = "", ?parent:h2d.Object) {

@@ -96,6 +96,9 @@ class Menu extends h2d.Object {
 		assetMenu.add("Load Texture Atlas", "load");
 		assetMenu.add("Load Font", "load");
 
+		assetMenu.addDivider();
+		assetMenu.add("Animation", "animation");
+
 
 		// Effects
 		effectMenu = new ui.Dropdown(this, "Effect");
@@ -179,11 +182,10 @@ class Menu extends h2d.Object {
 
 			case "Snap To Grid" : editor.snapToGrid(!editor.control.snapToGrid);
 
+			
 			case "Actual Size" : editor.control.actualSize();
 			case "Fit on Screen" : editor.control.fitView();
-
 			case "Toggle Properties" : editor.toggleSidebar();
-
 			case "Show Selection" : editor.control.toggleSelection();
 			case "Show Grid" : editor.toggleGrid();
 			case "Grid at Top" : editor.gridAtTop(viewMenu.get("Grid at Top").checked);
@@ -194,6 +196,9 @@ class Menu extends h2d.Object {
 			case "Outline" : editor.effect.open("Outline");
 			case "Glow" : editor.effect.open("Glow");
 			case "Blur" : editor.effect.open("Blur");
+
+
+			case "Animation" : editor.motion.onAnimation(true);
 
 			default:
 		}

@@ -42,6 +42,13 @@ class Assets {
 	}
 
 
+	public static function colorize(bitmap:h2d.Bitmap, value:Int = 0x9a9aa0) {
+		var a = bitmap.color.w;
+		bitmap.color.setColor(value);
+		bitmap.color.w = a;
+	}
+
+
 	public static function clear() {
 		fontPath.clear();
 		fonts.clear();

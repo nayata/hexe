@@ -34,6 +34,7 @@ class Editor extends hxd.App {
 	public var property:Properties;
 	public var texture:Texture;
 	public var effect:Effects;
+	public var motion:Motion;
 
 	public var menu:Menu;
 	public var view:Button;
@@ -89,6 +90,8 @@ class Editor extends hxd.App {
 		toolbar.x = s2d.width * 0.5 - toolbar.width * 0.5;
 		toolbar.y = 20;
 
+		motion = new Motion(s2d);
+
 		menu = new Menu(s2d);
 		menu.x = 10;
 		menu.y = 10;
@@ -129,6 +132,10 @@ class Editor extends hxd.App {
 		sidebar.x = WIDTH - sidebar.width;
 		sidebar.onResize();
 
+		motion.width = width;
+		motion.y = HEIGHT - motion.height;
+		motion.onResize();
+
 		outliner.onResize();
 		property.onResize();
 		texture.onResize();
@@ -158,6 +165,7 @@ class Editor extends hxd.App {
 		control.select(selected);
 
 		property.select(selected);
+		motion.select(selected);
 	}
 
 
@@ -166,6 +174,7 @@ class Editor extends hxd.App {
 		control.unselect();
 
 		property.unselect();
+		motion.unselect();
 
 		selected = null;
 	}
@@ -197,6 +206,12 @@ class Editor extends hxd.App {
 
 	public function onProject() {
 		property.onScene();
+	}
+
+
+	public function onAnimation() {
+		control.height = motion.enabled ? HEIGHT - motion.height : HEIGHT;
+		motion.y = HEIGHT - motion.height;
 	}
 
 
@@ -240,6 +255,7 @@ class Editor extends hxd.App {
 		outliner.clear();
 		property.clear();
 		history.clear();
+		motion.clear();
 
 		texture.clear();
 		file.clear();
@@ -314,6 +330,7 @@ class Editor extends hxd.App {
 		if (object == null) return;
 
 		outliner.delete(object);
+		motion.delete(object);
 			
 		// Remove Object and Prefab
 		// Object childs prefabs still exist in the `children` list
