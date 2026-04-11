@@ -46,11 +46,16 @@ class Number extends TextField {
 		
 		var val = Std.parseInt(input.text);
 		onChange({ field : field, from : undo, to : val });
+		undo = val;
 	}
 
 
 	override public function blur() {
-		if (input.hasFocus()) onChange({ field : field, from : undo, to : Std.parseInt(input.text) });
+		if (input.hasFocus()) {
+			var val = Std.parseInt(input.text);
+			onChange({ field : field, from : undo, to : val });
+			undo = val;
+		}
 	}
 
 

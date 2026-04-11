@@ -46,11 +46,16 @@ class FloatNumber extends TextField {
 
 		var val = Std.parseFloat(input.text);
 		onChange({ field : field, from : undo, to : val });
+		undo = val;
 	}
 
 
 	override public function blur() {
-		if (input.hasFocus()) onChange({ field : field, from : undo, to : Std.parseFloat(input.text) });
+		if (input.hasFocus()) {
+			var val = Std.parseFloat(input.text);
+			onChange({ field : field, from : undo, to : val });
+			undo = val;
+		}
 	}
 
 
