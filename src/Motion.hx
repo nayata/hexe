@@ -152,6 +152,8 @@ class Motion extends h2d.Object {
 
 			onUpdate();
 		}
+
+		control.play.icon = playing ? "pause" : "play";
 	}
 
 
