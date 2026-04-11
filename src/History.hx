@@ -103,13 +103,14 @@ class Transform extends Element {
 }
 
 
+// HIDE `Dynamic` from `HistoryElement`
 class Property extends Element {
-	var object:h2d.Object;
+	var object:Dynamic;
 	var field:String;
 	var from:Dynamic;
 	var to:Dynamic;
 
-	public function new(object:h2d.Object, field:String, from:Dynamic, to:Dynamic) {
+	public function new(object:Dynamic, field:String, from:Dynamic, to:Dynamic) {
 		super();
 		
 		this.object = object;
