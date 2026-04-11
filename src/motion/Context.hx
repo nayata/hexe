@@ -8,7 +8,7 @@ import property.component.FloatNumber;
 
 class Context extends h2d.Object {
 	public var settings:Settings;
-	public var event:ui.Context;
+	public var event:Event;
 	public var edit:ui.Context;
 	public var ease:ui.Context;
 
@@ -17,7 +17,7 @@ class Context extends h2d.Object {
 		super(parent);
 
 		settings = new Settings(this);
-		event = new Events(this);
+		event = new Event(this);
 		edit = new Editing(this);
 		ease = new Ease(this);
 	}
@@ -187,7 +187,9 @@ class Ease extends ui.Context {
 }
 
 
-class Events extends ui.Context {
+class Event extends ui.Context {
+	var text:property.component.Text;
+
 	public function new(?parent:h2d.Object) {
 		super(parent);
 
@@ -207,10 +209,72 @@ class Events extends ui.Context {
 		add("show", "action");
 		add("toggle", "action");
 		add("lock", "action");
+
+		addDivider();
+
+		text = new property.component.Text(this);
+		text.setPosition(16, input.height + 20);
+		text.setSize(220-46, 40);
+
+		text.onChange = onText;
+
+		text.label = "Event";
+		text.value = "none";
+
+		@:privateAccess text.input.onOut = onChildOut;
+
+		var button = new ui.Icon("add", this);
+		button.onClick = onButton;
+		button.input.onOut = onChildOut;
+
+		button.setPosition(193, text.y);
+		button.setSize(40, 40);
+
+		input.height = input.height + text.height + 40;
+		panel.height = input.height;
 	}
+
+
+	public function update(?frame:motion.animation.Frame) {
+		text.value = frame != null ? frame.name : "none";
+	}
+
+
+	override function onOut(e:hxd.Event) {
+		check();
+	}
+
+
+	function onChildOut(e:hxd.Event) {
+		check();
+	}
+
+
+	function check() {
+		var scene = editor.s2d;
+
+		var min = getAbsPos();
+		var max = new h2d.col.Point(min.x + input.width, min.y + input.height);
+
+		if (scene.mouseY < min.y || scene.mouseX < min.x || scene.mouseX >= max.x || scene.mouseY >= max.y) {
+			close();
+		}
+	}
+
+
+	function onText(prop:Dynamic) {
+		editor.motion.event(prop.to);
+	}
+
+
+	function onButton() {
+		close();
+	}
+
 
 	override function onChange(value:String, type:String) {
 		editor.motion.event(value);
+		text.value = value;
 	}
 }
 

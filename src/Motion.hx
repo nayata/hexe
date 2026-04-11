@@ -231,6 +231,8 @@ class Motion extends h2d.Object {
 		var name = editor.selected != null ? editor.selected.name : "";
 		channel.update(name, frame);
 
+		context.event.update(animation.find("", "event", frame));
+
 		editor.property.onChange();
 		editor.control.onChange();
 	}
@@ -400,6 +402,8 @@ class Motion extends h2d.Object {
 				channel.select(getName(), frame);
 				tracker.select(getName());
 
+				context.event.update(animation.find("", "event", frame));
+
 			default:
 		}
 	}
@@ -457,6 +461,8 @@ class Motion extends h2d.Object {
 				animation.update();
 				channel.select(name, frame);
 				tracker.select(name);
+
+				context.event.update(animation.find("", "event", frame));
 
 			case "paste" if (clipboard.length > 0) :
 				var history:Array<History.Element> = [];
@@ -752,6 +758,7 @@ class Motion extends h2d.Object {
 		
 		context.settings.update();
 		editor.onAnimation();
+		onUpdate();
 	}
 
 
@@ -783,6 +790,7 @@ class Motion extends h2d.Object {
 		visible = false;
 
 		editor.onAnimation();
+		onUpdate();
 	}
 
 

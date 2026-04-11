@@ -134,6 +134,9 @@ class Line extends Link {
 		mode.label.text = frame != null ? frame.name : "none";
 	}
 
+	override public function unselect() {
+	}
+
 	override function onClick(e:hxd.Event) {
 		Editor.ME.motion.context.event.open();
 	}
@@ -149,6 +152,7 @@ class Select extends h2d.Interactive {
 
 	var image:h2d.Bitmap;
 	var icon:h2d.Bitmap;
+	var mask:h2d.Mask;
 
 	public function new(width, height, ?parent) {
 		super(width, height, parent);
@@ -159,11 +163,13 @@ class Select extends h2d.Interactive {
 		image = new h2d.Bitmap(h2d.Tile.fromColor(Style.highlight, 100, 28), this);
 		image.visible = false;
 
-		label = new h2d.Text(Assets.defaultFont, this);
+		mask = new h2d.Mask(60, 28, this);
+		mask.x = 10;
+
+		label = new h2d.Text(Assets.defaultFont, mask);
 		label.textColor = Style.label;
 		label.text = "none";
 
-		label.x = 10;
 		label.y = 14 - label.textHeight * 0.5;
 
 		icon = new h2d.Bitmap(Assets.icon("arrow"), this);
