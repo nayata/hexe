@@ -1,0 +1,60 @@
+{
+	"name": "prefab",
+	"type": "prefab",
+	"children": [
+		{
+			"name": "bitmap",
+			"type": "bitmap",
+			"link": "bitmap",
+			"smooth": true,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "button.png"
+		},
+		{
+			"name": "over",
+			"type": "bitmap",
+			"link": "bitmap.1",
+			"visible": false,
+			"filter": [
+				{
+					"name": "Glow",
+					"prop": {
+						"alpha": 0.3,
+						"color": 16761095,
+						"quality": 1,
+						"smoothColor": true,
+						"radius": 60
+					}
+				}
+			],
+			"smooth": true,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "button-over.png"
+		},
+		{
+			"name": "label",
+			"type": "text",
+			"link": "text",
+			"y": -28,
+			"scaleX": 0.5,
+			"scaleY": 0.5,
+			"src": "tiltWarpLarge.fnt",
+			"font": "tiltWarpLarge",
+			"align": 1,
+			"text": "text"
+		},
+		{
+			"name": "input",
+			"type": "interactive",
+			"link": "interactive",
+			"x": -117,
+			"y": -44,
+			"scaleX": 3.65,
+			"scaleY": 1.39,
+			"width": 64,
+			"height": 64
+		}
+	]
+}

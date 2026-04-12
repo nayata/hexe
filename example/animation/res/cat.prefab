@@ -1,0 +1,76 @@
+{
+	"name": "prefab",
+	"type": "prefab",
+	"children": [
+		{
+			"name": "reference",
+			"type": "bitmap",
+			"link": "bitmap.1",
+			"visible": false,
+			"dx": 0.5,
+			"dy": 1,
+			"src": "character/template.png"
+		},
+		{
+			"name": "shadow",
+			"type": "bitmap",
+			"link": "bitmap.9",
+			"scaleX": 1.6,
+			"scaleY": 1.2,
+			"alpha": 0.3,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "character/shadow.png"
+		},
+		{
+			"name": "sword",
+			"type": "bitmap",
+			"link": "bitmap.8",
+			"x": 5,
+			"y": -119,
+			"rotation": 0.351058097152894,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "character/sword.png"
+		},
+		{
+			"name": "right",
+			"type": "bitmap",
+			"link": "bitmap.6",
+			"x": 29,
+			"y": -27,
+			"dx": 0.5,
+			"dy": 0.5,
+			"src": "character/right.png"
+		},
+		{
+			"name": "left",
+			"type": "bitmap",
+			"link": "bitmap.4",
+			"x": -32,
+			"y": -51,
+			"dx": 0.5,
+			"dy": 0,
+			"src": "character/left.png"
+		},
+		{
+			"name": "body",
+			"type": "bitmap",
+			"link": "bitmap.3",
+			"x": -6,
+			"y": -114,
+			"dx": 0.5,
+			"dy": 0,
+			"src": "character/body.png"
+		},
+		{
+			"name": "head",
+			"type": "bitmap",
+			"link": "bitmap.2",
+			"y": -101,
+			"dx": 0.5,
+			"dy": 1,
+			"src": "character/head.png"
+		}
+	]
+}
