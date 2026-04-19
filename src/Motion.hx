@@ -208,6 +208,8 @@ class Motion extends h2d.Object {
 				time = duration;
 				playing = false;
 
+				control.play.icon = "play";
+
 				onUpdate();
 			}
 			if (loop) time = 0;
