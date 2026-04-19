@@ -36,8 +36,8 @@ class Collider extends Prefab {
 		type = "collider";
 		link = "collider";
 
+		fixedScale = false;
 		locked = true;
-		fixed = false;
 	}
 
 
@@ -101,7 +101,7 @@ class Collider extends Prefab {
 
 		body = v;
 		color = Config.palette[body] ?? "7029cf";
-		fixed = shape == SPHERE;
+		fixedScale = shape == SPHERE;
 
 		return body;
 	}
@@ -112,7 +112,7 @@ class Collider extends Prefab {
 		if (v == CAPSULE && height < width) height = width;
 
 		shape = v;
-		fixed = shape == SPHERE;
+		fixedScale = shape == SPHERE;
 		graphics.shape = v;
 		graphics.render();
 
@@ -123,7 +123,6 @@ class Collider extends Prefab {
 	function set_mode(v) {
 		mode = v;
 
-		trace(v);
 		if (shape == POLYGON) {
 			graphics.set(v);
 			graphics.render();

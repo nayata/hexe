@@ -4,6 +4,7 @@ class Context extends ui.Context {
 
 		// Visuals
 		add("Add Object", "object");
+		add("Add Layout", "layout");
 
 		add("Add Bitmap", "bitmap");
 		add("Add ScaleGrid", "scalegrid");
@@ -41,6 +42,7 @@ class Context extends ui.Context {
 	override function onChange(value:String, type:String) {
 		switch (value) {
 			case "Add Object" : editor.make("object", true);
+			case "Add Layout" : editor.make("layout");
 
 			case "Add Bitmap" : editor.file.openBitmap(true);
 			case "Add ScaleGrid" : editor.file.openBitmap("scalegrid", true);

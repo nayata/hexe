@@ -192,6 +192,8 @@ class Control extends h2d.Object {
 		}
 
 		if (touch.left && selected != null) {
+			if (prefab.fixed) return;
+
 			var mouse = new Point(s2d.mouseX, s2d.mouseY);
 			var tool = editor.toolbar.tool;
 
@@ -248,7 +250,7 @@ class Control extends h2d.Object {
 					var w = Math.abs(mouseX - transform.x);
 					var h = Math.abs(mouseY - transform.y);
 
-					if (Key.isDown(Key.SHIFT) || prefab.fixed) {
+					if (Key.isDown(Key.SHIFT) || prefab.fixedScale) {
 						if (w / h > transform.aspect) {
 							h = w / transform.aspect;
 						} else {

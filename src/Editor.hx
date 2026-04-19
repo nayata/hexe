@@ -313,6 +313,23 @@ class Editor extends hxd.App {
 	}
 
 
+	public function set(prefab:Prefab, ?parent:String) {
+		hierarchy.push(prefab.object);
+		children.set(prefab.name, prefab);
+
+		if (parent == null || parent == "root") {
+			scene.addChild(prefab.object);
+		}
+		else {
+			var container = children.get(parent);
+			container.object.addChild(prefab.object);
+		}
+
+		outliner.add(prefab.name, prefab.link);
+		outliner.onChange();
+	}
+
+
 	public function add(object:Object, prefab:Prefab, keep:Bool = true) {
 		hierarchy.push(object);
 		children.set(object.name, prefab);
@@ -396,6 +413,8 @@ class Editor extends hxd.App {
 		switch (type) {
 			case "object":
 				prefab = new prefab.Object();
+			case "layout":
+				prefab = new prefab.Layout();
 			case "text":
 				prefab = new prefab.Text();
 			case "bitmap":

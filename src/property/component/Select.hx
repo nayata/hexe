@@ -49,7 +49,7 @@ class Select extends Input {
 		text.smooth = true;
 		text.text = "Alpha";
 
-		text.x = 20;
+		text.x = 16;
 		text.y = 20 - text.textHeight*0.5;
 
 		setSize(166, 40);
@@ -65,7 +65,7 @@ class Select extends Input {
 
 			item.value = index;
 
-			item.x = 20;
+			item.x = 16;
 			item.y = 2 + items.length * size;
 
 			item.width = width;

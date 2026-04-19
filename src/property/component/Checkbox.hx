@@ -34,6 +34,13 @@ class Checkbox extends Input {
 	}
 
 
+	override function set_enabled(v) {
+		input.visible = v;
+		alpha = v ? 1 : 0.3;
+		return enabled = v;
+	}
+
+
 	override function set_value(v) {
 		checked = v == "true" ? true : false;
 		

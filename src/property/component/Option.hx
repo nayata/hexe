@@ -16,7 +16,7 @@ class Option extends Select {
 			item.value = index++;
 			item.label = Std.string(entry);
 
-			item.x = 20;
+			item.x = 16;
 			item.y = 2 + items.length * size;
 
 			item.width = width;
@@ -57,7 +57,7 @@ class Option extends Select {
 			item.value = items.length;
 			item.label = "Unknown " + items.length;
 		
-			item.x = 20;
+			item.x = 16;
 			item.y = 2 + items.length * size;
 		
 			item.width = width;
@@ -73,6 +73,13 @@ class Option extends Select {
 		
 			items.push(item);
 		}
+	}
+
+
+	override public function setSize(w:Float, h:Float) {
+		super.setSize(w, h);
+
+		text.y = height * 0.5 - text.textHeight * 0.5;
 	}
 
 
