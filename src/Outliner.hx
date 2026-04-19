@@ -171,7 +171,15 @@ class Outliner extends h2d.Object {
 
 
 	public function select(object:h2d.Object) {
+		expandParent(object);
+		onExpand();
+
 		for (node in nodes) {
+			if (node.closable) {
+				var prefab = editor.children.get(node.name);
+				node.expanded = prefab.expanded;
+			}
+
 			if (node.name == object.name) {
 				selected = node;
 
@@ -179,6 +187,7 @@ class Outliner extends h2d.Object {
 				selection.y = selected.y;
 
 				scrollToSelected();
+				return;
 			}
 		}
 	}
@@ -187,7 +196,6 @@ class Outliner extends h2d.Object {
 	public function update(prefab:prefab.Prefab) {
 		for (node in nodes) {
 			if (node.name == prefab.object.name) {
-				//node.adjustment = prefab.filter != null && prefab.filter.notEmpty();
 				node.visibility = prefab.object.visible;
 			}
 		}
@@ -525,6 +533,18 @@ class Outliner extends h2d.Object {
 	}
 
 
+	function expandParent(object:h2d.Object) {
+		var parent = object.parent;
+	
+		while (parent != null && parent != editor.scene) {
+			var prefab = editor.children.get(parent.name);
+			prefab.expanded = true;
+
+			parent = parent.parent;
+		}
+	}
+
+
 	function findNodeIndex(name:String):Int {
 		for (i in 0...nodes.length) {
 			if (nodes[i].name == name) return i;
@@ -723,6 +743,7 @@ class Outliner extends h2d.Object {
 
 
 class Node extends h2d.Object {
+	var triangle:h2d.Bitmap;
 	var tile:h2d.Bitmap;
 	var view:h2d.Bitmap;
 	var label:h2d.Text;
@@ -731,17 +752,15 @@ class Node extends h2d.Object {
 	var height:Float = 30;
 
 	public var visibility(default, set):Bool = true;
-	public var adjustment(default, set):Bool = false;
-	public var padding(default, set):Int = 0;
-
 	public var expanded(default, set):Bool = true;
 	public var closable(default, set):Bool = false;
 
+	public var padding(default, set):Int = 0;
+
 	public var icon(never, set):String;
 	public var text(get, set):String;
-	public var id:Int = -1;
 
-	var triangle:h2d.Bitmap;
+	public var id:Int = -1;
 
 
 	public function new(?parent:h2d.Object) {
@@ -794,11 +813,6 @@ class Node extends h2d.Object {
 	function set_closable(v) {
 		triangle.visible = v;
 		return closable = v;
-	}
-
-
-	function set_adjustment(v) {
-		return adjustment = v;
 	}
 
 
