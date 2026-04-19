@@ -39,6 +39,8 @@ class Outliner extends h2d.Object {
 	public var position:Int = 120;
 	public var size:Int = 30;
 
+	var padding:Int = 20;
+
 	var dragStart:Float = 0;
 	var dragOffset:Float = 0;
 	var dragScroll = 0;
@@ -249,6 +251,17 @@ class Outliner extends h2d.Object {
 				highlighted.visibility = object.visible;
 			}
 
+			var triangle = padding + highlighted.padding;
+				
+			if (event.relX >= triangle - padding && event.relX <= triangle + padding && highlighted.closable) {
+				var prefab = editor.children.get(highlighted.name);
+
+				prefab.expanded = !prefab.expanded;
+				highlighted.expanded = prefab.expanded;
+
+				onExpand();
+			}
+
 			// Double Click
 			var current = Math.abs(clickTime - hxd.Timer.frameCount);
 			if (current < 20) {
@@ -277,7 +290,7 @@ class Outliner extends h2d.Object {
 
 		for (node in nodes) {
 			if (mouseY >= node.y && mouseY < node.y + size) {
-				highlighted = node;
+				if (node.visible) highlighted = node;
 			}
 		}
 
@@ -341,9 +354,8 @@ class Outliner extends h2d.Object {
 		var mouseY = event.relY - container.y;
 
 		if (touch.left && selected != null && highlighted == null) {
-			if (mouseY > nodes.length * size) {
+			if (mouseY > height) {
 				var object = editor.children.get(selected.name).object;
-
 				moveObject(object, editor.scene, editor.scene.children.length);
 			} 
 		}
@@ -358,6 +370,7 @@ class Outliner extends h2d.Object {
 		dragScroll = 0;
 
 		// Get the new position and move object
+
 		if (selected != null && highlighted != null) {
 			if (selected == highlighted) return;
 
@@ -422,6 +435,10 @@ class Outliner extends h2d.Object {
 		// Add object to the new parent
 		newParent.addChildAt(object, index);
 
+		// Expand parent
+		var prefab = editor.children.get(newParent.name);
+		if (prefab != null && !prefab.expanded) prefab.expanded = true;
+
 		// Send all to history
 		var redo = { parent : object.parent, index : object.parent.getChildIndex(object) };
 
@@ -454,17 +471,65 @@ class Outliner extends h2d.Object {
 			nodes[i].y = i * size;
 			nodes[i].id = i;
 
-			nodes[i].padding = getPadding(all[i].parent) * 20;
+			nodes[i].padding = getPadding(all[i].parent) * padding;
 			nodes[i].visibility = all[i].visible;
 
 			var prefab = editor.children.get(nodes[i].name);
 
 			nodes[i].text = prefab.link;
 			nodes[i].icon = prefab.type;
+
+			nodes[i].visible = true;
+
+			nodes[i].closable = !prefab.locked && prefab.object.numChildren > 0;
+			nodes[i].expanded = prefab.expanded;
 		}
 
 		height = nodes.length * size;
+		onExpand();
 		onScroll();
+	}
+
+
+	public function onExpand() {
+		var all:Array<Object> = editor.hierarchy;
+		var index = 0;
+	
+		for (i in 0...all.length) {
+			var visible = true;
+	
+			var parent = all[i].parent;
+	
+			while (parent != null && parent != editor.scene) {
+				var prefab = editor.children.get(parent.name);
+				var state = prefab.expanded;
+	
+				if (!state) {
+					visible = false;
+					break;
+				}
+	
+				parent = parent.parent;
+			}
+	
+			nodes[i].visible = visible;
+
+			if (visible) {
+				nodes[i].y = index * size;
+				index++;
+			}
+		}
+	
+		height = index * size;
+		onScroll();
+	}
+
+
+	function findNodeIndex(name:String):Int {
+		for (i in 0...nodes.length) {
+			if (nodes[i].name == name) return i;
+		}
+		return -1;
 	}
 
 
@@ -669,9 +734,14 @@ class Node extends h2d.Object {
 	public var adjustment(default, set):Bool = false;
 	public var padding(default, set):Int = 0;
 
+	public var expanded(default, set):Bool = true;
+	public var closable(default, set):Bool = false;
+
 	public var icon(never, set):String;
 	public var text(get, set):String;
 	public var id:Int = -1;
+
+	var triangle:h2d.Bitmap;
 
 
 	public function new(?parent:h2d.Object) {
@@ -688,6 +758,13 @@ class Node extends h2d.Object {
 
 		view.x = width - 40;
 		view.y = height * 0.5;
+
+		triangle = new h2d.Bitmap(Assets.icon("triangle"), this);
+		triangle.tile.setCenterRatio();
+		triangle.x = 20;
+		triangle.y = 15;
+		
+		triangle.visible = false;
 
 		label = new h2d.Text(Assets.defaultFont, this);
 		label.textColor = Style.label;
@@ -708,6 +785,18 @@ class Node extends h2d.Object {
 	}
 
 
+	function set_expanded(v) {
+		triangle.rotation = v ? Math.PI / 2 : 0;
+		return expanded = v;
+	}
+
+
+	function set_closable(v) {
+		triangle.visible = v;
+		return closable = v;
+	}
+
+
 	function set_adjustment(v) {
 		return adjustment = v;
 	}
@@ -725,6 +814,7 @@ class Node extends h2d.Object {
 
 
 	function set_padding(v) {
+		triangle.x = 20 + v;
 		label.x = 60 + v;
 		tile.x = 40 + v;
 

@@ -22,6 +22,8 @@ class Prefab {
 	public var pivotX:Float = 0;
 	public var pivotY:Float = 0;
 
+	public var expanded:Bool = true;
+
 	public var locked:Bool = false;
 	public var fixed:Bool = false;
 
