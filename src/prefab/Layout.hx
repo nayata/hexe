@@ -507,6 +507,12 @@ class Graphic extends h2d.Graphics {
 	}
 
 
+	override function onAdd() {
+		super.onAdd();
+		onResize();
+	}
+
+
 	function set_width(v) {
 		width = Std.int(v);
 		onResize();

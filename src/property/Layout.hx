@@ -212,6 +212,11 @@ class Layout extends Property {
 	}
 
 
+	override public function update() {
+		if (object == null) return;
+	}
+	
+
 	override function select(object:Dynamic) {
 		super.select(object);
 

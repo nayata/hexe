@@ -199,55 +199,57 @@ class Hierarchy extends Element {
 
 
 class Add extends Element {
-	var object:h2d.Object;
 	var prefab:Prefab;
 
 	var parent:h2d.Object;
 	var index:Int;
 
-	public function new(object:h2d.Object, prefab:Prefab, parent:h2d.Object, index:Int) {
+	public function new(prefab:Prefab, parent:h2d.Object, index:Int) {
 		super();
 		
-		this.object = object;
 		this.prefab = prefab;
 		this.parent = parent;
 		this.index = index;
 	}
 
 	override public function undo() {
-		Editor.ME.delete(object, false);
+		Editor.ME.delete(prefab.object, false);
 	}
 
 	override public function redo() {
-		parent.addChildAt(object, index);
-		Editor.ME.add(object, prefab, false);
+		Editor.ME.set(prefab);
+		parent.addChildAt(prefab.object, index);
+
+		Editor.ME.outliner.onChange();
+		Editor.ME.select(prefab.name);
 	}
 }
 
 
 class Delete extends Element {
-	var object:h2d.Object;
 	var prefab:Prefab;
 
 	var parent:h2d.Object;
 	var index:Int;
 
-	public function new(object:h2d.Object, prefab:Prefab, parent:h2d.Object, index:Int) {
+	public function new(prefab:Prefab, parent:h2d.Object, index:Int) {
 		super();
 		
-		this.object = object;
 		this.prefab = prefab;
 		this.parent = parent;
 		this.index = index;
 	}
 
 	override public function undo() {
-		parent.addChildAt(object, index);
-		Editor.ME.add(object, prefab, false);
+		Editor.ME.set(prefab);
+		parent.addChildAt(prefab.object, index);
+
+		Editor.ME.outliner.onChange();
+		Editor.ME.select(prefab.name);
 	}
 
 	override public function redo() {
-		Editor.ME.delete(object, false);
+		Editor.ME.delete(prefab.object, false);
 	}
 }
 

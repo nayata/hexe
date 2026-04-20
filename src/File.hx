@@ -336,7 +336,9 @@ class File {
 			prefab.object.alpha = entry.alpha ?? 1;
 			prefab.object.visible = entry.visible ?? true;
 
-			editor.set(prefab, entry.parent);
+			// Place object
+			var parent:h2d.Object = entry.parent != null ? editor.children.get(entry.parent).object : editor.scene;
+			editor.add(prefab, parent, false);
 		}
 
 
@@ -432,7 +434,7 @@ class File {
 
 
 	// Open Bitmap file
-	public function openBitmap(type:String = "bitmap", ?highlighted = false) {
+	public function openBitmap(type:String = "bitmap") {
 		var file = openfile("Open Image", "Image Files", ["png", "jpeg", "jpg"]);
 		if (file == null) return;
 
@@ -457,16 +459,15 @@ class File {
 		prefab.name = editor.getUID(prefab.type);
 		prefab.object.name = prefab.name;
 
-		editor.addChild(prefab.object, highlighted);
-		editor.add(prefab.object, prefab);
+		editor.add(prefab);
 	}
 
 
 
 	// Open Texture image
-	public function openTexture(type:String = "bitmap", ?highlighted = false) {
+	public function openTexture(type:String = "bitmap") {
 		if (editor.texture.atlas == null) {
-			openAtlas(type, highlighted);
+			openAtlas(type);
 			return;
 		}
 
@@ -494,8 +495,7 @@ class File {
 			prefab.path = Assets.atlasPath.get(atlas.name);
 			prefab.src = name;
 	
-			editor.addChild(prefab.object, highlighted);
-			editor.add(prefab.object, prefab);
+			editor.add(prefab);
 
 			// Clear onSelect
 			editor.texture.onSelect = null;
@@ -507,7 +507,7 @@ class File {
 
 
 	// Open Prefab file
-	public function openPrefab(?highlighted = false) {
+	public function openPrefab() {
 		var file = openfile("Open File", "Prefab Files", ["prefab", "json"]);
 		if (file == null) return;
 
@@ -527,8 +527,7 @@ class File {
 		prefab.link = name;
 		prefab.src = getPath(file);
 
-		editor.addChild(prefab.object, highlighted);
-		editor.add(prefab.object, prefab);
+		editor.add(prefab);
 	}
 
 
@@ -753,7 +752,7 @@ class File {
 
 
 	// Open Atlas file
-	public function openAtlas(type:String = "bitmap", ?highlighted = false) {
+	public function openAtlas(type:String = "bitmap") {
 		var file = openfile("Open Texture Atlas", "Texture Atlas Files", ["atlas"]);
 		if (file == null) return;
 
@@ -770,7 +769,7 @@ class File {
 		var atlas = new Texture.Atlas(name, entry, tile);
 
 		editor.addAtlas(atlas, name, path);
-		openTexture(type, highlighted);
+		openTexture(type);
 	}
 
 

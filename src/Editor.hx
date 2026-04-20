@@ -302,44 +302,28 @@ class Editor extends hxd.App {
 
 
 	/* ------------------------------ Objects actions ------------------------------ */
-	public function addChild(object:Object, ?highlighted = false) {
-		var container:Object = scene;
-
-		if (highlighted && selected != null) {
-			container = children.get(selected.name).locked ? selected.parent : selected;
-		}
-
-		container.addChild(object);
+	public function set(prefab:Prefab) {
+		hierarchy.push(prefab.object);
+		children.set(prefab.name, prefab);
+		outliner.add(prefab.name, prefab.link);
 	}
 
 
-	public function set(prefab:Prefab, ?parent:String) {
-		hierarchy.push(prefab.object);
+	public function add(prefab:Prefab, ?parent:Object, keep:Bool = true) {
+		var parent = parent ?? scene;
+		var object = prefab.object;
+
+		hierarchy.push(object);
 		children.set(prefab.name, prefab);
 
-		if (parent == null || parent == "root") {
-			scene.addChild(prefab.object);
-		}
-		else {
-			var container = children.get(parent);
-			container.object.addChild(prefab.object);
-		}
+		parent.addChild(object);
 
 		outliner.add(prefab.name, prefab.link);
 		outliner.onChange();
-	}
 
+		select(prefab.name);
 
-	public function add(object:Object, prefab:Prefab, keep:Bool = true) {
-		hierarchy.push(object);
-		children.set(object.name, prefab);
-
-		outliner.add(object.name, prefab.link);
-		outliner.onChange(); // [?]
-
-		select(object.name);
-
-		if (keep) history.add(new History.Add(object, prefab, object.parent, object.parent.getChildIndex(object)));
+		if (keep) history.add(new History.Add(prefab, parent, parent.getChildIndex(object)));
 	}
 
 
@@ -352,7 +336,7 @@ class Editor extends hxd.App {
 		// Remove Object and Prefab
 		// Object childs prefabs still exist in the `children` list
 
-		if (keep) history.add(new History.Delete(object, children.get(object.name), object.parent, object.parent.getChildIndex(object)));
+		if (keep) history.add(new History.Delete(children.get(object.name), object.parent, object.parent.getChildIndex(object)));
 			
 		children.remove(object.name);
 
@@ -381,8 +365,11 @@ class Editor extends hxd.App {
 						prefab.name = getUID(prefab.type);
 						prefab.object.name = prefab.name;
 				
-						addChild(prefab.object, highlighted);
-						add(prefab.object, prefab);
+						var container:Object = scene;
+						if (highlighted && selected != null) {
+							container = children.get(selected.name).locked ? selected.parent : selected;
+						}
+						add(prefab, container);
 					}
 				}
 			case "duplicate":
@@ -395,9 +382,7 @@ class Editor extends hxd.App {
 						prefab.object.name = prefab.name;
 					
 						var container:Object = highlighted ? selected.parent : scene;
-
-						container.addChild(prefab.object);
-						add(prefab.object, prefab);
+						add(prefab, container);
 					}
 				}
 			default:
@@ -406,8 +391,7 @@ class Editor extends hxd.App {
 
 
 	/* ------------------------------ ASSETS ------------------------------ */
-
-	public function make(type:String, ?highlighted = false) {
+	public function make(type:String) {
 		var prefab:Prefab;
 
 		switch (type) {
@@ -434,8 +418,7 @@ class Editor extends hxd.App {
 		prefab.name = getUID(prefab.type);
 		prefab.object.name = prefab.name;
 
-		addChild(prefab.object, highlighted);
-		add(prefab.object, prefab);
+		add(prefab, scene);
 	}
 
 
