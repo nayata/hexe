@@ -95,9 +95,7 @@ class Layout extends Prefab {
 		super();
 
 		var layout = new Graphic();
-
-		layout.add = add;
-		layout.delete = delete;
+		layout.prefab = this;
 
 		object = layout;
 
@@ -450,14 +448,13 @@ class Layout extends Prefab {
 
 
 class Graphic extends h2d.Graphics {
+	public var prefab:Layout;
+
 	public var width(default, set):Int = 0;
 	public var height(default, set):Int = 0;
-
-	public var padding:Int = 0;
+	
 	public var clipping:Bool = false;
-
-	public dynamic function add(node:Layout, s:h2d.Object) {}
-	public dynamic function delete(s:h2d.Object) {}
+	public var padding:Int = 0;
 
 
 	override function drawRec(ctx:h2d.RenderContext) {
@@ -467,42 +464,18 @@ class Graphic extends h2d.Graphics {
 	}
 
 
-	function getRoot(layout:Layout):Layout {
-		var p = layout.object.parent;
-
-		while (p != null) {
-			var prefab = Editor.ME.children.get(p.name);
-
-			if (prefab != null && prefab.type == "layout") {
-				layout = (cast prefab : Layout);
-			}
-			p = p.parent;
-		}
-
-		return layout;
-	}
-
-
 	override public function addChildAt(s:h2d.Object, pos:Int):Void {
 		super.addChildAt(s, pos);
 
-		var prefab = Editor.ME.children.get(name);
-
-		var node = (cast prefab : Layout);
-		var root = getRoot(node);
-
-		root.add(node, s);
+		var root = prefab.origin();
+		root.add(prefab, s);
 	}
 
 
 	override public function removeChild(s:h2d.Object) {
 		super.removeChild(s);
 
-		var prefab = Editor.ME.children.get(name);
-		
-		var root = (cast prefab : Layout);
-		root = getRoot(root);
-
+		var root = prefab.origin();
 		root.delete(s);
 	}
 
