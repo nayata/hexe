@@ -409,6 +409,8 @@ class Editor extends hxd.App {
 				prefab = new prefab.Graphics();
 			case "mask":
 				prefab = new prefab.Mask();
+			case "flow":
+				prefab = new prefab.Flow();
 			case "collider":
 				prefab = new prefab.Collider();
 			default:

@@ -12,6 +12,7 @@ import property.Prefab;
 import property.Anim;
 import property.Text;
 import property.Mask;
+import property.Flow;
 import property.Name;
 
 
@@ -129,6 +130,15 @@ class Properties extends h2d.Layers {
 		element.x = 30;
 		element.y = 346;
 		properties.set("mask", element);
+
+
+		// Flow Prefab
+		element = new Flow(this);
+		element.onFocus = onFocus;
+		element.visible = false;
+		element.x = 30;
+		element.y = 346;
+		properties.set("flow", element);
 
 
 		// Collider Prefab

@@ -176,6 +176,23 @@ class Layout extends Prefab {
 	}
 
 
+	public function resize(name:String) {
+		var element = children.get(name);
+
+		if (element != null) {
+			var object = element.prefab.object;
+
+			element.width = object.getBounds(object).width;
+			element.height = object.getBounds(object).height;
+
+			element.original.width = element.width;
+			element.original.height = element.height;
+
+			onResize();
+		}
+	}
+
+
 	public function select(prefab:Prefab) {
 		selected = children.get(prefab.name);
 	}

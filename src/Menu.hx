@@ -81,6 +81,7 @@ class Menu extends h2d.Object {
 		assetMenu.add("Add Interactive", "interactive");
 		assetMenu.add("Add Graphics", "graphics");
 		assetMenu.add("Add Mask", "mask");
+		assetMenu.add("Add Flow", "flow");
 		assetMenu.addDivider();
 
 		assetMenu.add("Add from Texture Atlas", "bitmap");
@@ -172,6 +173,7 @@ class Menu extends h2d.Object {
 			case "Add Interactive" : editor.make("interactive");
 			case "Add Graphics" : editor.make("graphics");
 			case "Add Mask" : editor.make("mask");
+			case "Add Flow" : editor.make("flow");
 
 			case "Add from Texture Atlas" : editor.file.openTexture(type);
 			

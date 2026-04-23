@@ -276,6 +276,19 @@ class File {
 			}
 
 
+			// Flow Prefab
+			if (entry.type == "flow") {
+				var item = new prefab.Flow();
+
+				item.layout = entry.mode;
+				item.horizontalSpacing = Std.int(entry.dx);
+				item.verticalSpacing = Std.int(entry.dy);
+				item.padding = entry.padding;
+
+				prefab = item;
+			}
+
+
 			// Collider Prefab
 			if (entry.type == "collider") {
 				var item = new prefab.Collider();
@@ -701,6 +714,18 @@ class File {
 
 			if (entry.type == "mask") {
 				var item = new h2d.Mask(Std.int(entry.width), Std.int(entry.height));
+
+				hierarchy.set(entry.link, item);
+				object = item;
+			}
+
+			if (entry.type == "flow") {
+				var item = new h2d.Flow();
+
+				item.layout = haxe.EnumTools.createByIndex(h2d.Flow.FlowLayout, entry.mode);
+				item.horizontalSpacing = Std.int(entry.dx);
+				item.verticalSpacing = Std.int(entry.dy);
+				item.padding = entry.padding;
 
 				hierarchy.set(entry.link, item);
 				object = item;
