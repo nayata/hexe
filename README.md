@@ -22,6 +22,7 @@ List of Heaps h2d objects that can be added to a prefab:
 - [x] **Anim**
 - [x] **ScaleGrid** 
 - [x] **Mask**
+- [x] **Flow**
 
 
 # Quick Start
@@ -63,7 +64,6 @@ var object = new hxe.Prefab("myPrefab", s2d);
 * [Introduction](https://nayata.github.io/hexe)  
 * [Quick Start](https://nayata.github.io/hexe/#quick-start)  
 * [Working with editor](https://nayata.github.io/hexe/#working-with-editor)  
-* [Using Collider Prefabs with Echo Physics](https://nayata.github.io/hexe-echo)  
 * [In-game implementation](https://nayata.github.io/hexe-lib)
   - [Load prefab](https://nayata.github.io/hexe-lib/#load-prefab)  
   - [Modify Prefab](https://nayata.github.io/hexe-lib/#modify-prefab)  
@@ -73,3 +73,8 @@ var object = new hxe.Prefab("myPrefab", s2d);
   - [Prefab Bind](https://nayata.github.io/hexe-lib/#prefab-bind)  
   - [Override](https://nayata.github.io/hexe-lib/#override)  
 * [API](https://nayata.github.io/hexe-api)
+
+
+# Guides
+
+* [Using Collider Prefabs with Echo Physics](https://nayata.github.io/hexe-echo)  
