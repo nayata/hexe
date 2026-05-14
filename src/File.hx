@@ -64,48 +64,6 @@ class File {
 			}
 
 
-			// Layout Prefab
-			if (entry.type == "layout") {
-				var item = new prefab.Layout();
-
-				item.width = entry.width;
-				item.height = entry.height;
-		
-				if (entry.clipping != null) item.masking = entry.clipping;
-				if (entry.padding != null) item.padding = entry.padding;
-				if (entry.color != null) item.color = StringTools.hex(entry.color, 6);
-
-				if (entry.children != null) {
-					for (child in entry.children) {
-						var element = item.set(child.name);
-	
-						element.name = child.name;
-						element.type = child.type;
-				
-						element.width = child.width;
-						element.height = child.height;
-
-						element.clipping = child.clipping ?? false;
-						element.padding = child.padding ?? 0;
-
-						if (child.color != null) element.color = StringTools.hex(child.color, 6);
-						element.anchor = child.dx + "," + child.dy;
-	
-						element.resizeX = Std.int(child.x);
-						element.resizeY = Std.int(child.y);
-	
-						element.scaleX = child.scaleX;
-						element.scaleY = child.scaleY;
-			
-						element.anchorX = child.dx;
-						element.anchorY = child.dy;
-					}
-				}
-
-				prefab = item;
-			}
-
-
 			// Bitmap Prefab
 			if (entry.type == "bitmap") {
 				var tile:h2d.Tile;
@@ -562,12 +520,6 @@ class File {
 			var object:h2d.Object = null;
 
 			if (entry.type == "object") {
-				var item = new h2d.Object();
-				hierarchy.set(entry.link, item);
-				object = item;
-			}
-
-			if (entry.type == "layout") {
 				var item = new h2d.Object();
 				hierarchy.set(entry.link, item);
 				object = item;

@@ -397,8 +397,6 @@ class Editor extends hxd.App {
 		switch (type) {
 			case "object":
 				prefab = new prefab.Object();
-			case "layout":
-				prefab = new prefab.Layout();
 			case "text":
 				prefab = new prefab.Text();
 			case "bitmap":

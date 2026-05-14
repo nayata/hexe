@@ -71,7 +71,6 @@ class Menu extends h2d.Object {
 		assetMenu.x = editMenu.x + editMenu.width + divider;
 		
 		assetMenu.add("Add Object", "object");
-		assetMenu.add("Add Layout", "layout");
 
 		assetMenu.add("Add Bitmap", "bitmap");
 		assetMenu.add("Add ScaleGrid", "scalegrid");
@@ -163,7 +162,6 @@ class Menu extends h2d.Object {
 
 			
 			case "Add Object" : editor.make("object");
-			case "Add Layout" : editor.make("layout");
 
 			case "Add Bitmap" : editor.file.openBitmap();
 			case "Add ScaleGrid" : editor.file.openBitmap("scalegrid");

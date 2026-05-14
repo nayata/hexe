@@ -24,15 +24,6 @@ class Flow extends Prefab {
 
 
 	public dynamic function onReflow() {
-		var prefab = Editor.ME.children.get(object.parent.name);
-
-		if (prefab != null && prefab.type == "layout") {
-			var layout = (cast prefab : Layout);
-			var root = layout.origin();
-			
-			root.resize(object.name);
-		}
-
 		var flow = (cast object : h2d.Flow);
 
 		width = flow.innerWidth;

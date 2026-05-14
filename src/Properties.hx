@@ -2,7 +2,6 @@ import property.Property;
 import property.Transform;
 import property.Project;
 import property.Object;
-import property.Layout;
 import property.Bitmap;
 import property.Interactive;
 import property.ScaleGrid;
@@ -63,14 +62,6 @@ class Properties extends h2d.Layers {
 		element.x = 30;
 		element.y = 346;
 		properties.set("object", element);
-
-
-		// Layout Prefab
-		element = new Layout(this);
-		element.visible = false;
-		element.x = 30;
-		element.y = 120;
-		properties.set("layout", element);
 
 
 		// Bitmap Prefab
@@ -167,20 +158,7 @@ class Properties extends h2d.Layers {
 		project.select(prefab);
 		uid.select(prefab);
 
-		if (prefab.fixed) transform.unselect();
 		if (property != null) property.unselect();
-
-		// Select a child's root layout
-		var element = editor.children.get(object.parent.name);
-
-		if (element != null && element.type == "layout") {
-			var root = (cast element : prefab.Layout);
-			root = root.origin();
-			root.select(prefab);
-			prefab = root;
-
-			transform.unselect();
-		}
 
 		if (properties.exists(prefab.type)) {
 			property = properties.get(prefab.type);
