@@ -15,6 +15,7 @@ class Graphics extends Property {
 
 		var input = set("color", new Color(this));
 		input.setPosition(second, top);
+		input.onUpdate = onUpdate;
 		input.onChange = onChange;
 		input.onFocus = onFocused;
 		input.setSize(166, 32);

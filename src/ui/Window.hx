@@ -2,18 +2,19 @@ package ui;
 
 class Window extends h2d.Object {
 	var backdrop:Touch;
-
 	var window:h2d.Object;
 
 	public var background:h2d.Bitmap;
 	public var content:ui.Mask;
 	public var header:Header;
-	
 
+	public var title(default, set):String = "";
+	
 	public var width(default, set):Int = 340;
 	public var height(default, set):Int = 256;
 
-	public var title(default, set):String = "";
+	public var padding:Int = 60;
+
 
 
 	public function new(?parent:h2d.Object) {
@@ -34,6 +35,18 @@ class Window extends h2d.Object {
 		content = new ui.Mask(width, height, window);
 
 		background.y = header.y = -header.height;
+	}
+
+	
+	public function position(x:Float, y:Float) {
+		window.x = x;
+		window.y = y;
+		
+		var min = new h2d.col.Point(padding, header.height + padding);
+		var max = new h2d.col.Point(Editor.ME.WIDTH - width - padding, Editor.ME.HEIGHT - height - padding);
+	
+		window.x = max.x > min.x ? hxd.Math.clamp(window.x, min.x, max.x) : min.x;
+		window.y = max.y > min.y ? hxd.Math.clamp(window.y, min.y, max.y) : min.y;
 	}
 
 

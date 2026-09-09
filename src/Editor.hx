@@ -35,6 +35,7 @@ class Editor extends hxd.App {
 	public var texture:Texture;
 	public var effect:Effects;
 	public var motion:Motion;
+	public var color:Color;
 
 	public var menu:Menu;
 	public var view:Button;
@@ -103,6 +104,7 @@ class Editor extends hxd.App {
 
 		texture = new Texture(s2d);
 		effect = new Effects(s2d);
+		color = new Color(s2d);
 
 		onResize();
 	}

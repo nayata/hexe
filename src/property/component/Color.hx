@@ -2,8 +2,6 @@ package property.component;
 
 
 class Color extends TextField {
-	var picker:ColorPicker;
-
 	var swatch:h2d.Interactive;
 	var undo:String = "";
 
@@ -15,35 +13,35 @@ class Color extends TextField {
 
 		swatch = new h2d.Interactive(16, 16, this);
 		swatch.onClick = onSwatch;
-
-		picker = new ColorPicker(this);
-		picker.input.onFocusLost = colorFocusLost;
-		picker.onChange = onColor;
-		picker.visible = false;
 	}
 
 
 	function onSwatch(event:hxd.Event) {
-		onFocus(this);
-
-		picker.visible = !picker.visible;
-		if (picker.visible) picker.input.focus();
+		Editor.ME.color.onUpdate = updateColor;
+		Editor.ME.color.onChange = changeColor;
+		Editor.ME.color.open(undo);
+		
+		var position = getAbsPos();
+		var window = Editor.ME.color;
+		
+		window.position(position.x - window.width * 0.5, position.y - window.height + 20);
 	}
 
 
-	function colorFocusLost(event:hxd.Event) {
-		picker.visible = false;
-	}
-
-
-	function onColor(prop:Dynamic) {
-		var color = Editor.ME.getColor(prop.color);
+	function updateColor(prop:String) {
+		var color = Editor.ME.getColor(prop);
 		if (color == null) return;
 
-		setTileColor(prop.color);
-		input.text = prop.color;
+		setTileColor(prop);
+		input.text = prop;
 
-		onChange({ field : field, from : undo, to :  prop.color });
+		onUpdate({ field : field, from : undo, to : prop });
+	}
+
+
+	function changeColor(prop:String) {
+		onChange({ field : field, from : undo, to : prop });
+		undo = prop;
 	}
 
 
@@ -97,9 +95,6 @@ class Color extends TextField {
 
 			swatch.x = tile.x;
 			swatch.y = tile.y;
-
-			picker.x = swatch.x - picker.width * 0.5;
-			picker.y = swatch.y - picker.height;
 
 			input.inputWidth = Std.int(width-tile.tile.width-padding*4);
 			input.x = tile.tile.width + padding*2;

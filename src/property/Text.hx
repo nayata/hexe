@@ -67,6 +67,7 @@ class Text extends Property {
 
 		input = set("color", new Color(panel));
 		input.setPosition(second, top);
+		input.onUpdate = onUpdate;
 		input.onChange = onChange;
 		input.onFocus = onFocus;
 		input.setSize(166, 32);

@@ -24,6 +24,7 @@ class Outline extends Effect {
 		input.setPosition(90, 0);
 		input.setSize(130, 32);
 
+		input.onUpdate = onChange;
 		input.onChange = onChange;
 
 		registry.set("color", input);

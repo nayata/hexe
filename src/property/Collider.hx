@@ -119,6 +119,7 @@ class Collider extends Property {
 
 		input = set("color", new Color(prop));
 		input.setPosition(second, top);
+		input.onUpdate = onUpdate;
 		input.onChange = onChange;
 		input.onFocus = onObjectFocus;
 		input.setSize(166, 32);
