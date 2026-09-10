@@ -111,9 +111,9 @@ class Text extends Property {
 
 
 	override public function rebuild() {
-		var fonts = [];
+		var fonts = ["Default"];
 		for (name => font in Assets.fonts) {
-			fonts.push(name);
+			if (name != "Default") fonts.push(name);
 		}
 		fonts.push("Load");
 		choice.add(fonts);
