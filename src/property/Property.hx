@@ -32,7 +32,7 @@ class Property extends h2d.Layers {
 		this.object = object;
 
 		for (field => item in registry) {
-			var value = Reflect.field(object, field);
+			var value = Reflect.getProperty(object, field);
 			item.value = Std.string(value);
 		}
 
@@ -54,7 +54,7 @@ class Property extends h2d.Layers {
 		if (object == null) return;
 
 		for (field => item in registry) {
-			var value = Reflect.field(object, field);
+			var value = Reflect.getProperty(object, field);
 			item.value = Std.string(value);
 		}
 	}
