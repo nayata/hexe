@@ -4,19 +4,17 @@ import property.component.Label;
 import property.component.Input;
 
 import property.component.Number;
-import property.component.FloatNumber;
 import property.component.TextArea;
-import property.component.Select;
+import property.component.Option;
 import property.component.Align;
 import property.component.Color;
-
 import property.component.Font;
 
 
 class Text extends Property {
 	var panel:h2d.Layers;
 	var text:TextArea;
-	var choice:Select;
+	var choice:Font;
 	
 
 	public function new(?parent:h2d.Object) {
@@ -49,6 +47,22 @@ class Text extends Property {
 		set("font", choice);
 
 		top += choice.height + padding;
+
+
+		// Type
+		label = new Label("Type", 0, top + tall * 0.5, panel);
+
+		var option = new Option(panel);
+		registry.set("mode", option);
+		option.setPosition(second, top);
+		option.add(["Bitmap", "MSDF", "SDF"]);
+		option.onFocus = onFocus;
+		option.onChange = onChange;
+		option.field = "mode";
+		option.icon = "menu";
+		option.setSize(166, 40);
+
+		top += option.height + padding;
 
 
 		// Text Align

@@ -12,6 +12,8 @@ class Text extends Prefab {
 	public var color(default, set):String = "FFFFFF";
 	public var align(default, set):Int = 0;
 
+	public var mode(get, set):Int;
+
 
 	public function new() {
 		super();
@@ -40,6 +42,7 @@ class Text extends Prefab {
 		}
 
 		if (color != "FFFFFF") data.color = Editor.ME.getColor(color);
+		if (mode != 0) data.mode = mode;
 
 		if (letterSpacing != 0) data.width = letterSpacing;
 		if (lineSpacing != 0) data.height = lineSpacing;
@@ -144,15 +147,58 @@ class Text extends Prefab {
 
 	
 	function set_font(v) {
+		font = v;
+
 		var h2dText = (cast object : h2d.Text);
-		h2dText.font = Assets.font(v);
+
+		h2dText.font = Assets.defaultFont;
+		h2dText.font = Assets.font(font);
 
 		width = h2dText.textWidth;
 		height = h2dText.textHeight;
-
 		align = align;
 
-		return font = v;
+		return v;
+	}
+
+
+	function get_mode() {
+		return switch (Assets.font(font).type) {
+			case SignedDistanceField(ch, _, _): ch == MultiChannel ? 1 : 2;
+			default: 0;
+		}
+	}
+
+
+	function set_mode(v) {
+		Assets.setType(font, v);
+
+		update(Assets.font(font));
+
+		var h2dText = (cast object : h2d.Text);
+		h2dText.font = Assets.defaultFont;
+		h2dText.font = Assets.font(font);
+		width = h2dText.textWidth;
+		height = h2dText.textHeight;
+		align = align;
+		
+		return v;
+	}
+
+
+	static function update(f:h2d.Font) {
+		for (object in Editor.ME.hierarchy) {
+			var prefab = Editor.ME.children.get(object.name);
+			
+			if (prefab.type == "text") {
+				var h2dText = (cast object : h2d.Text);
+
+				if (h2dText.font == f) {
+					h2dText.font = Assets.defaultFont;
+					h2dText.font = f;
+				}
+			}
+		}
 	}
 
 

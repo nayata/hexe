@@ -183,6 +183,8 @@ class File {
 				if (entry.font != null) {
 					loadFont(directory + entry.src);
 
+					if (entry.mode != null) Assets.setType(entry.font, entry.mode);
+
 					item.font = entry.font;
 					item.src = entry.src;
 				}
@@ -628,6 +630,12 @@ class File {
 			if (entry.type == "text") {
 				var font = hxd.res.DefaultFont.get();
 				if (entry.font != null) font = getFont(path + entry.src);
+
+				if (entry.mode != null && entry.mode != 0) {
+					var channel:h2d.Font.SDFChannel = entry.mode == 1 ? MultiChannel : Alpha;
+					font.type = SignedDistanceField(channel, 0.5, -1);
+					font.tile.getTexture().filter = Linear;
+				}
 
 				var item = new h2d.Text(font);
 				item.text = entry.text ?? "";
