@@ -180,16 +180,16 @@ class File {
 			if (entry.type == "text") {
 				var item = new prefab.Text();
 
-				if (entry.mode != null) item.mode = entry.mode;
-				if (entry.size != null) item.size = entry.size;
-				if (entry.smooth != null) item.smooth = entry.smooth;
-
 				if (entry.font != null) {
 					loadFont(directory + entry.src);
 
 					item.font = entry.font;
 					item.src = entry.src;
 				}
+
+				if (entry.mode != null) item.mode = entry.mode;
+				if (entry.size != null) item.size = entry.size;
+				if (entry.smooth != null) item.smooth = entry.smooth;
 
 				if (entry.color != null) item.color = StringTools.hex(entry.color, 6);
 				if (entry.width != null) item.letterSpacing = Std.int(entry.width);
