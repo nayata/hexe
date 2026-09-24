@@ -9,10 +9,15 @@ class Text extends Prefab {
 	public var lineSpacing(default, set):Int = 0;
 	public var maxWidth(default, set):Int = -1;
 
+	public var smooth(default, set):Bool = true;
+
 	public var color(default, set):String = "FFFFFF";
 	public var align(default, set):Int = 0;
 
-	public var mode(get, set):Int;
+	public var mode(default, set):Int = 0;
+	public var size(default, set):Int = 0;
+	
+	var textFont = new Font();
 
 
 	public function new() {
@@ -42,7 +47,11 @@ class Text extends Prefab {
 		}
 
 		if (color != "FFFFFF") data.color = Editor.ME.getColor(color);
+		
+		if (size != 0) data.size = size;
 		if (mode != 0) data.mode = mode;
+
+		if (!smooth) data.smooth = false;
 
 		if (letterSpacing != 0) data.width = letterSpacing;
 		if (lineSpacing != 0) data.height = lineSpacing;
@@ -58,6 +67,9 @@ class Text extends Prefab {
 	override public function clone():Prefab {
 		var prefab = new Text();
 
+		prefab.mode = mode;
+		prefab.size = size;
+		prefab.smooth = smooth;
 		prefab.font = font;
 		prefab.src = src;
 
@@ -66,7 +78,6 @@ class Text extends Prefab {
 		prefab.lineSpacing = lineSpacing;
 		prefab.maxWidth = maxWidth;
 		prefab.align = align;
-
 		prefab.text = text;
 
 		prefab.copy(this);
@@ -145,60 +156,26 @@ class Text extends Prefab {
 		return lineSpacing = v;
 	}
 
+
+	function set_smooth(v:Bool) {
+		var h2dText = (cast object : h2d.Text);
+		h2dText.smooth = v;
+
+		return smooth = v;
+	}
+
 	
-	function set_font(v) {
-		font = v;
-
+	function set_font(v) { font = v; update(); return v; }
+	function set_mode(v) { mode = v; update(); return v; }
+	function set_size(v) { size = v; update(); return v; }
+	
+	
+	function update() {
 		var h2dText = (cast object : h2d.Text);
-
-		h2dText.font = Assets.defaultFont;
-		h2dText.font = Assets.font(font);
-
+		h2dText.font = textFont.get(font, mode, size);
 		width = h2dText.textWidth;
 		height = h2dText.textHeight;
 		align = align;
-
-		return v;
-	}
-
-
-	function get_mode() {
-		return switch (Assets.font(font).type) {
-			case SignedDistanceField(ch, _, _): ch == MultiChannel ? 1 : 2;
-			default: 0;
-		}
-	}
-
-
-	function set_mode(v) {
-		Assets.setType(font, v);
-
-		update(Assets.font(font));
-
-		var h2dText = (cast object : h2d.Text);
-		h2dText.font = Assets.defaultFont;
-		h2dText.font = Assets.font(font);
-		width = h2dText.textWidth;
-		height = h2dText.textHeight;
-		align = align;
-		
-		return v;
-	}
-
-
-	static function update(f:h2d.Font) {
-		for (object in Editor.ME.hierarchy) {
-			var prefab = Editor.ME.children.get(object.name);
-			
-			if (prefab.type == "text") {
-				var h2dText = (cast object : h2d.Text);
-
-				if (h2dText.font == f) {
-					h2dText.font = Assets.defaultFont;
-					h2dText.font = f;
-				}
-			}
-		}
 	}
 
 

@@ -180,10 +180,12 @@ class File {
 			if (entry.type == "text") {
 				var item = new prefab.Text();
 
+				if (entry.mode != null) item.mode = entry.mode;
+				if (entry.size != null) item.size = entry.size;
+				if (entry.smooth != null) item.smooth = entry.smooth;
+
 				if (entry.font != null) {
 					loadFont(directory + entry.src);
-
-					if (entry.mode != null) Assets.setType(entry.font, entry.mode);
 
 					item.font = entry.font;
 					item.src = entry.src;
@@ -629,17 +631,13 @@ class File {
 
 			if (entry.type == "text") {
 				var font = hxd.res.DefaultFont.get();
-				if (entry.font != null) font = getFont(path + entry.src);
 
-				if (entry.mode != null && entry.mode != 0) {
-					var channel:h2d.Font.SDFChannel = entry.mode == 1 ? MultiChannel : Alpha;
-					font.type = SignedDistanceField(channel, 0.5, -1);
-					font.tile.getTexture().filter = Linear;
-				}
+				if (entry.font != null) font = getFont(path + entry.src);
+				font = Font.make(font, entry.mode ?? 0, entry.size ?? 0);
 
 				var item = new h2d.Text(font);
+				item.smooth = entry.smooth ?? true;
 				item.text = entry.text ?? "";
-				item.smooth = true;
 
 				if (entry.color != null) item.textColor = entry.color;
 				if (entry.align != null) item.textAlign = entry.align == 1 ? Center : Right;
@@ -939,6 +937,7 @@ typedef Data = {
 	@:optional var color : Int;
 	@:optional var align : Int;
 	@:optional var range : Int;
+	@:optional var size : Int;
 
 	@:optional var clipping : Bool;
 	@:optional var padding : Int;

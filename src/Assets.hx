@@ -42,23 +42,6 @@ class Assets {
 	}
 
 
-	// mode: 0 = Bitmap, 1 = MSDF, 2 = SDF
-	public static function setType(name:String, mode:Int) {
-		if (name == "Default" || !fonts.exists(name)) return;
-
-		var f = fonts.get(name);
-
-		if (mode == 0) {
-			f.type = BitmapFont;
-			return;
-		}
-
-		var channel:h2d.Font.SDFChannel = mode == 1 ? MultiChannel : Alpha;
-		f.type = SignedDistanceField(channel, 0.5, -1);
-		f.tile.getTexture().filter = Linear;
-	}
-
-
 	public static function colorize(bitmap:h2d.Bitmap, value:Int = 0x9a9aa0) {
 		var a = bitmap.color.w;
 		bitmap.color.setColor(value);

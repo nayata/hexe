@@ -5,6 +5,7 @@ import property.component.Input;
 
 import property.component.Number;
 import property.component.TextArea;
+import property.component.Checkbox;
 import property.component.Option;
 import property.component.Align;
 import property.component.Color;
@@ -33,7 +34,7 @@ class Text extends Property {
 		panel.y = text.height + divider;
 
 
-		// Text Font
+		// Font
 		var label = new Label("Font", 0, top + tall * 0.5, panel);
 
 		choice = new Font(panel);
@@ -47,22 +48,6 @@ class Text extends Property {
 		set("font", choice);
 
 		top += choice.height + padding;
-
-
-		// Type
-		label = new Label("Type", 0, top + tall * 0.5, panel);
-
-		var option = new Option(panel);
-		registry.set("mode", option);
-		option.setPosition(second, top);
-		option.add(["Bitmap", "MSDF", "SDF"]);
-		option.onFocus = onFocus;
-		option.onChange = onChange;
-		option.field = "mode";
-		option.icon = "menu";
-		option.setSize(166, 40);
-
-		top += option.height + padding;
 
 
 		// Text Align
@@ -89,23 +74,50 @@ class Text extends Property {
 		top += input.height + padding;
 
 
-		// maxWidth & lineSpacing
+		// Size
 		label = new Label("Size", 0, top + half, panel);
 
+		input = set("size", new Number(panel));
+		input.setPosition(second, top);
+		input.onUpdate = onUpdate;
+		input.onChange = onChange;
+		input.minimum = 0;
+		input.icon = "font";
+
+		// Mode
+		var option = new Option(panel);
+		registry.set("mode", option);
+		option.setPosition(third, top);
+		option.add(["Bitmap", "MSDF", "SDF"]);
+		option.onFocus = onFocus;
+		option.onChange = onChange;
+		option.field = "mode";
+		option.setSize(80, 32);
+
+		top += input.height + padding;
+
+
+		label = new Label("Spacing", 0, top + half, panel);
+
+		// letterSpacing
 		input = set("letterSpacing", new Number(panel));
 		input.setPosition(second, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
 		input.icon = "spacing";
 
+		// lineSpacing
 		input = set("lineSpacing", new Number(panel));
 		input.setPosition(third, top);
 		input.onUpdate = onUpdate;
 		input.onChange = onChange;
+		input.minimum = -1;
 		input.icon = "leading";
 
-
 		top += input.height + padding;
+
+		
+		label = new Label("maxWidth", 0, top + half, panel);
 
 		// maxWidth
 		input = set("maxWidth", new Number(panel));
@@ -114,6 +126,16 @@ class Text extends Property {
 		input.onChange = onChange;
 		input.minimum = -1;
 		input.icon = "wrap";
+
+		top += input.height + padding + padding;
+
+
+		// smooth
+		label = new Label("Smooth", 0, top + half * 0.5, panel);
+
+		input = set("smooth", new Checkbox(panel));
+		input.setPosition(second, top);
+		input.onChange = onChange;
 
 		over(choice);
 	}
