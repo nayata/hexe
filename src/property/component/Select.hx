@@ -208,6 +208,13 @@ class Select extends Input {
 	}
 
 
+	override function set_enabled(v) {
+		input.visible = v;
+		text.textColor = v ? Style.input : Style.label;
+		return enabled = v;
+	}
+
+
 	override function set_value(v) {
 		undo = v;
 		text.text = v;
