@@ -67,11 +67,11 @@ class Text extends Prefab {
 	override public function clone():Prefab {
 		var prefab = new Text();
 
+		prefab.font = font;
+		prefab.src = src;
 		prefab.mode = mode;
 		prefab.size = size;
 		prefab.smooth = smooth;
-		prefab.font = font;
-		prefab.src = src;
 
 		prefab.color = color;
 		prefab.letterSpacing = letterSpacing;
