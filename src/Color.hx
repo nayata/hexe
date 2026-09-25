@@ -12,6 +12,10 @@ class Color extends ui.Window {
 	var picker:Picker;
 	var slider:Slider;
 
+	var hue:property.component.Slider;
+	var saturation:property.component.Slider;
+	var value:property.component.Slider;
+
 	var rgb:Int = 0xffffff;
 
 
@@ -34,12 +38,16 @@ class Color extends ui.Window {
 		picker.onChange = onColor;
 		picker.x = picker.y = 64 + 20;
 
+		hue = addChannel("H", "h", 300, 360);
+		saturation = addChannel("S", "s", 340, 100);
+		value = addChannel("V", "v", 380, 100);
+
 		palette = new Palette(content);
 		palette.onChange = onPalette;
 		palette.x = 20;
-		palette.y = 296;
+		palette.y = 440;
 
-		height = 296 + (palette.height * palette.size) + 20;
+		height = 440 + (palette.height * palette.size) + 20;
 
 		visible = false;
 	}
@@ -62,6 +70,31 @@ class Color extends ui.Window {
 	public dynamic function onChange(prop:String) {}
 
 
+	function addChannel(name:String, field:String, y:Int, max:Int):property.component.Slider {
+		var label = new property.component.Label(name, 20, y + 14, content);
+	
+		var input = new property.component.Slider(content);
+		input.setPosition(216, y);
+		input.setSize(60, 32);
+		input.setSliderSize(150, 32);
+		input.setSliderRange(0, max);
+		input.minimum = 0;
+		input.maximum = max;
+		input.step = 1;
+		input.field = field;
+		input.onUpdate = onHsv;
+	
+		return input;
+	}
+
+
+	function setHsv() {
+		hue.value = Std.string(Math.round(slider.hue * 360));
+		saturation.value = Std.string(Math.round(picker.saturation * 100));
+		value.value = Std.string(Math.round(picker.value * 100));
+	}
+
+
 	function setColor(color:String) {
 		rgb = from(color);
 
@@ -75,6 +108,8 @@ class Color extends ui.Window {
 
 		picker.onCursor();
 		slider.onCursor();
+
+		setHsv();
 	}
 
 
@@ -88,6 +123,24 @@ class Color extends ui.Window {
 		rgb = hsvToRgb(slider.hue, picker.saturation, picker.value);
 		picker.shader.hue = slider.hue;
 
+		setHsv();
+		onUpdate(to(rgb));
+	}
+
+
+	function onHsv(prop:Dynamic) {
+		switch (prop.field) {
+			case "h": slider.hue = prop.to / 360;
+			case "s": picker.saturation = prop.to / 100;
+			default:  picker.value = prop.to / 100;
+		}
+	
+		rgb = hsvToRgb(slider.hue, picker.saturation, picker.value);
+		picker.shader.hue = slider.hue;
+	
+		picker.onCursor();
+		slider.onCursor();
+	
 		onUpdate(to(rgb));
 	}
 
